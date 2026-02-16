@@ -1325,9 +1325,9 @@
         updateSelectionCount();
         document.getElementById('copy-btn').onclick = copyToClipboard;
         document.getElementById('submit-btn').onclick = submitToOtto;
-        // Poll status every 15s
+        // Poll status every 3s for near-instant reactivity
         pollStatus();
-        setInterval(pollStatus, 15000);
+        setInterval(pollStatus, 3000);
     });
     </script>
 </body>
