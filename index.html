@@ -558,6 +558,7 @@
             <button class="btn btn-copy" id="copy-btn">📋 Copy</button>
             <button class="btn btn-submit" id="submit-btn">🚀 Make It Happen</button>
             <button class="btn btn-panic" id="panic-btn" onclick="openPanicModal()">🛑 Panic Undo</button>
+            <button class="btn" style="background:rgba(76,201,240,0.15);color:var(--accent-cyan);border:1px solid rgba(76,201,240,0.3);" onclick="resetLayout()">🖥️ Fix Layout</button>
         </div>
     </div>
 
@@ -1310,6 +1311,13 @@
     document.addEventListener('click', (e) => {
         if (e.target.id === 'panic-overlay') closePanicModal();
     });
+
+    async function resetLayout() {
+        try {
+            await fetch(`${API_BASE}/api/desktop/layout`, { method: 'POST' });
+            showToast('🖥️ Layout reset — windows repositioned');
+        } catch(e) { showToast('⚠️ Couldn\'t reach Otto'); }
+    }
 
     function showToast(msg) {
         const t = document.createElement('div');
