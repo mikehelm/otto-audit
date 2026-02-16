@@ -379,7 +379,39 @@
             color: white;
         }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+        .btn-panic { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
+        .btn-panic:hover { background: var(--severity-high); color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239,68,68,0.4); }
         .btn:active { transform: translateY(0); }
+
+        /* Panic Modal */
+        .panic-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center;
+        }
+        .panic-overlay.open { display: flex; }
+        .panic-modal {
+            background: var(--bg-secondary); border-radius: 20px; padding: 2rem;
+            max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
+            border: 2px solid var(--severity-high); box-shadow: 0 0 60px rgba(239,68,68,0.3);
+        }
+        .panic-title { font-size: 1.5rem; font-weight: 800; color: var(--severity-high); margin-bottom: 0.5rem; }
+        .panic-subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .panic-commits { list-style: none; margin-bottom: 1.5rem; }
+        .panic-commit {
+            padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 0.5rem;
+            background: var(--bg-card); border: 1px solid var(--border); cursor: pointer;
+            transition: all 0.2s ease; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .panic-commit:hover { background: var(--bg-card-hover); border-color: var(--severity-high); }
+        .panic-commit.selected { background: rgba(239,68,68,0.1); border-color: var(--severity-high); }
+        .panic-commit-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-secondary); flex-shrink: 0; position: relative; }
+        .panic-commit.selected .panic-commit-radio { border-color: var(--severity-high); background: var(--severity-high); }
+        .panic-commit.selected .panic-commit-radio::after { content: ''; position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; border-radius: 50%; background: white; }
+        .panic-commit-hash { font-family: 'JetBrains Mono', monospace; color: var(--accent-blue); font-size: 0.85rem; font-weight: 600; }
+        .panic-commit-msg { color: var(--text-primary); font-size: 0.9rem; flex: 1; }
+        .panic-commit-idx { color: var(--text-secondary); font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
+        .panic-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .panic-log { margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: pre-wrap; color: var(--accent-green); max-height: 200px; overflow-y: auto; }
 
         /* Toast */
         .toast {
@@ -499,6 +531,22 @@
         <div id="tab-contents"></div>
     </div>
 
+    <!-- Panic Undo Modal -->
+    <div class="panic-overlay" id="panic-overlay">
+        <div class="panic-modal">
+            <div class="panic-title">🛑 Panic Undo</div>
+            <div class="panic-subtitle">Roll Otto back to a previous state. Select how far back to go. This reverts files AND restarts all services.</div>
+            <div id="panic-loading" style="color:var(--text-secondary);padding:1rem;">Loading commit history...</div>
+            <ul class="panic-commits" id="panic-commits"></ul>
+            <div class="panic-actions">
+                <button class="btn btn-copy" onclick="closePanicModal()">Cancel</button>
+                <button class="btn" style="background:var(--accent-amber);color:#1a1a2e;" onclick="panicRestart()">🔄 Restart Services Only</button>
+                <button class="btn" style="background:var(--severity-high);color:white;" id="panic-undo-btn" onclick="panicUndo()">⏪ Undo & Restart</button>
+            </div>
+            <div class="panic-log" id="panic-log" style="display:none;"></div>
+        </div>
+    </div>
+
     <div class="bottom-bar">
         <div class="selection-info">
             <div class="selection-count">
@@ -509,6 +557,7 @@
         <div class="bottom-bar-actions">
             <button class="btn btn-copy" id="copy-btn">📋 Copy</button>
             <button class="btn btn-submit" id="submit-btn">🚀 Make It Happen</button>
+            <button class="btn btn-panic" id="panic-btn" onclick="openPanicModal()">🛑 Panic Undo</button>
         </div>
     </div>
 
@@ -1158,6 +1207,109 @@
             statusEl.textContent = parts.join(' · ');
         }
     }
+
+    // === PANIC UNDO ===
+    let panicSelectedSteps = 0;
+    let panicCommits = [];
+
+    async function openPanicModal() {
+        document.getElementById('panic-overlay').classList.add('open');
+        document.getElementById('panic-loading').style.display = 'block';
+        document.getElementById('panic-commits').innerHTML = '';
+        document.getElementById('panic-log').style.display = 'none';
+        panicSelectedSteps = 0;
+        try {
+            const r = await fetch(`${API_BASE}/api/panic/history`);
+            const data = await r.json();
+            panicCommits = data.commits || [];
+            document.getElementById('panic-loading').style.display = 'none';
+            const ul = document.getElementById('panic-commits');
+            panicCommits.forEach((c, i) => {
+                if (i === 0) return; // Current commit = nothing to undo
+                const li = document.createElement('li');
+                li.className = 'panic-commit';
+                li.dataset.steps = i;
+                li.innerHTML = `
+                    <div class="panic-commit-radio"></div>
+                    <span class="panic-commit-idx">-${i}</span>
+                    <span class="panic-commit-hash">${c.hash}</span>
+                    <span class="panic-commit-msg">${c.message}</span>
+                `;
+                li.onclick = () => {
+                    document.querySelectorAll('.panic-commit').forEach(el => el.classList.remove('selected'));
+                    li.classList.add('selected');
+                    panicSelectedSteps = i;
+                };
+                ul.appendChild(li);
+            });
+            // Show services status
+            if (data.services) {
+                const svcHTML = Object.entries(data.services).map(([name, s]) =>
+                    `<span style="margin-right:1rem;">${s.running ? '🟢' : '🔴'} ${name.replace('com.otto.', '')}</span>`
+                ).join('');
+                const svcDiv = document.createElement('div');
+                svcDiv.style.cssText = 'padding:0.75rem 1rem;background:var(--bg-card);border-radius:10px;margin-bottom:1rem;font-size:0.85rem;';
+                svcDiv.innerHTML = `<strong>Services:</strong> ${svcHTML}`;
+                ul.before(svcDiv);
+            }
+        } catch(e) {
+            document.getElementById('panic-loading').textContent = '❌ Cannot reach Otto server. Try manually: openclaw gateway restart';
+        }
+    }
+
+    function closePanicModal() {
+        document.getElementById('panic-overlay').classList.remove('open');
+    }
+
+    async function panicUndo() {
+        if (!panicSelectedSteps) { showToast('⚠️ Select how far back to go'); return; }
+        if (!confirm(`⚠️ This will REVERT ${panicSelectedSteps} commit(s) and RESTART all Otto services. Are you sure?`)) return;
+
+        const logEl = document.getElementById('panic-log');
+        logEl.style.display = 'block';
+        logEl.textContent = '🔄 Executing panic undo...\n';
+        document.getElementById('panic-undo-btn').disabled = true;
+        document.getElementById('panic-undo-btn').textContent = '⏳ Working...';
+
+        try {
+            const r = await fetch(`${API_BASE}/api/panic/undo`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ steps: panicSelectedSteps, restartServices: true })
+            });
+            const data = await r.json();
+            logEl.textContent = (data.log || []).join('\n');
+            if (data.ok) {
+                showToast('✅ Panic undo complete — Otto is rolling back');
+            } else {
+                showToast('⚠️ Partial undo — check the log');
+            }
+        } catch(e) {
+            logEl.textContent += '\n❌ Server unreachable. Manual recovery:\n  cd ~/.openclaw/workspace\n  git revert HEAD\n  openclaw gateway restart';
+        }
+        document.getElementById('panic-undo-btn').disabled = false;
+        document.getElementById('panic-undo-btn').textContent = '⏪ Undo & Restart';
+    }
+
+    async function panicRestart() {
+        if (!confirm('Restart all Otto services? (No file changes)')) return;
+        const logEl = document.getElementById('panic-log');
+        logEl.style.display = 'block';
+        logEl.textContent = '🔄 Restarting services...\n';
+        try {
+            const r = await fetch(`${API_BASE}/api/panic/restart`, { method: 'POST' });
+            const data = await r.json();
+            logEl.textContent = (data.log || []).join('\n');
+            showToast('🔄 Services restarted');
+        } catch(e) {
+            logEl.textContent += '\n❌ Server unreachable. Manual: openclaw gateway restart';
+        }
+    }
+
+    // Close modal on overlay click
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'panic-overlay') closePanicModal();
+    });
 
     function showToast(msg) {
         const t = document.createElement('div');
