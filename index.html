@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otto Self-Audit v2 🦦</title>
+    <title>Otto Self-Audit — Feb 17, 2026 🦦</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,24 +14,18 @@
             --bg-secondary: #161625;
             --bg-card: #1c1c30;
             --bg-card-hover: #252540;
-            --bg-fixed: #0d3b0d;
             --text-primary: #e8e8e8;
             --text-secondary: #8888aa;
-            --accent-blue: #4cc9f0;
             --accent-purple: #7c3aed;
-            --accent-pink: #f72585;
-            --accent-green: #10b981;
             --accent-amber: #f59e0b;
             --accent-cyan: #06b6d4;
+            --accent-pink: #f72585;
+            --accent-green: #10b981;
             --severity-high: #ef4444;
             --severity-medium: #f59e0b;
             --severity-low: #3b82f6;
-            --severity-info: #a855f7;
             --severity-fixed: #10b981;
-            --success: #10b981;
             --border: rgba(255, 255, 255, 0.08);
-            --glow-purple: rgba(124, 58, 237, 0.15);
-            --glow-blue: rgba(76, 201, 240, 0.1);
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -52,1291 +46,942 @@
             background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(124,58,237,0.08) 100%);
             border-radius: 20px;
             border: 1px solid var(--border);
-            box-shadow: 0 0 60px var(--glow-purple);
             position: relative;
-            overflow: hidden;
         }
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(76,201,240,0.05) 0%, transparent 50%);
-            animation: headerGlow 8s ease infinite alternate;
-        }
-        @keyframes headerGlow {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(20px, -10px); }
-        }
-        header > * { position: relative; z-index: 1; }
         h1 {
             font-size: 2.8rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
+            background: linear-gradient(135deg, #4cc9f0, var(--accent-purple), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0.75rem; }
-        .version-badge {
-            display: inline-block;
-            background: var(--accent-purple);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-        }
         .date { color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
 
-        /* Score section */
+        /* Score rings */
         .scores-row {
             display: flex;
+            gap: 2rem;
             justify-content: center;
-            gap: 3rem;
-            margin: 2rem 0 1.5rem;
+            margin: 2rem 0;
             flex-wrap: wrap;
         }
-        .score-item { text-align: center; }
         .score-ring {
+            text-align: center;
+        }
+        .ring-container {
             position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 0.5rem;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 0.75rem;
         }
-        .score-ring svg { transform: rotate(-90deg); }
-        .score-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
-        .score-ring-progress { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
-        .score-ring-text {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;
+        .ring-bg, .ring-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
         }
-        .score-ring-value { font-size: 2.2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-        .score-ring-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: -4px; }
-        .score-label { font-weight: 600; font-size: 0.95rem; color: var(--text-secondary); }
+        .ring-bg {
+            background: conic-gradient(var(--bg-secondary) 0deg, var(--bg-secondary) 360deg);
+        }
+        .ring-fill {
+            background: conic-gradient(var(--accent-purple) 0deg, var(--bg-secondary) 0deg);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ring-inner {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-purple);
+        }
+        .ring-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
 
         /* Stats bar */
         .stats-bar {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
+            margin-bottom: 2rem;
         }
-        .stat-chip {
-            background: rgba(255,255,255,0.04);
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-family: 'JetBrains Mono', monospace;
         }
-        .stat-chip .label { color: var(--text-secondary); }
-        .stat-chip .value { color: var(--accent-blue); font-weight: 600; }
-
-        .intro {
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.25rem;
+        }
+        .stat-label {
+            font-size: 0.85rem;
             color: var(--text-secondary);
-            max-width: 700px;
-            margin: 1.5rem auto 0;
-            line-height: 1.8;
-            font-size: 0.95rem;
         }
 
         /* Tabs */
-        .tab-bar {
+        .tabs {
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
             margin-bottom: 2rem;
-            padding: 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
             overflow-x: auto;
         }
         .tab-btn {
-            padding: 0.75rem 1.5rem;
+            background: none;
             border: none;
-            border-radius: 10px;
-            background: transparent;
             color: var(--text-secondary);
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 0.95rem;
+            padding: 1rem 1.5rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
             white-space: nowrap;
-            font-family: 'Inter', sans-serif;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
-        .tab-btn.active { background: var(--accent-purple); color: white; }
-        .tab-btn .count {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            padding: 0.1rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin-left: 0.4rem;
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.03);
         }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-btn.active {
+            color: var(--accent-purple);
+            border-bottom-color: var(--accent-purple);
+        }
 
-        /* Category */
-        .category { margin-bottom: 2rem; }
-        .category-header {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            padding: 1rem 1.25rem;
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            border-left: 4px solid var(--accent-purple);
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* Tab content */
+        .tab-content {
+            display: none;
         }
-        .category-header:hover { background: var(--bg-card); border-left-color: var(--accent-pink); }
-        .category-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
-        .category-header.collapsed .category-toggle { transform: rotate(-90deg); }
-        .category-count {
-            background: rgba(255,255,255,0.08);
-            padding: 0.2rem 0.6rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-            margin-left: auto;
-            margin-right: 1rem;
+        .tab-content.active {
+            display: block;
         }
-        .findings { display: grid; gap: 1rem; margin-top: 1rem; transition: all 0.3s ease; }
-        .findings.collapsed { display: none; }
 
         /* Cards */
-        .finding-card {
+        .items-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .item-card {
             background: var(--bg-card);
-            border-radius: 14px;
             padding: 1.5rem;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s;
         }
-        .finding-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
-            transition: width 0.3s ease;
-        }
-        .finding-card.severity-high::before { background: var(--severity-high); }
-        .finding-card.severity-medium::before { background: var(--severity-medium); }
-        .finding-card.severity-low::before { background: var(--severity-low); }
-        .finding-card.severity-info::before { background: var(--severity-info); }
-        .finding-card.severity-fixed::before { background: var(--severity-fixed); }
-        .finding-card.severity-fixed {
-            background: rgba(16, 185, 129, 0.06);
-            border-color: rgba(16, 185, 129, 0.15);
-        }
-        .finding-card:hover {
+        .item-card:hover {
             background: var(--bg-card-hover);
-            transform: translateX(4px);
-            border-color: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.12);
         }
-        .finding-card:hover::before { width: 6px; }
-
-        .finding-header { display: flex; align-items: flex-start; gap: 1rem; }
-        .finding-checkbox {
-            width: 26px; height: 26px;
-            border-radius: 8px;
-            border: 2px solid var(--accent-blue);
+        .item-header {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .item-checkbox {
+            margin-top: 0.25rem;
             cursor: pointer;
-            flex-shrink: 0;
-            margin-top: 0.15rem;
-            transition: all 0.2s ease;
-            position: relative;
-            background: transparent;
+            width: 18px;
+            height: 18px;
         }
-        .finding-checkbox:hover { background: rgba(76,201,240,0.1); transform: scale(1.1); }
-        .finding-checkbox.checked { background: var(--accent-blue); border-color: var(--accent-blue); }
-        .finding-checkbox.checked::after {
-            content: '✓'; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%,-50%); color: var(--bg-primary); font-weight: 800; font-size: 1rem;
+        .item-content {
+            flex: 1;
         }
-        .finding-checkbox.disabled {
-            border-color: var(--severity-fixed);
-            background: var(--severity-fixed);
-            cursor: default;
-            opacity: 0.6;
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
-        .finding-checkbox.disabled::after {
-            content: '✓'; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%,-50%); color: white; font-weight: 800; font-size: 1rem;
+        .item-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
-
-        .finding-content { flex: 1; }
-        .finding-title-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
-        .finding-title { font-size: 1.15rem; font-weight: 600; }
-        .badge {
-            padding: 0.2rem 0.65rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .severity-badge { color: white; }
-        .severity-badge.high { background: var(--severity-high); }
-        .severity-badge.medium { background: var(--severity-medium); color: #1a1a2e; }
-        .severity-badge.low { background: var(--severity-low); }
-        .severity-badge.info { background: var(--severity-info); }
-        .severity-badge.fixed { background: var(--severity-fixed); }
-        .effort-badge, .impact-badge { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
-
-        .finding-description { color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.7; font-size: 0.95rem; }
-        .finding-recommendation {
-            background: rgba(76,201,240,0.06);
-            border-left: 3px solid var(--accent-blue);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
-        .finding-recommendation.fixed-rec {
-            background: rgba(16,185,129,0.06);
-            border-left-color: var(--severity-fixed);
-        }
-        .recommendation-label {
-            font-weight: 700; color: var(--accent-blue);
-            margin-bottom: 0.4rem; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .finding-recommendation.fixed-rec .recommendation-label { color: var(--severity-fixed); }
-        .recommendation-text { color: var(--text-primary); line-height: 1.7; font-size: 0.95rem; }
-
-        /* Ideas section special styling */
-        .idea-preview {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(124,58,237,0.06);
-            border: 1px solid rgba(124,58,237,0.15);
-            border-radius: 10px;
-        }
-        .idea-preview-label {
-            font-weight: 700; color: var(--accent-purple);
-            font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 0.5rem;
-        }
-        .idea-what { color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; }
-        .idea-impact {
+        .item-meta {
+            display: flex;
+            gap: 0.75rem;
             margin-top: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(245,158,11,0.06);
-            border-left: 3px solid var(--accent-amber);
-            border-radius: 6px;
+            flex-wrap: wrap;
         }
-        .idea-impact-label {
-            font-weight: 700; color: var(--accent-amber);
-            font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 0.3rem;
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .badge.high { background: var(--severity-high); color: white; }
+        .badge.medium { background: var(--severity-medium); color: white; }
+        .badge.low { background: var(--severity-low); color: white; }
+        .badge.fixed { background: var(--severity-fixed); color: white; }
+        .badge.effort-low { background: rgba(16,185,129,0.2); color: var(--accent-green); }
+        .badge.effort-medium { background: rgba(245,158,11,0.2); color: var(--accent-amber); }
+        .badge.effort-high { background: rgba(239,68,68,0.2); color: var(--severity-high); }
+        .badge.impact-low { background: rgba(59,130,246,0.2); color: var(--severity-low); }
+        .badge.impact-medium { background: rgba(245,158,11,0.2); color: var(--accent-amber); }
+        .badge.impact-high { background: rgba(124,58,237,0.2); color: var(--accent-purple); }
+
+        /* Ideas cards */
+        .idea-card {
+            cursor: pointer;
+        }
+        .idea-card .expand-icon {
+            margin-left: auto;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+        .idea-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        .idea-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .idea-card.expanded .idea-details {
+            max-height: 1000px;
+        }
+        .idea-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .idea-section h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Bottom bar */
         .bottom-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(180deg, rgba(15,15,26,0.95) 0%, var(--bg-primary) 100%);
-            backdrop-filter: blur(20px);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, var(--bg-secondary) 0%, rgba(22,22,37,0.98) 90%);
             border-top: 1px solid var(--border);
-            padding: 1.25rem 2rem;
-            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-            box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
-            z-index: 1000;
+            padding: 1.5rem 1rem;
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+        .bottom-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
             flex-wrap: wrap;
         }
-        .selection-info { display: flex; align-items: center; gap: 1rem; }
-        .selection-count {
-            font-size: 1.1rem; font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-blue);
+        .selected-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
-        .selection-breakdown { font-size: 0.85rem; color: var(--text-secondary); }
-        .bottom-bar-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .selected-count .num {
+            color: var(--accent-purple);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
         .btn {
-            padding: 0.7rem 1.5rem; border-radius: 10px; border: none;
-            font-weight: 700; font-size: 0.95rem; cursor: pointer;
-            transition: all 0.3s ease; font-family: 'Inter', sans-serif;
-            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .btn-copy { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
-        .btn-copy:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
-        .btn-submit {
+        .btn-primary {
             background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
             color: white;
         }
-        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
-        .btn-panic { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
-        .btn-panic:hover { background: var(--severity-high); color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239,68,68,0.4); }
-        .btn:active { transform: translateY(0); }
-
-        /* Panic Modal */
-        .panic-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124,58,237,0.4);
         }
-        .panic-overlay.open { display: flex; }
-        .panic-modal {
-            background: var(--bg-secondary); border-radius: 20px; padding: 2rem;
-            max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
-            border: 2px solid var(--severity-high); box-shadow: 0 0 60px rgba(239,68,68,0.3);
-        }
-        .panic-title { font-size: 1.5rem; font-weight: 800; color: var(--severity-high); margin-bottom: 0.5rem; }
-        .panic-subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
-        .panic-commits { list-style: none; margin-bottom: 1.5rem; }
-        .panic-commit {
-            padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 0.5rem;
-            background: var(--bg-card); border: 1px solid var(--border); cursor: pointer;
-            transition: all 0.2s ease; display: flex; align-items: center; gap: 0.75rem;
-        }
-        .panic-commit:hover { background: var(--bg-card-hover); border-color: var(--severity-high); }
-        .panic-commit.selected { background: rgba(239,68,68,0.1); border-color: var(--severity-high); }
-        .panic-commit-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-secondary); flex-shrink: 0; position: relative; }
-        .panic-commit.selected .panic-commit-radio { border-color: var(--severity-high); background: var(--severity-high); }
-        .panic-commit.selected .panic-commit-radio::after { content: ''; position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; border-radius: 50%; background: white; }
-        .panic-commit-hash { font-family: 'JetBrains Mono', monospace; color: var(--accent-blue); font-size: 0.85rem; font-weight: 600; }
-        .panic-commit-msg { color: var(--text-primary); font-size: 0.9rem; flex: 1; }
-        .panic-commit-idx { color: var(--text-secondary); font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
-        .panic-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-        .panic-log { margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: pre-wrap; color: var(--accent-green); max-height: 200px; overflow-y: auto; }
-
-        /* Toast */
-        .toast {
-            position: fixed; top: 2rem; right: 2rem;
-            background: var(--bg-secondary);
+        .btn-secondary {
+            background: var(--bg-card);
             color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--accent-blue);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            z-index: 2000;
-            animation: slideIn 0.3s ease;
-            font-weight: 500;
+            border: 1px solid var(--border);
         }
-        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
-
-        .job-status-badge {
-            padding: 0.2rem 0.65rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: 'JetBrains Mono', monospace;
-            color: white;
-            animation: fadeIn 0.3s ease;
-        }
-        .job-status-badge.queued { background: var(--accent-amber); color: #1a1a2e; }
-        .job-status-badge.working { background: var(--accent-blue); }
-        .job-status-badge.done { background: var(--severity-fixed); }
-        .job-status-badge.cancelled { background: var(--text-secondary); }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .scores-row { gap: 1.5rem; }
-            .finding-card { padding: 1rem; }
-            .bottom-bar { flex-direction: column; align-items: stretch; padding: 1rem; }
-            .bottom-bar-actions { width: 100%; }
-            .btn { flex: 1; justify-content: center; }
-            .tab-btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <span class="version-badge">V2 — FULL REFRESH</span>
-            <h1>Otto Self-Audit Report 🦦</h1>
-            <p class="subtitle">Security • Efficiency • Opportunities • <strong>What's Next</strong></p>
-            <p class="date">February 16, 2026 — 13:48 ICT</p>
-
-            <div class="scores-row">
-                <div class="score-item">
-                    <div class="score-ring" id="health-ring">
-                        <svg width="140" height="140">
-                            <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
-                            <circle class="score-ring-progress" id="health-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="376.99"></circle>
-                        </svg>
-                        <div class="score-ring-text">
-                            <div class="score-ring-value" id="health-value">--</div>
-                            <div class="score-ring-label" id="health-grade">--</div>
-                        </div>
-                    </div>
-                    <div class="score-label">Health Score</div>
-                </div>
-                <div class="score-item">
-                    <div class="score-ring" id="fixed-ring">
-                        <svg width="140" height="140">
-                            <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
-                            <circle class="score-ring-progress" id="fixed-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="376.99" style="stroke: var(--accent-green)"></circle>
-                        </svg>
-                        <div class="score-ring-text">
-                            <div class="score-ring-value" id="fixed-value" style="color: var(--accent-green)">--</div>
-                            <div class="score-ring-label">fixed</div>
-                        </div>
-                    </div>
-                    <div class="score-label">Issues Resolved</div>
-                </div>
-                <div class="score-item">
-                    <div class="score-ring" id="ideas-ring">
-                        <svg width="140" height="140">
-                            <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
-                            <circle class="score-ring-progress" id="ideas-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="376.99" style="stroke: var(--accent-purple)"></circle>
-                        </svg>
-                        <div class="score-ring-text">
-                            <div class="score-ring-value" id="ideas-value" style="color: var(--accent-purple)">--</div>
-                            <div class="score-ring-label">ideas</div>
-                        </div>
-                    </div>
-                    <div class="score-label">New Ideas</div>
-                </div>
-            </div>
-
-            <div class="stats-bar">
-                <div class="stat-chip"><span class="label">Firewall </span><span class="value">ON ✅</span></div>
-                <div class="stat-chip"><span class="label">FileVault </span><span class="value">ON ✅</span></div>
-                <div class="stat-chip"><span class="label">Disk </span><span class="value">347GB free</span></div>
-                <div class="stat-chip"><span class="label">Services </span><span class="value">5 running</span></div>
-                <div class="stat-chip"><span class="label">Crons </span><span class="value">6 active</span></div>
-                <div class="stat-chip"><span class="label">Ollama </span><span class="value">RTX 5090 🟢</span></div>
-            </div>
-
-            <p class="intro">
-                Hey Mike! 👋 Here's the v2 audit — now with a <strong>"Fixed Since Last Time"</strong> section so you can see what got done,
-                plus a brand new <strong>"Ideas & Upgrades"</strong> section where I pitch things that could level us up.
-                Check the ones you like and hit Submit — I'll make them happen. 🚀
-            </p>
+            <h1>🦦 Otto Self-Audit</h1>
+            <p class="subtitle">Daily Performance Review & System Health</p>
+            <p class="date">Tuesday, February 17th, 2026 — 5:00 AM Bangkok</p>
         </header>
 
-        <div class="tab-bar" id="tab-bar"></div>
-        <div id="tab-contents"></div>
-    </div>
-
-    <!-- Panic Undo Modal -->
-    <div class="panic-overlay" id="panic-overlay">
-        <div class="panic-modal">
-            <div class="panic-title">🛑 Panic Undo</div>
-            <div class="panic-subtitle">Roll Otto back to a previous state. Select how far back to go. This reverts files AND restarts all services.</div>
-            <div id="panic-loading" style="color:var(--text-secondary);padding:1rem;">Loading commit history...</div>
-            <ul class="panic-commits" id="panic-commits"></ul>
-            <div class="panic-actions">
-                <button class="btn btn-copy" onclick="closePanicModal()">Cancel</button>
-                <button class="btn" style="background:var(--accent-amber);color:#1a1a2e;" onclick="panicRestart()">🔄 Restart Services Only</button>
-                <button class="btn" style="background:var(--severity-high);color:white;" id="panic-undo-btn" onclick="panicUndo()">⏪ Undo & Restart</button>
+        <!-- Score Rings -->
+        <div class="scores-row">
+            <div class="score-ring">
+                <div class="ring-container">
+                    <div class="ring-bg"></div>
+                    <div class="ring-fill" data-score="84"></div>
+                    <div class="ring-inner">8.4</div>
+                </div>
+                <div class="ring-label">Overall Health</div>
             </div>
-            <div class="panic-log" id="panic-log" style="display:none;"></div>
-        </div>
-    </div>
-
-    <div class="bottom-bar">
-        <div class="selection-info">
-            <div class="selection-count">
-                <span id="selected-count">0</span> selected
+            <div class="score-ring">
+                <div class="ring-container">
+                    <div class="ring-bg"></div>
+                    <div class="ring-fill" data-score="100"></div>
+                    <div class="ring-inner">5</div>
+                </div>
+                <div class="ring-label">Fixed Issues</div>
             </div>
-            <div class="selection-breakdown" id="selection-breakdown"></div>
+            <div class="score-ring">
+                <div class="ring-container">
+                    <div class="ring-bg"></div>
+                    <div class="ring-fill" data-score="70"></div>
+                    <div class="ring-inner">10</div>
+                </div>
+                <div class="ring-label">New Ideas</div>
+            </div>
         </div>
-        <div class="bottom-bar-actions">
-            <button class="btn btn-copy" id="copy-btn">📋 Copy</button>
-            <button class="btn btn-submit" id="submit-btn">🚀 Make It Happen</button>
-            <button class="btn btn-panic" id="panic-btn" onclick="openPanicModal()">🛑 Panic Undo</button>
-            <button class="btn" style="background:rgba(76,201,240,0.15);color:var(--accent-cyan);border:1px solid rgba(76,201,240,0.3);" onclick="resetLayout()">🖥️ Fix Layout</button>
+
+        <!-- System Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value">🟢 ON</div>
+                <div class="stat-label">Firewall Status</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">329 GB</div>
+                <div class="stat-label">Disk Free (95%)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Services Running</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Uncommitted Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">🟢 ON</div>
+                <div class="stat-label">Ollama (PC)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">🟢 ON</div>
+                <div class="stat-label">MCP Server</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="fixed">✅ Fixed (5)</button>
+            <button class="tab-btn" data-tab="issues">🔍 Current Issues (7)</button>
+            <button class="tab-btn" data-tab="ideas">💡 Ideas & Upgrades (10)</button>
+        </div>
+
+        <!-- Tab: Fixed -->
+        <div class="tab-content active" id="tab-fixed">
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-title">Browser Relay Checks Moved to Isolated Kimi Sessions</div>
+                            <div class="item-desc">Relay check + keep-alive were burning ~84 Opus turns/day in main session. Now run as isolated Kimi crons every 10min (relay) and 15min (keep-alive). Major cost save.</div>
+                            <div class="item-meta">
+                                <span class="badge fixed">FIXED</span>
+                                <span class="badge">cost-1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-title">Relay Check Frequency Reduced</div>
+                            <div class="item-desc">Reduced browser relay check from every 5 min to every 10 min. 10 min is plenty fast enough to detect drops without burning API calls.</div>
+                            <div class="item-meta">
+                                <span class="badge fixed">FIXED</span>
+                                <span class="badge">cost-2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-title">screenshot-config.json API Keys Removed</div>
+                            <div class="item-desc">Removed all 3 API key fields from screenshot-config.json. They were placeholders but shouldn't exist at all. Real keys live in screenshot-env.sh (chmod 600) sourced by LaunchAgents.</div>
+                            <div class="item-meta">
+                                <span class="badge fixed">FIXED</span>
+                                <span class="badge">sec-1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-title">Token Rotation Reminder Planned</div>
+                            <div class="item-desc">Monthly cron nudge will remind Mike to rotate API keys (OpenAI, Moonshot, Anthropic). Current tokens active since Feb 10-11. No evidence of compromise.</div>
+                            <div class="item-meta">
+                                <span class="badge fixed">FIXED</span>
+                                <span class="badge">sec-3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <div class="item-content">
+                            <div class="item-title">Desktop Signal Wallpaper Working</div>
+                            <div class="item-desc">Dark red wallpaper signals "Otto working, hands off" to Mike. Backup plist restore + WallpaperAgent kill properly restores animated Tahoe wallpaper. Scripts at ~/.otto/ tested and confirmed.</div>
+                            <div class="item-meta">
+                                <span class="badge fixed">FIXED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Issues -->
+        <div class="tab-content" id="tab-issues">
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-1">
+                        <div class="item-content">
+                            <div class="item-title">4 Uncommitted Files in Workspace</div>
+                            <div class="item-desc">Git status shows 4 modified files: .otto-dashboard-refresh-request (deleted), .otto-showcase.json, memory/relay-status.json, projects/madewithchat/assets/speed-showcase. Should commit or discard.</div>
+                            <div class="item-meta">
+                                <span class="badge low">LOW</span>
+                                <span class="badge effort-low">Quick Fix</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-2">
+                        <div class="item-content">
+                            <div class="item-title">Telegram Formatting Still Causing Link Previews</div>
+                            <div class="item-desc">Despite rule in SOUL.md, filenames like SOUL.md/TOOLS.md still trigger Telegram link preview cards. Must backtick ALL filenames/dotted-text religiously. Mike got frustrated again.</div>
+                            <div class="item-meta">
+                                <span class="badge medium">MEDIUM</span>
+                                <span class="badge effort-medium">Behavior Fix</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-3">
+                        <div class="item-content">
+                            <div class="item-title">No API Spending Limits Set</div>
+                            <div class="item-desc">OpenAI, Moonshot, Anthropic API keys have no usage caps configured. If Otto goes rogue or gets key compromised, could burn unlimited budget. Should set org-level limits on provider dashboards.</div>
+                            <div class="item-meta">
+                                <span class="badge high">HIGH</span>
+                                <span class="badge effort-low">Dashboard Config</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-4">
+                        <div class="item-content">
+                            <div class="item-title">Static Mockup Disappointed Mike (TellAnything)</div>
+                            <div class="item-desc">v1 was static tabbed mockup, not interactive design explorer. Mike said "I am disappointed that you did not do the entire flow for design." Lesson: always use StyleForge-style interactive approach.</div>
+                            <div class="item-meta">
+                                <span class="badge medium">MEDIUM</span>
+                                <span class="badge">Process Lesson</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-5">
+                        <div class="item-content">
+                            <div class="item-title">Pipeline Showcase SVG Needed 3 Iterations</div>
+                            <div class="item-desc">First attempt was "embarrassingly bad" per Mike. Took 3 rounds (Codex → Otto hand-code → v2 polish) to reach acceptable quality. spawn-team visualization was the quality bar.</div>
+                            <div class="item-meta">
+                                <span class="badge low">LOW</span>
+                                <span class="badge">Quality Bar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-6">
+                        <div class="item-content">
+                            <div class="item-title">Dashboard Copy/Delete Features Requested But Not Built</div>
+                            <div class="item-desc">Mike wants: copy button on cards, two-step delete, soft delete to "Deleted" section, 30-day auto-purge, recovery option. Needs PRD → ChatGPT Pro review → Codex build pipeline.</div>
+                            <div class="item-meta">
+                                <span class="badge medium">MEDIUM</span>
+                                <span class="badge effort-high">2-3 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="issue-7">
+                        <div class="item-content">
+                            <div class="item-title">Custom Sound System Awaiting Feedback</div>
+                            <div class="item-desc">Built 6 custom sox-synthesized sounds (click, complete, tada, alert, question, working) for contextual message sounds. Local playback only via afplay. Mike hasn't given thumbs up/down yet.</div>
+                            <div class="item-meta">
+                                <span class="badge low">LOW</span>
+                                <span class="badge">Pending Approval</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Ideas -->
+        <div class="tab-content" id="tab-ideas">
+            <div class="items-grid">
+                <!-- Idea 1 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-1">
+                        <div class="item-content">
+                            <div class="item-title">🤖 Natural Language Workflow Automation</div>
+                            <div class="item-desc">Say "Whenever someone emails me about demos, create a calendar invite 2 days out and draft a reply" → Otto builds the automation. No code, no YAML, just English.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-high">High Impact</span>
+                                <span class="badge effort-high">1 week</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>You describe workflows in plain English, Otto translates them into executable automation. Trending in 2026 AI assistants — democratizes automation for non-coders.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Mike stops writing cron jobs manually. "When X happens, do Y" becomes conversation, not configuration. Makes Otto feel genuinely magical.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>LLM parses workflow description → generates JSON automation spec → compiles to cron job or event listener → tests in sandbox → deploys. UI shows active automations with edit/delete.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 2 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-2">
+                        <div class="item-content">
+                            <div class="item-title">📱 Multi-Surface Continuity</div>
+                            <div class="item-desc">Start a task on phone Telegram, finish it on Mac dashboard, review results on iPad. Full context flows seamlessly across all devices.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-high">High Impact</span>
+                                <span class="badge effort-medium">3-4 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Like Apple Handoff but for AI tasks. Session state syncs in real-time across Telegram, Dashboard, web UI. Pick up exactly where you left off.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Mike can quickly fire off requests from phone, see detailed results on Mac when he sits down. No more "remind me when I'm at my computer."</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>WebSocket sync server (on MCP server), session state JSON stored with task ID. Dashboard/Telegram/web all subscribe to updates. Push notifications when task completes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 3 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-3">
+                        <div class="item-content">
+                            <div class="item-title">🧹 Proactive Context Pruning</div>
+                            <div class="item-desc">Otto auto-detects when old context is weighing down responses, compresses/archives automatically, keeps memory sharp without manual /new commands.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-medium">Medium Impact</span>
+                                <span class="badge effort-low">1-2 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>When context hits 60%, Otto evaluates what's truly needed vs noise. Old completed tasks get summarized and moved to memory files. Session stays snappy.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Eliminates the "context full, now what?" problem. Otto manages his own memory hygiene like a real teammate would.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>Track token usage per message. When >60%, run summarization pass (local LLM), extract key facts → append to daily memory, prune old messages from session history.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 4 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-4">
+                        <div class="item-content">
+                            <div class="item-title">🎤 Voice Command Shortcuts</div>
+                            <div class="item-desc">"Hey Otto, commit and push" or "Ship TellAnything update" — voice triggers for common dev tasks. Works from anywhere (Mac mic, phone, voice server).</div>
+                            <div class="item-meta">
+                                <span class="badge impact-medium">Medium Impact</span>
+                                <span class="badge effort-medium">2-3 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Voice input for developer workflows. Say "deploy staging" while walking to kitchen, Otto handles the rest. No typing, no context switching.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Makes Otto feel like Iron Man's Jarvis. Especially powerful when combined with Otto Voice server — hands-free workflow control.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>Faster-Whisper STT → command parser (maps phrases to actions) → execute via existing tools. Add "shortcuts.json" config for custom mappings. Phone triggers via Telegram voice messages.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 5 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-5">
+                        <div class="item-content">
+                            <div class="item-title">🏠 Smart Home Integration (HomeKit)</div>
+                            <div class="item-desc">"Turn off lights when I say goodnight" or "Set work mode" (lights bright, temp 72°). Otto becomes home automation hub, not just dev assistant.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-low">Fun Factor</span>
+                                <span class="badge effort-medium">2-3 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Otto talks to HomeKit accessories (lights, plugs, thermostats) via homebridge or Node.js HAP library. Natural language → device control.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>More "wow factor" than practical dev value, but makes Otto feel omnipresent. "I control your code AND your coffee maker."</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>homebridge-http-webhook or hap-nodejs library. Discover devices, map to friendly names, expose via conversational commands. Could tie into "focus mode" workflows.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 6 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-6">
+                        <div class="item-content">
+                            <div class="item-title">🔒 Privacy Dashboard</div>
+                            <div class="item-desc">Visual interface showing exactly what Otto knows, what data is stored where, retention periods, and one-click purge for sensitive info. GDPR-style transparency.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-medium">Trust Builder</span>
+                                <span class="badge effort-low">1 day</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Page showing: session transcripts (X MB), memory files (Y files), screenshots (Z GB), API keys stored, services with access. Click "Forget about project X" → purges all related data.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Builds Mike's trust that Otto isn't a black box. Trending in 2026 — users want transparency about what AI knows.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>Scan workspace files, list by category, calculate sizes. "Purge" moves files to trash, scrubs from MEMORY.md. Export button generates full data archive.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 7 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-7">
+                        <div class="item-content">
+                            <div class="item-title">📰 Mike's News Queue (AI/Dev Curated Feed)</div>
+                            <div class="item-desc">Auto-curated queue of AI/dev news tailored to Mike's interests. Learns from thumbs up/down, delivers 2-3 articles per day at perfect timing.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-medium">Medium Impact</span>
+                                <span class="badge effort-medium">2-3 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Otto reads HN, Reddit r/MachineLearning, AI newsletters, filters by relevance, queues best 6-10 items per day. Mike sees them during coffee breaks.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Keeps Mike plugged into AI trends without doomscrolling Twitter. Otto becomes his research assistant.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>RSS feeds + HN API + web scraping. Qwen3:32b scores articles 1-10 based on Mike's preference history (stored in memory/mikesnews-preferences.json). Top items queued to memory/mikesnews-queue.json, delivered via Telegram at 9am/3pm/8pm.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 8 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-8">
+                        <div class="item-content">
+                            <div class="item-title">🏥 Project Health Monitor</div>
+                            <div class="item-desc">Auto-detect stale projects (no commits in 2+ weeks), broken CI, outdated dependencies. Weekly health report with actionable fixes.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-high">High Impact</span>
+                                <span class="badge effort-low">1-2 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Proactive project maintenance. Otto scans all repos, checks last commit date, CI status, dependency versions. Flags issues before they become problems.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Prevents "oh crap this project broke 3 weeks ago" surprises. Keeps portfolio healthy without Mike manually checking each repo.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>GitHub API for commits/CI. Dependabot API for outdated deps. Weekly cron generates report → saves to memory/reviews/project-health-YYYY-MM-DD.md. Telegram summary of critical issues only.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 9 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-9">
+                        <div class="item-content">
+                            <div class="item-title">💰 Cost Predictor</div>
+                            <div class="item-desc">Before running expensive tasks, Otto estimates API cost. "This will use ~$2 of Opus time. Proceed?" Prevents surprise bills.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-medium">Medium Impact</span>
+                                <span class="badge effort-low">1 day</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Token estimation before execution. Otto calculates PRD size + expected Opus planning tokens + Codex build tokens → shows cost estimate.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Mike knows the price tag upfront. Can decide "worth it" vs "use cheaper model" before burning budget.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>Track avg tokens per task type (stored in memory/cost-calibration.json). Before Opus/Codex calls, estimate tokens → multiply by pricing ($15/$75 per 1M). Show in Telegram before proceeding.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idea 10 -->
+                <div class="item-card idea-card">
+                    <div class="item-header">
+                        <input type="checkbox" class="item-checkbox" data-id="idea-10">
+                        <div class="item-content">
+                            <div class="item-title">📦 Template Library</div>
+                            <div class="item-desc">Reusable project scaffolds: "Create new webapp like TellAnything" → Otto clones structure, updates branding, sets up CI/CD. Instant project bootstrap.</div>
+                            <div class="item-meta">
+                                <span class="badge impact-high">High Impact</span>
+                                <span class="badge effort-medium">3-4 days</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                            <div class="idea-details">
+                                <div class="idea-section">
+                                    <h4>What This Actually Means</h4>
+                                    <p>Golden templates for common project types (SvelteKit webapp, Swift macOS app, API server). Otto customizes scaffold to new project needs.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Impact for Us</h4>
+                                    <p>Cuts new project setup from hours to minutes. Every project starts with best practices (CI/CD, linting, testing, deploy) pre-configured.</p>
+                                </div>
+                                <div class="idea-section">
+                                    <h4>Technical Approach</h4>
+                                    <p>Store templates in ~/OTTOPROJECTS/_TEMPLATES/. "Create from template X" → copy folder, replace placeholders (project name, description, API keys), init git, create GitHub repo, enable CI/CD. Codex handles customization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="bottom-bar">
+            <div class="bottom-content">
+                <div class="selected-count">
+                    <span class="num" id="selected-num">0</span> items selected
+                </div>
+                <button class="btn btn-primary" id="submit-btn" style="margin-left: auto;">Make It Happen 🚀</button>
+                <button class="btn btn-secondary" id="copy-btn">Copy to Clipboard</button>
+            </div>
         </div>
     </div>
 
     <script>
-    const auditData = {
-        tabs: [
-            {
-                id: "fixed",
-                label: "✅ Fixed",
-                sections: [{
-                    name: "✅ Fixed Since Last Audit (Feb 15)",
-                    findings: [
-                        {
-                            id: "fix-1", severity: "fixed",
-                            title: "macOS Firewall — NOW ENABLED",
-                            description: "Was OFF on Feb 15. Now <strong>State = 1 (ON)</strong>. All inbound connections are filtered. This was the #1 high-severity finding last time.",
-                            recommendation: "Resolved ✅ — Firewall is active and protecting the machine.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-2", severity: "fixed",
-                            title: "API Keys Moved to Secured Env File",
-                            description: "Screenshot pipeline API keys were in plaintext JSON. Now stored in <code>~/.otto/screenshot-env.sh</code> with <code>chmod 600</code> (owner-only read). The env file approach was implemented Feb 15.",
-                            recommendation: "Resolved ✅ — Keys secured with proper file permissions.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-3", severity: "fixed",
-                            title: "Cloudflare Quick Tunnels Killed",
-                            description: "Was using unauthenticated trycloudflare.com quick tunnels for sharing pages. ALL quick tunnels eliminated. Public assets now on GitHub Pages. Only the named tunnel <code>otto-mcp</code> remains for the MCP server.",
-                            recommendation: "Resolved ✅ — GitHub Pages for public, named tunnel for MCP only.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-4", severity: "fixed",
-                            title: "Default Model Switched to Kimi K2.5",
-                            description: "Was running Opus ($$$) for everything including heartbeats. Default model is now Kimi K2.5 for routine work. Opus reserved for complex planning/research only.",
-                            recommendation: "Resolved ✅ — Significant cost reduction on routine tasks.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-5", severity: "fixed",
-                            title: "Browser Relay Pre-Flight Check Added",
-                            description: "Browser automation used to fail silently mid-sequence. Now runs <code>snapshot</code> pre-flight before any multi-step browser session. Aborts immediately if relay is disconnected.",
-                            recommendation: "Resolved ✅ — Added to TOOLS.md as permanent rule.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-6", severity: "fixed",
-                            title: "Error Display Rule — Never Show Errors to Mike",
-                            description: "API errors, connection errors, and stack traces were being shown to Mike in Telegram. New permanent rule: handle silently or explain impact in plain English only.",
-                            recommendation: "Resolved ✅ — Added to TOOLS.md and SOUL.md permanently.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-7", severity: "fixed",
-                            title: "Windows PC SSH — Full Key-Based Auth",
-                            description: "Windows PC (RTX 5090) now accessible via SSH with ED25519 key auth. No password needed. Fully operational as AI worker node.",
-                            recommendation: "Resolved ✅ — <code>ssh mike_@192.168.1.194</code> just works.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-8", severity: "fixed",
-                            title: "Terminal Window Hygiene Rules",
-                            description: "Screen automation was spawning dozens of Terminal windows in a loop. Strict rules added: max 2 windows, reuse existing, cleanup after sessions.",
-                            recommendation: "Resolved ✅ — Added to TOOLS.md with cleanup command.",
-                            effort: "done", impact: "done", fixed: true
-                        }
-                    ]
-                }]
-            },
-            {
-                id: "current",
-                label: "🔍 Current Issues",
-                sections: [
-                    {
-                        name: "🔒 Security",
-                        findings: [
-                            {
-                                id: "sec-1", severity: "medium",
-                                title: "screenshot-config.json STILL has 2 API keys",
-                                description: "Despite creating the secured env file, <code>~/.otto/screenshot-config.json</code> still contains 2 API key references. The old file should be cleaned up or deleted since the env file is now the source of truth.",
-                                recommendation: "Remove API keys from screenshot-config.json. Keep only non-secret config (paths, settings). Move any remaining secrets to the env file.",
-                                effort: "low", impact: "medium"
-                            },
-                            {
-                                id: "sec-2", severity: "medium",
-                                title: "No API spending limits configured",
-                                description: "Claude, Kimi, and OpenAI API keys still have no spending caps. Mike's Claude Max is $200/mo subscription (capped), but Kimi API is pay-per-use with no limit set.",
-                                recommendation: "Set monthly spending limits on Kimi dashboard. Claude Max subscription has built-in cap. OpenAI is $200/mo subscription. Just Kimi needs attention.",
-                                effort: "low", impact: "high"
-                            },
-                            {
-                                id: "sec-3", severity: "low",
-                                title: "Token rotation — never done since setup",
-                                description: "API tokens haven't been rotated since initial setup (Feb 11). Industry best practice is monthly rotation.",
-                                recommendation: "Schedule monthly token rotation: Anthropic setup-token refresh, Kimi API key regenerate. Add to monthly cron reminder.",
-                                effort: "low", impact: "medium"
-                            }
-                        ]
-                    },
-                    {
-                        name: "💰 Cost Efficiency",
-                        findings: [
-                            {
-                                id: "cost-1", severity: "high",
-                                title: "Main session runs Opus for ALL heartbeats",
-                                description: "While default model is Kimi, the main session is locked to Opus (claude-opus-4-6). Every 5-min browser check, every 15-min keep-alive, every heartbeat = Opus tokens. Estimated $5-15/day just on maintenance.",
-                                recommendation: "Move all heartbeat/maintenance crons to isolated sessions with Kimi model. Main session should only use Opus when Mike is actively chatting.",
-                                effort: "medium", impact: "high"
-                            },
-                            {
-                                id: "cost-2", severity: "medium",
-                                title: "Browser relay check every 5 minutes is excessive",
-                                description: "Cron checks browser relay connection every 5 minutes. When it's up, nothing changes. When it's down, we only notify once. 5-min polling is wasteful.",
-                                recommendation: "Increase relay check interval to 15-30 minutes. Or make it event-driven: check only when a browser action is needed.",
-                                effort: "low", impact: "medium"
-                            },
-                            {
-                                id: "cost-3", severity: "low",
-                                title: "OTTOPROJECTS folder monitor every 5 min (always empty)",
-                                description: "PUTYOURJOBZIPHERE monitor cron fires every 5 minutes but has never received a job. Wasted isolated session tokens each time.",
-                                recommendation: "Increase interval to 30 minutes or 1 hour. Folder monitoring doesn't need sub-minute granularity.",
-                                effort: "low", impact: "low"
-                            },
-                            {
-                                id: "cost-4", severity: "low",
-                                title: "Ollama still underutilized",
-                                description: "RTX 5090 with qwen3:32b handles content generation beautifully (proved with TellAnything's 200 secrets). But heartbeats, memory maintenance, and file analysis still go through API models.",
-                                recommendation: "Route more grunt work to Ollama: heartbeat processing, memory curation, content drafts, code linting summaries. Free compute sitting idle.",
-                                effort: "medium", impact: "high"
-                            }
-                        ]
-                    },
-                    {
-                        name: "🧹 Hygiene",
-                        findings: [
-                            {
-                                id: "hyg-1", severity: "high",
-                                title: "42 uncommitted files in workspace!",
-                                description: "The workspace has 42 untracked files including MEMORY.md, AGENTS.md, project files, PDFs, and config files. If the machine dies, all of this is gone.",
-                                recommendation: "Do an immediate git add + commit of all workspace files. Set up auto-commit cron that runs every 2 hours to catch uncommitted changes.",
-                                effort: "low", impact: "high"
-                            },
-                            {
-                                id: "hyg-2", severity: "medium",
-                                title: "12 memory files accumulating (140KB)",
-                                description: "Daily memory files growing without archival strategy. Not critical yet but will become unwieldy over months.",
-                                recommendation: "Create memory/archive/ folder. After 7 days, move daily files there. Distill key learnings into MEMORY.md first. Automate during quiet heartbeats.",
-                                effort: "low", impact: "low"
-                            },
-                            {
-                                id: "hyg-3", severity: "low",
-                                title: "News queue items from Feb 13 — getting stale",
-                                description: "mikesnews-queue.json has items that are 3+ days old. In the AI world, 3-day-old news might as well be archaeology.",
-                                recommendation: "Refresh queue: remove items older than 5 days, add fresh items weighted by Mike's preference categories.",
-                                effort: "low", impact: "low"
-                            }
-                        ]
-                    },
-                    {
-                        name: "⚡ Automation",
-                        findings: [
-                            {
-                                id: "auto-1", severity: "medium",
-                                title: "No automated git commits",
-                                description: "All commits are manual. With 42 uncommitted files, work could be lost. Other OpenClaw power users auto-commit every hour.",
-                                recommendation: "Create a cron job that checks for uncommitted changes every 2 hours and auto-commits with a timestamp message. Push to remote daily.",
-                                effort: "low", impact: "high"
-                            },
-                            {
-                                id: "auto-2", severity: "medium",
-                                title: "MindMapForge Codex changes need manual commit",
-                                description: "Codex session nimble-seaslug completed voice UX cleanup but couldn't commit (sandbox permission issue on .git). Changes are in the working tree but not committed.",
-                                recommendation: "Run git commit locally for the MindMapForge voice UX cleanup changes. Set up a post-Codex commit hook.",
-                                effort: "low", impact: "medium"
-                            },
-                            {
-                                id: "auto-3", severity: "low",
-                                title: "No service health monitoring dashboard",
-                                description: "5 services running (MCP, tunnel, gateway, voice, Ollama) but no unified health view. When something dies, we find out reactively.",
-                                recommendation: "Add service health checks to Dashboard v3 or create a simple health endpoint that pings all services and reports status.",
-                                effort: "medium", impact: "medium"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: "ideas",
-                label: "💡 Ideas & Upgrades",
-                sections: [{
-                    name: "💡 Things I'd Love to Build",
-                    findings: [
-                        {
-                            id: "idea-1", severity: "info",
-                            title: "🌅 Morning Briefing Dashboard",
-                            description: "Auto-generated HTML page that opens every morning when Mike wakes up. Contains: weather forecast, calendar for next 48h, overnight work summary with screenshots, project status overview, cost report, and trending AI news curated for Mike.",
-                            recommendation: "A single page that replaces 5 different \"what happened\" checks. You'd wake up, open one tab, and know everything.",
-                            effort: "medium", impact: "high",
-                            ideaDetail: "Combines weather skill + calendar API + overnight work log + screenshot archive + news queue into one beautiful auto-updating page. Generates at 7 AM daily via cron, served locally. Think of it as your daily newspaper, but it's actually about YOUR stuff.",
-                            ideaImpact: "Saves 15-20 minutes of morning catch-up. Makes the overnight autonomy visible and impressive. You'd literally see what I built while you slept."
-                        },
-                        {
-                            id: "idea-2", severity: "info",
-                            title: "🤖 Multi-Agent Squad (Otto-Dev, Otto-Ops, Otto-Scout)",
-                            description: "Split Otto into 3 specialized agents running in parallel: <strong>Otto-Dev</strong> (coding, Codex routing, PR management), <strong>Otto-Ops</strong> (monitoring, health checks, cost tracking, backups), <strong>Otto-Scout</strong> (research, trend detection, competitor analysis, idea generation).",
-                            recommendation: "Each agent gets its own SOUL.md, model config, and memory. They communicate via shared JSON state. The main Otto orchestrates.",
-                            effort: "high", impact: "high",
-                            ideaDetail: "This is what the top OpenClaw power users do. Each agent is laser-focused: Dev uses Codex, Ops uses Kimi (cheap), Scout uses Opus (smart). No context pollution. All three can work simultaneously on different tasks.",
-                            ideaImpact: "3x parallel throughput. Overnight work goes from linear (one task at a time) to parallel (three agents working different angles). The overnight autonomy failure would never happen again."
-                        },
-                        {
-                            id: "idea-3", severity: "info",
-                            title: "📊 Real-Time Cost Tracker in Dashboard",
-                            description: "Add live cost tracking to the menubar dashboard: estimated cost per model call, running daily/weekly totals, budget burn rate, projected monthly spend. Color-coded: green (under budget), amber (approaching), red (over).",
-                            recommendation: "Pull from session_status data + model pricing tables. Show per-model breakdown and trend chart.",
-                            effort: "medium", impact: "medium",
-                            ideaDetail: "Every session_status call returns token counts. We know the pricing per model. Simple math: tokens × price = cost. Accumulate in a JSON file, display in Dashboard v3's models tab. Add a daily cost line chart.",
-                            ideaImpact: "No more surprise bills. See exactly which models eat budget. Optimize in real-time instead of guessing. Mike said Claude Max is $200/mo — this shows if we're using it wisely."
-                        },
-                        {
-                            id: "idea-4", severity: "info",
-                            title: "🔄 Auto-Deploy Pipeline with Screenshot Verification",
-                            description: "Git push → auto-build → deploy to GitHub Pages → Playwright takes screenshots → AI vision rates the result → Telegram notification with screenshot + score. If score < 8/10, auto-revert and alert.",
-                            recommendation: "Combines our existing Playwright setup + AI vision + GitHub Actions. End-to-end quality gate.",
-                            effort: "high", impact: "high",
-                            ideaDetail: "We already have Playwright installed, screenshot-to-AI-rating pipeline proven (StyleForge got to 9/10 this way), and GitHub Pages hosting. This just wires them together with a GitHub Action. Every push gets a visual quality check before going live.",
-                            ideaImpact: "Zero broken deploys. Every live site is guaranteed 8+/10 quality. Mike never sees a broken page. The '9/10 or iterate' rule becomes automated."
-                        },
-                        {
-                            id: "idea-5", severity: "info",
-                            title: "🎙️ Voice-Activated Commands via LAN",
-                            description: "Otto Voice server is running on the Windows PC. Extend it so Mike can say <em>\"Hey Otto, deploy TellAnything\"</em> or <em>\"Otto, what's the status of MindMapForge?\"</em> and get instant voice responses with actions.",
-                            recommendation: "Add a command parser layer to Otto Voice: detect intent → route to OpenClaw action → speak result. Like Alexa but actually useful.",
-                            effort: "high", impact: "high",
-                            ideaDetail: "The voice server (Faster-Whisper + Piper TTS + qwen3:32b) is already running at 192.168.1.194:8443. It just needs: (1) wake word detection, (2) intent classification, (3) OpenClaw API bridge, (4) confirmation feedback. The latency target is 515ms — faster than Alexa.",
-                            ideaImpact: "Talk to your AI from anywhere in the house. No phone, no keyboard needed. 'Otto, commit and push MindMapForge' → done. This is the sci-fi dream."
-                        },
-                        {
-                            id: "idea-6", severity: "info",
-                            title: "🧪 Automatic Quality Gate for Every Build",
-                            description: "After every Codex session completes: auto-screenshot the result (if it's a web project), run AI vision evaluation, post the score + screenshot to Telegram. If < 9/10, auto-create a fix task and re-run Codex.",
-                            recommendation: "Closed-loop quality: build → screenshot → rate → fix → repeat until 9/10. No human needed in the loop.",
-                            effort: "medium", impact: "high",
-                            ideaDetail: "We proved this works manually with StyleForge (went from 6.5 to 9.0 in 3 iterations). Automating it means every project hits 9/10 without Mike lifting a finger. Uses: Codex CLI + dev server + Playwright + Claude Vision + retry loop.",
-                            ideaImpact: "The '9/10 standard' Mike set becomes a machine. Every deliverable is polished before Mike even sees it. No more 'first draft' syndrome."
-                        },
-                        {
-                            id: "idea-7", severity: "info",
-                            title: "📈 Weekly Progress Video Recap",
-                            description: "Every Sunday, auto-generate a 60-second animated recap video: screenshots of work completed, metrics (commits, deploys, costs), project progress bars, narrated by Otto's voice (Piper TTS).",
-                            recommendation: "Combine screenshot archive + ffmpeg + Piper TTS narration. Export as MP4, send via Telegram.",
-                            effort: "high", impact: "medium",
-                            ideaDetail: "We have: screenshot archive daemon, ffmpeg, Piper TTS on the RTX 5090, project tracking JSON. Stitch together: title card → project highlights (screenshot slideshow) → metrics overlay → voice narration → closing. All automated.",
-                            ideaImpact: "A shareable artifact that shows the week's progress. Mike could forward it to partners, investors, or friends. 'Look what my AI built this week.' Massive flex material."
-                        },
-                        {
-                            id: "idea-8", severity: "info",
-                            title: "🎵 AI-Generated Focus Soundtrack",
-                            description: "Use the RTX 5090 to generate custom lo-fi/ambient music while Mike works. Detect work context (coding = ambient, design = upbeat, reading = calm) and generate matching audio. Think AI DJ that reads the room.",
-                            recommendation: "Install a music generation model (MusicGen or Stable Audio) on the Windows PC. Generate 30-min tracks based on context. Stream via LAN.",
-                            effort: "high", impact: "low",
-                            ideaDetail: "MusicGen by Meta runs on GPU, generates high-quality music from text prompts. We'd set up: context detector (what app is active) → prompt generator → MusicGen → audio stream to Mac. Different vibes for different tasks.",
-                            ideaImpact: "Pure vibe upgrade. Not essential but deeply cool. Imagine your AI assistant also being your DJ. The future is now."
-                        },
-                        {
-                            id: "idea-9", severity: "info",
-                            title: "🧠 Smart Context Manager",
-                            description: "Auto-detect when main session context is getting full (>80%). Pre-spawn sub-agents for pending tasks, save critical state to memory files, write HEARTBEAT.md checklist — all BEFORE compaction hits.",
-                            recommendation: "Prevents the overnight autonomy failure. Context never runs out unexpectedly because work is pre-distributed.",
-                            effort: "medium", impact: "high",
-                            ideaDetail: "Monitor context usage via session_status. At 80%: dump current task list to HEARTBEAT.md, spawn sub-agents for top 3 tasks, save conversation summary to daily memory file. At 90%: aggressive task offloading. Never hit 100% unprepared again.",
-                            ideaImpact: "Directly fixes the Feb 16 overnight autonomy failure where 84 heartbeat turns were wasted. Otto would stay productive even through context resets."
-                        },
-                        {
-                            id: "idea-10", severity: "info",
-                            title: "🏠 Home Automation Bridge",
-                            description: "Connect Otto to Home Assistant or HomeKit. Control lights, AC, music from Telegram. <em>\"Otto, turn on the office lights\"</em> or auto-dim lights when it's movie time.",
-                            recommendation: "Requires Home Assistant instance (runs on Pi or Docker). Otto talks to it via REST API. Natural language → device control.",
-                            effort: "high", impact: "medium",
-                            ideaDetail: "Home Assistant is the most popular open-source home automation platform. Runs alongside OpenClaw. Otto becomes the voice/text interface. 'Otto, set AC to 24' or 'Otto, movie mode' (dims lights, turns on TV, adjusts AC). Already proven by other OpenClaw users.",
-                            ideaImpact: "Otto goes from 'computer assistant' to 'home assistant'. Full sci-fi butler vibes. Control your entire environment through Telegram or voice."
-                        }
-                    ]
-                }]
-            }
-        ]
-    };
-
-    let selectedFindings = new Set();
-    let activeTab = 'current';
-
-    function loadState() {
-        const saved = localStorage.getItem('otto-audit-v2-selections');
-        if (saved) { try { selectedFindings = new Set(JSON.parse(saved)); } catch(e) {} }
-    }
-    function saveState() {
-        localStorage.setItem('otto-audit-v2-selections', JSON.stringify([...selectedFindings]));
-    }
-
-    function calculateScores() {
-        let health = 100;
-        let fixedCount = 0;
-        let ideasCount = 0;
-        let totalActive = 0;
-
-        auditData.tabs.forEach(tab => {
-            tab.sections.forEach(section => {
-                section.findings.forEach(f => {
-                    if (f.fixed) { fixedCount++; return; }
-                    if (tab.id === 'ideas') { ideasCount++; return; }
-                    totalActive++;
-                    if (f.severity === 'high') health -= 8;
-                    else if (f.severity === 'medium') health -= 4;
-                    else if (f.severity === 'low') health -= 2;
-                });
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
             });
         });
-        // Bonus for fixes
-        health = Math.min(100, Math.max(0, health) + fixedCount * 2);
-        let grade = health >= 90 ? 'A' : health >= 80 ? 'B+' : health >= 70 ? 'B' : health >= 60 ? 'C+' : 'C';
-        return { health, grade, fixedCount, ideasCount, totalActive };
-    }
 
-    function updateScoreRings() {
-        const s = calculateScores();
-        const circ = 2 * Math.PI * 60;
-
-        // Health
-        document.getElementById('health-value').textContent = s.health;
-        document.getElementById('health-grade').textContent = s.grade;
-        const hp = document.getElementById('health-progress');
-        hp.style.strokeDashoffset = circ - (s.health / 100) * circ;
-        hp.style.stroke = s.health >= 80 ? 'var(--accent-green)' : s.health >= 60 ? 'var(--accent-amber)' : 'var(--severity-high)';
-        document.getElementById('health-value').style.color = hp.style.stroke;
-
-        // Fixed
-        document.getElementById('fixed-value').textContent = s.fixedCount;
-        document.getElementById('fixed-progress').style.strokeDashoffset = circ - (s.fixedCount / (s.fixedCount + s.totalActive)) * circ;
-
-        // Ideas
-        document.getElementById('ideas-value').textContent = s.ideasCount;
-        document.getElementById('ideas-progress').style.strokeDashoffset = circ - 0.85 * circ; // Always looks full — it's aspirational
-    }
-
-    function renderTabs() {
-        const bar = document.getElementById('tab-bar');
-        const contents = document.getElementById('tab-contents');
-
-        auditData.tabs.forEach(tab => {
-            let count = 0;
-            tab.sections.forEach(s => count += s.findings.length);
-
-            const btn = document.createElement('button');
-            btn.className = `tab-btn ${tab.id === activeTab ? 'active' : ''}`;
-            btn.innerHTML = `${tab.label}<span class="count">${count}</span>`;
-            btn.onclick = () => switchTab(tab.id);
-            btn.dataset.tab = tab.id;
-            bar.appendChild(btn);
-
-            const content = document.createElement('div');
-            content.className = `tab-content ${tab.id === activeTab ? 'active' : ''}`;
-            content.id = `tab-${tab.id}`;
-
-            tab.sections.forEach(section => {
-                const cat = document.createElement('div');
-                cat.className = 'category';
-
-                const header = document.createElement('div');
-                header.className = 'category-header';
-                header.innerHTML = `<span>${section.name}</span><span class="category-count">${section.findings.length}</span><span class="category-toggle">▼</span>`;
-                header.onclick = () => {
-                    header.classList.toggle('collapsed');
-                    header.nextElementSibling.classList.toggle('collapsed');
-                };
-
-                const findings = document.createElement('div');
-                findings.className = 'findings';
-                section.findings.forEach(f => findings.appendChild(createCard(f, tab.id)));
-
-                cat.appendChild(header);
-                cat.appendChild(findings);
-                content.appendChild(cat);
-            });
-            contents.appendChild(content);
-        });
-    }
-
-    function switchTab(tabId) {
-        activeTab = tabId;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === `tab-${tabId}`));
-    }
-
-    function createCard(finding, tabId) {
-        const card = document.createElement('div');
-        card.className = `finding-card severity-${finding.severity}`;
-
-        const isFixed = finding.fixed;
-        const isChecked = selectedFindings.has(finding.id);
-        const isIdea = tabId === 'ideas';
-
-        let extraHTML = '';
-        if (isIdea && finding.ideaDetail) {
-            extraHTML = `
-                <div class="idea-preview">
-                    <div class="idea-preview-label">🔍 What This Actually Means</div>
-                    <div class="idea-what">${finding.ideaDetail}</div>
-                    <div class="idea-impact">
-                        <div class="idea-impact-label">⚡ Impact for Us</div>
-                        <div class="idea-what">${finding.ideaImpact}</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        card.innerHTML = `
-            <div class="finding-header">
-                <div class="finding-checkbox ${isFixed ? 'disabled' : ''} ${isChecked ? 'checked' : ''}" data-id="${finding.id}" ${isFixed ? '' : ''}></div>
-                <div class="finding-content">
-                    <div class="finding-title-row">
-                        <span class="finding-title">${finding.title}</span>
-                        <span class="badge severity-badge ${finding.severity}">${isFixed ? 'FIXED' : finding.severity}</span>
-                        ${!isFixed && finding.effort !== 'done' ? `<span class="badge effort-badge">⏱ ${finding.effort}</span>` : ''}
-                        ${!isFixed && finding.impact !== 'done' ? `<span class="badge impact-badge">💥 ${finding.impact}</span>` : ''}
-                    </div>
-                    <div class="finding-description">${finding.description}</div>
-                    <div class="finding-recommendation ${isFixed ? 'fixed-rec' : ''}">
-                        <div class="recommendation-label">${isFixed ? '✅ Status' : isIdea ? '💡 The Pitch' : '💡 Recommendation'}</div>
-                        <div class="recommendation-text">${finding.recommendation}</div>
-                    </div>
-                    ${extraHTML}
-                </div>
-            </div>
-        `;
-
-        if (!isFixed) {
-            card.querySelector('.finding-checkbox').onclick = (e) => {
-                e.stopPropagation();
-                toggleSelection(finding.id);
-            };
-        }
-        return card;
-    }
-
-    function toggleSelection(id) {
-        if (selectedFindings.has(id)) selectedFindings.delete(id);
-        else selectedFindings.add(id);
-
-        const cb = document.querySelector(`.finding-checkbox[data-id="${id}"]`);
-        if (cb) cb.classList.toggle('checked');
-        updateSelectionCount();
-        saveState();
-    }
-
-    function updateSelectionCount() {
-        document.getElementById('selected-count').textContent = selectedFindings.size;
-
-        // Breakdown
-        let issues = 0, ideas = 0;
-        selectedFindings.forEach(id => {
-            if (id.startsWith('idea-')) ideas++;
-            else issues++;
-        });
-        const parts = [];
-        if (issues) parts.push(`${issues} fix${issues > 1 ? 'es' : ''}`);
-        if (ideas) parts.push(`${ideas} idea${ideas > 1 ? 's' : ''}`);
-        document.getElementById('selection-breakdown').textContent = parts.join(' + ');
-    }
-
-    function getSelectedFindings() {
-        const selected = [];
-        auditData.tabs.forEach(tab => {
-            tab.sections.forEach(section => {
-                section.findings.forEach(f => {
-                    if (selectedFindings.has(f.id)) {
-                        selected.push({ tab: tab.label, category: section.name, ...f });
-                    }
-                });
-            });
-        });
-        return selected;
-    }
-
-    function formatSelections() {
-        const sel = getSelectedFindings();
-        if (!sel.length) return 'No items selected.';
-        let txt = `Otto Self-Audit v2 — Selected Items (${sel.length})\nDate: February 16, 2026\n${'='.repeat(50)}\n\n`;
-
-        const fixes = sel.filter(s => !s.id.startsWith('idea-'));
-        const ideas = sel.filter(s => s.id.startsWith('idea-'));
-
-        if (fixes.length) {
-            txt += `🔧 FIXES TO APPLY (${fixes.length})\n${'-'.repeat(30)}\n`;
-            fixes.forEach((f, i) => {
-                txt += `\n${i+1}. [${f.severity.toUpperCase()}] ${f.title}\n   💡 ${f.recommendation}\n`;
-            });
-            txt += '\n';
-        }
-        if (ideas.length) {
-            txt += `💡 IDEAS TO BUILD (${ideas.length})\n${'-'.repeat(30)}\n`;
-            ideas.forEach((f, i) => {
-                txt += `\n${i+1}. ${f.title}\n   ${f.recommendation}\n`;
-            });
-        }
-        return txt;
-    }
-
-    async function copyToClipboard() {
-        try {
-            await navigator.clipboard.writeText(formatSelections());
-            showToast('✅ Copied to clipboard!');
-        } catch(e) { showToast('❌ Failed to copy'); }
-    }
-
-    const API_BASE = 'https://otto.workwithchat.com';
-    let activeJobs = {}; // id -> {status, notes, ...}
-    let submitting = false;
-
-    async function submitToOtto() {
-        if (submitting) return;
-        const sel = getSelectedFindings();
-        if (!sel.length) { showToast('⚠️ Nothing selected yet!'); return; }
-
-        // Check if any selected items are already active jobs
-        const activeSelected = sel.filter(s => activeJobs[s.id] && activeJobs[s.id].status !== 'done' && activeJobs[s.id].status !== 'cancelled');
-        if (activeSelected.length > 0 && sel.length === activeSelected.length) {
-            if (confirm(`${activeSelected.length} item(s) already being worked on. Cancel them?`)) {
-                for (const s of activeSelected) {
-                    try {
-                        await fetch(`${API_BASE}/api/audit/cancel`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ jobId: s.id })
-                        });
-                    } catch(e) {}
+        // Idea card expansion
+        document.querySelectorAll('.idea-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.type !== 'checkbox') {
+                    card.classList.toggle('expanded');
                 }
-                showToast('🛑 Cancelled!');
-                await pollStatus();
+            });
+        });
+
+        // Checkbox counting
+        function updateSelectedCount() {
+            const checked = document.querySelectorAll('.item-checkbox:checked').length;
+            document.getElementById('selected-num').textContent = checked;
+        }
+        document.querySelectorAll('.item-checkbox').forEach(cb => {
+            cb.addEventListener('change', updateSelectedCount);
+        });
+
+        // Submit button
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const selected = Array.from(document.querySelectorAll('.item-checkbox:checked'))
+                .map(cb => cb.dataset.id);
+            if (selected.length === 0) {
+                alert('Select at least one item to proceed.');
                 return;
             }
-            return;
-        }
+            
+            // Build submission payload
+            const payload = {
+                submittedAt: new Date().toISOString(),
+                items: selected
+            };
 
-        // Only submit items that aren't already active
-        const newSel = sel.filter(s => !activeJobs[s.id] || activeJobs[s.id].status === 'done' || activeJobs[s.id].status === 'cancelled');
-        if (!newSel.length) { showToast('All selected items are already being worked on'); return; }
-
-        submitting = true;
-        const btn = document.getElementById('submit-btn');
-        btn.textContent = '⏳ Sending...';
-        btn.style.opacity = '0.6';
-
-        try {
-            const r = await fetch(`${API_BASE}/api/audit/submit`, {
+            // Send to MCP server
+            fetch('https://otto.workwithchat.com/api/audit/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ date: new Date().toISOString(), selections: newSel, count: newSel.length })
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(`✅ Submitted ${selected.length} items to Otto!\n\nRefresh this page in a few seconds to see live status.`);
+                // Uncheck all
+                document.querySelectorAll('.item-checkbox:checked').forEach(cb => cb.checked = false);
+                updateSelectedCount();
+            })
+            .catch(err => {
+                console.error('Submit failed:', err);
+                alert('❌ Submission failed. Check console or try copying to clipboard instead.');
             });
-            if (r.ok) {
-                const data = await r.json();
-                showToast(`🚀 ${data.queued} item(s) sent to Otto!`);
-                // Clear selections for submitted items
-                newSel.forEach(s => selectedFindings.delete(s.id));
-                saveState();
-                updateSelectionCount();
-                await pollStatus();
-            } else throw new Error();
-        } catch(e) {
-            showToast('📋 Copied to clipboard (Otto server offline)');
-            await copyToClipboard();
-        }
-        submitting = false;
-        btn.textContent = '🚀 Make It Happen';
-        btn.style.opacity = '1';
-    }
+        });
 
-    async function pollStatus() {
-        try {
-            const r = await fetch(`${API_BASE}/api/audit/status`);
-            if (!r.ok) return;
-            const data = await r.json();
-            activeJobs = {};
-            (data.jobs || []).forEach(j => { activeJobs[j.id] = j; });
-            updateCardStatuses();
-        } catch(e) { /* silently fail */ }
-    }
-
-    function updateCardStatuses() {
-        for (const [id, job] of Object.entries(activeJobs)) {
-            const card = document.querySelector(`.finding-checkbox[data-id="${id}"]`);
-            if (!card) continue;
-            const cardEl = card.closest('.finding-card');
-            if (!cardEl) continue;
-
-            // Remove old status badges
-            cardEl.querySelectorAll('.job-status-badge').forEach(b => b.remove());
-            cardEl.querySelectorAll('.job-notes').forEach(b => b.remove());
-
-            let statusHTML = '';
-            if (job.status === 'queued') {
-                statusHTML = '<span class="job-status-badge queued">⏳ Queued</span>';
-                card.style.borderColor = 'var(--accent-amber)';
-            } else if (job.status === 'working') {
-                statusHTML = '<span class="job-status-badge working">🔨 Working...</span>';
-                card.style.borderColor = 'var(--accent-blue)';
-                card.style.animation = 'pulse 2s infinite';
-            } else if (job.status === 'done') {
-                statusHTML = '<span class="job-status-badge done">✅ Done</span>';
-                card.classList.add('disabled');
-                card.classList.add('checked');
-                card.style.borderColor = 'var(--severity-fixed)';
-                card.style.background = 'var(--severity-fixed)';
-            } else if (job.status === 'cancelled') {
-                statusHTML = '<span class="job-status-badge cancelled">🛑 Cancelled</span>';
-                card.style.borderColor = 'var(--text-secondary)';
+        // Copy to clipboard
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const selected = Array.from(document.querySelectorAll('.item-checkbox:checked'))
+                .map(cb => {
+                    const card = cb.closest('.item-card');
+                    const title = card.querySelector('.item-title').textContent;
+                    return `- ${cb.dataset.id}: ${title}`;
+                }).join('\n');
+            
+            if (!selected) {
+                alert('Select items first.');
+                return;
             }
 
-            const titleRow = cardEl.querySelector('.finding-title-row');
-            if (titleRow && statusHTML) {
-                titleRow.insertAdjacentHTML('beforeend', statusHTML);
-            }
-
-            if (job.notes && (job.status === 'done' || job.status === 'working')) {
-                const rec = cardEl.querySelector('.finding-recommendation');
-                if (rec) {
-                    rec.insertAdjacentHTML('afterend', `
-                        <div class="job-notes" style="margin-top:0.75rem;padding:0.75rem;background:rgba(76,201,240,0.08);border-left:3px solid var(--accent-cyan);border-radius:6px;">
-                            <div style="font-weight:700;color:var(--accent-cyan);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.3rem;">🦦 Otto's Notes</div>
-                            <div style="color:var(--text-primary);line-height:1.7;font-size:0.95rem;">${job.notes}</div>
-                        </div>
-                    `);
-                }
-            }
-        }
-
-        // Update submit button text based on active jobs
-        const activeCount = Object.values(activeJobs).filter(j => j.status === 'queued' || j.status === 'working').length;
-        const doneCount = Object.values(activeJobs).filter(j => j.status === 'done').length;
-        const statusEl = document.getElementById('selection-breakdown');
-        if (activeCount > 0 || doneCount > 0) {
-            const parts = [];
-            if (activeCount) parts.push(`${activeCount} in progress`);
-            if (doneCount) parts.push(`${doneCount} done`);
-            if (selectedFindings.size) parts.push(`${selectedFindings.size} selected`);
-            statusEl.textContent = parts.join(' · ');
-        }
-    }
-
-    // === PANIC UNDO ===
-    let panicSelectedSteps = 0;
-    let panicCommits = [];
-
-    async function openPanicModal() {
-        document.getElementById('panic-overlay').classList.add('open');
-        document.getElementById('panic-loading').style.display = 'block';
-        document.getElementById('panic-commits').innerHTML = '';
-        document.getElementById('panic-log').style.display = 'none';
-        panicSelectedSteps = 0;
-        try {
-            const r = await fetch(`${API_BASE}/api/panic/history`);
-            const data = await r.json();
-            panicCommits = data.commits || [];
-            document.getElementById('panic-loading').style.display = 'none';
-            const ul = document.getElementById('panic-commits');
-            panicCommits.forEach((c, i) => {
-                if (i === 0) return; // Current commit = nothing to undo
-                const li = document.createElement('li');
-                li.className = 'panic-commit';
-                li.dataset.steps = i;
-                li.innerHTML = `
-                    <div class="panic-commit-radio"></div>
-                    <span class="panic-commit-idx">-${i}</span>
-                    <span class="panic-commit-hash">${c.hash}</span>
-                    <span class="panic-commit-msg">${c.message}</span>
-                `;
-                li.onclick = () => {
-                    document.querySelectorAll('.panic-commit').forEach(el => el.classList.remove('selected'));
-                    li.classList.add('selected');
-                    panicSelectedSteps = i;
-                };
-                ul.appendChild(li);
+            navigator.clipboard.writeText(selected).then(() => {
+                alert('✅ Copied to clipboard!');
             });
-            // Show services status
-            if (data.services) {
-                const svcHTML = Object.entries(data.services).map(([name, s]) =>
-                    `<span style="margin-right:1rem;">${s.running ? '🟢' : '🔴'} ${name.replace('com.otto.', '')}</span>`
-                ).join('');
-                const svcDiv = document.createElement('div');
-                svcDiv.style.cssText = 'padding:0.75rem 1rem;background:var(--bg-card);border-radius:10px;margin-bottom:1rem;font-size:0.85rem;';
-                svcDiv.innerHTML = `<strong>Services:</strong> ${svcHTML}`;
-                ul.before(svcDiv);
-            }
-        } catch(e) {
-            document.getElementById('panic-loading').textContent = '❌ Cannot reach Otto server. Try manually: openclaw gateway restart';
-        }
-    }
+        });
 
-    function closePanicModal() {
-        document.getElementById('panic-overlay').classList.remove('open');
-    }
-
-    async function panicUndo() {
-        if (!panicSelectedSteps) { showToast('⚠️ Select how far back to go'); return; }
-        if (!confirm(`⚠️ This will REVERT ${panicSelectedSteps} commit(s) and RESTART all Otto services. Are you sure?`)) return;
-
-        const logEl = document.getElementById('panic-log');
-        logEl.style.display = 'block';
-        logEl.textContent = '🔄 Executing panic undo...\n';
-        document.getElementById('panic-undo-btn').disabled = true;
-        document.getElementById('panic-undo-btn').textContent = '⏳ Working...';
-
-        try {
-            const r = await fetch(`${API_BASE}/api/panic/undo`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ steps: panicSelectedSteps, restartServices: true })
+        // Animate score rings on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.ring-fill').forEach(ring => {
+                const score = parseInt(ring.dataset.score);
+                const degrees = (score / 100) * 360;
+                ring.style.background = `conic-gradient(var(--accent-purple) ${degrees}deg, var(--bg-secondary) ${degrees}deg)`;
             });
-            const data = await r.json();
-            logEl.textContent = (data.log || []).join('\n');
-            if (data.ok) {
-                showToast('✅ Panic undo complete — Otto is rolling back');
-            } else {
-                showToast('⚠️ Partial undo — check the log');
-            }
-        } catch(e) {
-            logEl.textContent += '\n❌ Server unreachable. Manual recovery:\n  cd ~/.openclaw/workspace\n  git revert HEAD\n  openclaw gateway restart';
-        }
-        document.getElementById('panic-undo-btn').disabled = false;
-        document.getElementById('panic-undo-btn').textContent = '⏪ Undo & Restart';
-    }
-
-    async function panicRestart() {
-        if (!confirm('Restart all Otto services? (No file changes)')) return;
-        const logEl = document.getElementById('panic-log');
-        logEl.style.display = 'block';
-        logEl.textContent = '🔄 Restarting services...\n';
-        try {
-            const r = await fetch(`${API_BASE}/api/panic/restart`, { method: 'POST' });
-            const data = await r.json();
-            logEl.textContent = (data.log || []).join('\n');
-            showToast('🔄 Services restarted');
-        } catch(e) {
-            logEl.textContent += '\n❌ Server unreachable. Manual: openclaw gateway restart';
-        }
-    }
-
-    // Close modal on overlay click
-    document.addEventListener('click', (e) => {
-        if (e.target.id === 'panic-overlay') closePanicModal();
-    });
-
-    async function resetLayout() {
-        try {
-            await fetch(`${API_BASE}/api/desktop/layout`, { method: 'POST' });
-            showToast('🖥️ Layout reset — windows repositioned');
-        } catch(e) { showToast('⚠️ Couldn\'t reach Otto'); }
-    }
-
-    function showToast(msg) {
-        const t = document.createElement('div');
-        t.className = 'toast'; t.textContent = msg;
-        document.body.appendChild(t);
-        setTimeout(() => { t.style.animation = 'slideOut 0.3s ease'; setTimeout(() => t.remove(), 300); }, 3000);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        loadState();
-        renderTabs();
-        updateScoreRings();
-        updateSelectionCount();
-        document.getElementById('copy-btn').onclick = copyToClipboard;
-        document.getElementById('submit-btn').onclick = submitToOtto;
-        // Poll status every 3s for near-instant reactivity
-        pollStatus();
-        setInterval(pollStatus, 3000);
-    });
+        });
     </script>
 </body>
 </html>
