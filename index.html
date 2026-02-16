@@ -397,6 +397,24 @@
         @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
 
+        .job-status-badge {
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace;
+            color: white;
+            animation: fadeIn 0.3s ease;
+        }
+        .job-status-badge.queued { background: var(--accent-amber); color: #1a1a2e; }
+        .job-status-badge.working { background: var(--accent-blue); }
+        .job-status-badge.done { background: var(--severity-fixed); }
+        .job-status-badge.cancelled { background: var(--text-secondary); }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .scores-row { gap: 1.5rem; }
@@ -1007,25 +1025,137 @@
         } catch(e) { showToast('❌ Failed to copy'); }
     }
 
+    const API_BASE = 'https://otto.workwithchat.com';
+    let activeJobs = {}; // id -> {status, notes, ...}
+    let submitting = false;
+
     async function submitToOtto() {
+        if (submitting) return;
         const sel = getSelectedFindings();
         if (!sel.length) { showToast('⚠️ Nothing selected yet!'); return; }
 
+        // Check if any selected items are already active jobs
+        const activeSelected = sel.filter(s => activeJobs[s.id] && activeJobs[s.id].status !== 'done' && activeJobs[s.id].status !== 'cancelled');
+        if (activeSelected.length > 0 && sel.length === activeSelected.length) {
+            if (confirm(`${activeSelected.length} item(s) already being worked on. Cancel them?`)) {
+                for (const s of activeSelected) {
+                    try {
+                        await fetch(`${API_BASE}/api/audit/cancel`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ jobId: s.id })
+                        });
+                    } catch(e) {}
+                }
+                showToast('🛑 Cancelled!');
+                await pollStatus();
+                return;
+            }
+            return;
+        }
+
+        // Only submit items that aren't already active
+        const newSel = sel.filter(s => !activeJobs[s.id] || activeJobs[s.id].status === 'done' || activeJobs[s.id].status === 'cancelled');
+        if (!newSel.length) { showToast('All selected items are already being worked on'); return; }
+
+        submitting = true;
+        const btn = document.getElementById('submit-btn');
+        btn.textContent = '⏳ Sending...';
+        btn.style.opacity = '0.6';
+
         try {
-            const r = await fetch('http://localhost:8899/api/audit-selections', {
+            const r = await fetch(`${API_BASE}/api/audit/submit`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ date: 'February 16, 2026', selections: sel, count: sel.length })
+                body: JSON.stringify({ date: new Date().toISOString(), selections: newSel, count: newSel.length })
             });
             if (r.ok) {
-                showToast('🚀 Sent to Otto! I\'ll get right on it.');
-                selectedFindings.clear(); saveState();
-                document.querySelectorAll('.finding-checkbox.checked:not(.disabled)').forEach(cb => cb.classList.remove('checked'));
+                const data = await r.json();
+                showToast(`🚀 ${data.queued} item(s) sent to Otto!`);
+                // Clear selections for submitted items
+                newSel.forEach(s => selectedFindings.delete(s.id));
+                saveState();
                 updateSelectionCount();
+                await pollStatus();
             } else throw new Error();
         } catch(e) {
-            showToast('📋 Copied to clipboard (server unavailable)');
+            showToast('📋 Copied to clipboard (Otto server offline)');
             await copyToClipboard();
+        }
+        submitting = false;
+        btn.textContent = '🚀 Make It Happen';
+        btn.style.opacity = '1';
+    }
+
+    async function pollStatus() {
+        try {
+            const r = await fetch(`${API_BASE}/api/audit/status`);
+            if (!r.ok) return;
+            const data = await r.json();
+            activeJobs = {};
+            (data.jobs || []).forEach(j => { activeJobs[j.id] = j; });
+            updateCardStatuses();
+        } catch(e) { /* silently fail */ }
+    }
+
+    function updateCardStatuses() {
+        for (const [id, job] of Object.entries(activeJobs)) {
+            const card = document.querySelector(`.finding-checkbox[data-id="${id}"]`);
+            if (!card) continue;
+            const cardEl = card.closest('.finding-card');
+            if (!cardEl) continue;
+
+            // Remove old status badges
+            cardEl.querySelectorAll('.job-status-badge').forEach(b => b.remove());
+            cardEl.querySelectorAll('.job-notes').forEach(b => b.remove());
+
+            let statusHTML = '';
+            if (job.status === 'queued') {
+                statusHTML = '<span class="job-status-badge queued">⏳ Queued</span>';
+                card.style.borderColor = 'var(--accent-amber)';
+            } else if (job.status === 'working') {
+                statusHTML = '<span class="job-status-badge working">🔨 Working...</span>';
+                card.style.borderColor = 'var(--accent-blue)';
+                card.style.animation = 'pulse 2s infinite';
+            } else if (job.status === 'done') {
+                statusHTML = '<span class="job-status-badge done">✅ Done</span>';
+                card.classList.add('disabled');
+                card.classList.add('checked');
+                card.style.borderColor = 'var(--severity-fixed)';
+                card.style.background = 'var(--severity-fixed)';
+            } else if (job.status === 'cancelled') {
+                statusHTML = '<span class="job-status-badge cancelled">🛑 Cancelled</span>';
+                card.style.borderColor = 'var(--text-secondary)';
+            }
+
+            const titleRow = cardEl.querySelector('.finding-title-row');
+            if (titleRow && statusHTML) {
+                titleRow.insertAdjacentHTML('beforeend', statusHTML);
+            }
+
+            if (job.notes && (job.status === 'done' || job.status === 'working')) {
+                const rec = cardEl.querySelector('.finding-recommendation');
+                if (rec) {
+                    rec.insertAdjacentHTML('afterend', `
+                        <div class="job-notes" style="margin-top:0.75rem;padding:0.75rem;background:rgba(76,201,240,0.08);border-left:3px solid var(--accent-cyan);border-radius:6px;">
+                            <div style="font-weight:700;color:var(--accent-cyan);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.3rem;">🦦 Otto's Notes</div>
+                            <div style="color:var(--text-primary);line-height:1.7;font-size:0.95rem;">${job.notes}</div>
+                        </div>
+                    `);
+                }
+            }
+        }
+
+        // Update submit button text based on active jobs
+        const activeCount = Object.values(activeJobs).filter(j => j.status === 'queued' || j.status === 'working').length;
+        const doneCount = Object.values(activeJobs).filter(j => j.status === 'done').length;
+        const statusEl = document.getElementById('selection-breakdown');
+        if (activeCount > 0 || doneCount > 0) {
+            const parts = [];
+            if (activeCount) parts.push(`${activeCount} in progress`);
+            if (doneCount) parts.push(`${doneCount} done`);
+            if (selectedFindings.size) parts.push(`${selectedFindings.size} selected`);
+            statusEl.textContent = parts.join(' · ');
         }
     }
 
@@ -1043,6 +1173,9 @@
         updateSelectionCount();
         document.getElementById('copy-btn').onclick = copyToClipboard;
         document.getElementById('submit-btn').onclick = submitToOtto;
+        // Poll status every 15s
+        pollStatus();
+        setInterval(pollStatus, 15000);
     });
     </script>
 </body>
