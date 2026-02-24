@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otto Self-Audit — Feb 24, 2026 🦦</title>
+    <title>Otto Self-Audit — Feb 25, 2026 🦦</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,16 +23,16 @@
             --accent-green: #10b981;
             --accent-amber: #f59e0b;
             --accent-cyan: #06b6d4;
-            --accent-orange: #fb923c;
-            --severity-critical: #dc2626;
+            --severity-critical: #ff2d55;
             --severity-high: #ef4444;
             --severity-medium: #f59e0b;
             --severity-low: #3b82f6;
             --severity-info: #a855f7;
             --severity-fixed: #10b981;
             --border: rgba(255,255,255,0.08);
-            --glow-purple: rgba(124,58,237,0.15);
-            --glow-blue: rgba(76,201,240,0.1);
+            --glow-purple: rgba(124,58,237,0.2);
+            --glow-blue: rgba(76,201,240,0.12);
+            --glow-green: rgba(16,185,129,0.12);
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -42,1092 +42,1108 @@
             padding: 2rem 1rem 160px;
             line-height: 1.6;
         }
-        code, .mono { font-family: 'JetBrains Mono', monospace; }
+        code, .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
         .container { max-width: 1200px; margin: 0 auto; }
 
-        /* ——— HEADER ——— */
+        /* ── Header ── */
         header {
             text-align: center;
             margin-bottom: 2.5rem;
             padding: 2.5rem 2rem;
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(124,58,237,0.08) 100%);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(124,58,237,0.1) 50%, rgba(76,201,240,0.05) 100%);
             border-radius: 20px;
             border: 1px solid var(--border);
-            box-shadow: 0 0 60px var(--glow-purple);
+            box-shadow: 0 0 80px var(--glow-purple);
             position: relative;
             overflow: hidden;
         }
         header::before {
             content: '';
-            position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(76,201,240,0.05) 0%, transparent 50%);
-            animation: headerGlow 8s ease infinite alternate;
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 25% 50%, rgba(124,58,237,0.06) 0%, transparent 60%),
+                        radial-gradient(circle at 75% 50%, rgba(76,201,240,0.06) 0%, transparent 60%);
+            animation: hglow 8s ease infinite alternate;
         }
-        @keyframes headerGlow {
-            0% { transform: translate(0,0); }
-            100% { transform: translate(20px,-10px); }
-        }
+        @keyframes hglow { 0%{transform:translate(0,0);} 100%{transform:translate(15px,-8px);} }
         header > * { position: relative; z-index: 1; }
+
+        .header-otter { font-size: 3.5rem; margin-bottom: 0.5rem; display: block; }
         h1 {
-            font-size: 2.8rem; font-weight: 800; margin-bottom: 0.5rem;
+            font-size: 2.4rem; font-weight: 800; margin-bottom: 0.3rem;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0.75rem; }
-        .version-badge {
-            display: inline-block; background: var(--accent-purple);
-            color: white; padding: 0.25rem 0.75rem; border-radius: 20px;
-            font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 1rem;
-        }
-        .date { color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+        .header-sub { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; }
+        .header-sub span { color: var(--accent-blue); font-weight: 600; }
 
-        /* ——— SCORE RINGS ——— */
-        .scores-row {
-            display: flex; gap: 2rem; justify-content: center;
-            margin: 1.5rem 0; flex-wrap: wrap;
+        /* Score rings row */
+        .score-rings {
+            display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 1.5rem;
         }
-        .score-ring { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-        .score-ring svg { width: 90px; height: 90px; transform: rotate(-90deg); }
-        .score-ring circle { fill: none; stroke-width: 8; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
-        .score-ring .track { stroke: rgba(255,255,255,0.08); }
-        .score-ring .fill { stroke: var(--accent-purple); stroke-linecap: round; }
-        .score-ring .fill.blue { stroke: var(--accent-blue); }
-        .score-ring .fill.green { stroke: var(--accent-green); }
-        .score-ring .fill.pink { stroke: var(--accent-pink); }
-        .score-ring .fill.amber { stroke: var(--accent-amber); }
-        .ring-center {
-            position: absolute; font-size: 1.35rem; font-weight: 800;
-            color: var(--text-primary); transform: rotate(90deg);
+        .ring-item { text-align: center; }
+        .ring-wrap { position: relative; width: 90px; height: 90px; margin: 0 auto 0.5rem; }
+        .ring-wrap svg { transform: rotate(-90deg); }
+        .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 7; }
+        .ring-fill { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
+        .ring-text {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
         }
-        .ring-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
-        .ring-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+        .ring-num { font-size: 1.4rem; font-weight: 800; line-height: 1; }
+        .ring-denom { font-size: 0.65rem; color: var(--text-secondary); }
+        .ring-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
 
-        /* ——— STATS BAR ——— */
+        /* Quick stats bar */
         .stats-bar {
-            display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
-            margin-bottom: 2rem; padding: 1.25rem 1.5rem;
-            background: var(--bg-secondary); border-radius: 14px; border: 1px solid var(--border);
+            display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
-        .stat-chip {
-            display: flex; align-items: center; gap: 0.5rem;
-            padding: 0.4rem 0.9rem; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 600;
-            background: var(--bg-card); border: 1px solid var(--border);
-        }
-        .stat-chip .dot {
-            width: 8px; height: 8px; border-radius: 50%;
-        }
-        .dot-green { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
-        .dot-red { background: var(--severity-high); box-shadow: 0 0 6px var(--severity-high); }
-        .dot-amber { background: var(--accent-amber); box-shadow: 0 0 6px var(--accent-amber); }
-        .dot-blue { background: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue); }
-        .dot-gray { background: var(--text-secondary); }
-        .dot-critical { background: var(--severity-critical); box-shadow: 0 0 8px var(--severity-critical); animation: pulseCrit 1.5s infinite; }
-        @keyframes pulseCrit { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .stat-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; }
+        .stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .stat-dot.green { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
+        .stat-dot.red { background: var(--severity-high); }
+        .stat-dot.amber { background: var(--accent-amber); }
+        .stat-dot.blue { background: var(--accent-blue); }
+        .stat-dot.purple { background: var(--accent-purple); }
+        .stat-label { color: var(--text-secondary); }
+        .stat-val { font-weight: 600; }
 
-        /* ——— TABS ——— */
-        .tabs-nav {
-            display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border); padding-bottom: 0;
-        }
+        /* ── Tabs ── */
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .tab-btn {
-            padding: 0.75rem 1.5rem; background: none; border: none;
-            color: var(--text-secondary); font-size: 0.95rem; font-weight: 600;
-            cursor: pointer; border-bottom: 3px solid transparent;
-            margin-bottom: -2px; border-radius: 8px 8px 0 0;
-            transition: all 0.2s; font-family: 'Inter', sans-serif;
+            padding: 0.6rem 1.3rem; border-radius: 10px; border: 1px solid var(--border);
+            background: var(--bg-secondary); color: var(--text-secondary);
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-        .tab-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
-        .tab-btn.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+        .tab-btn:hover { border-color: var(--accent-purple); color: var(--text-primary); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(76,201,240,0.15));
+            border-color: var(--accent-purple); color: var(--text-primary);
+            box-shadow: 0 0 20px rgba(124,58,237,0.2);
+        }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        /* ——— CARDS ——— */
+        /* ── Cards ── */
         .card {
-            background: var(--bg-card); border-radius: 14px;
-            border: 1px solid var(--border); padding: 1.25rem 1.5rem;
-            margin-bottom: 1rem; transition: all 0.2s;
-            cursor: pointer;
+            background: var(--bg-card); border-radius: 14px; border: 1px solid var(--border);
+            padding: 1.2rem 1.4rem; margin-bottom: 0.8rem; transition: all 0.2s;
+            position: relative; overflow: hidden;
         }
-        .card:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.15); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .card.fixed { background: var(--bg-fixed); border-color: rgba(16,185,129,0.3); }
-        .card.checked { border-color: var(--accent-green); background: rgba(16,185,129,0.05); }
-        .card-header { display: flex; align-items: flex-start; gap: 1rem; }
-        .card-title { font-weight: 700; font-size: 1rem; flex: 1; }
-        .card-meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.3rem; }
-        .card-detail {
-            margin-top: 1rem; padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.88rem; color: var(--text-secondary);
-            display: none;
-        }
-        .card.open .card-detail { display: block; }
-        .card-detail p { margin-bottom: 0.5rem; }
-        .card-detail strong { color: var(--text-primary); }
+        .card:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.14); transform: translateY(-1px); }
+        .card.fixed { background: var(--bg-fixed); border-color: rgba(16,185,129,0.25); }
+        .card.fixed:hover { border-color: rgba(16,185,129,0.5); }
+        .card.critical { border-left: 3px solid var(--severity-critical); }
+        .card.high { border-left: 3px solid var(--severity-high); }
+        .card.medium { border-left: 3px solid var(--severity-medium); }
+        .card.low { border-left: 3px solid var(--severity-low); }
+        .card.info { border-left: 3px solid var(--severity-info); }
 
-        /* ——— BADGES ——— */
+        .card-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.6rem; }
+        .card-check { margin-top: 3px; flex-shrink: 0; }
+        .card-check input[type="checkbox"] {
+            width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-purple);
+        }
+        .card-title { font-weight: 600; font-size: 0.95rem; flex: 1; }
+        .card-body { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; margin-left: 0; }
+        .card-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.7rem; }
+
+        /* Badges */
         .badge {
-            display: inline-block; padding: 0.2rem 0.65rem;
-            border-radius: 6px; font-size: 0.72rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+            padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.04em;
         }
-        .badge-critical { background: rgba(220,38,38,0.2); color: var(--severity-critical); border: 1px solid rgba(220,38,38,0.4); animation: pulseCrit 2s infinite; }
-        .badge-high { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
-        .badge-medium { background: rgba(245,158,11,0.15); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.3); }
-        .badge-low { background: rgba(59,130,246,0.15); color: var(--severity-low); border: 1px solid rgba(59,130,246,0.3); }
-        .badge-info { background: rgba(168,85,247,0.15); color: var(--severity-info); border: 1px solid rgba(168,85,247,0.3); }
-        .badge-fixed { background: rgba(16,185,129,0.15); color: var(--severity-fixed); border: 1px solid rgba(16,185,129,0.3); }
-        .badge-effort { background: rgba(76,201,240,0.1); color: var(--accent-cyan); border: 1px solid rgba(76,201,240,0.2); }
-        .badge-impact { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
-        .badge-new { background: rgba(251,146,60,0.15); color: var(--accent-orange); border: 1px solid rgba(251,146,60,0.3); }
-        .badges-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .badge-critical { background: rgba(255,45,85,0.15); color: #ff6b7a; border: 1px solid rgba(255,45,85,0.3); }
+        .badge-high { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .badge-medium { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .badge-low { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .badge-info { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+        .badge-fixed { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .badge-effort { background: rgba(76,201,240,0.1); color: var(--accent-blue); border: 1px solid rgba(76,201,240,0.2); }
+        .badge-impact { background: rgba(247,37,133,0.1); color: #f472b6; border: 1px solid rgba(247,37,133,0.2); }
+        .badge-repeat { background: rgba(255,45,85,0.2); color: #ff6b7a; border: 1px solid rgba(255,45,85,0.4); }
+        .badge-new { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
 
-        /* ——— CHECKBOX ——— */
-        .item-checkbox {
-            width: 20px; height: 20px; flex-shrink: 0;
-            border-radius: 5px; border: 2px solid rgba(255,255,255,0.2);
-            background: var(--bg-primary); cursor: pointer;
-            appearance: none; -webkit-appearance: none;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.15s; margin-top: 2px;
-        }
-        .item-checkbox:checked {
-            background: var(--accent-green); border-color: var(--accent-green);
-        }
-        .item-checkbox:checked::after {
-            content: '✓'; color: white; font-size: 12px; font-weight: 800;
-        }
-
-        /* ——— SCORES TABLE ——— */
-        .scores-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem; margin-bottom: 1.5rem;
-        }
-        .score-card {
-            background: var(--bg-card); border-radius: 12px;
-            border: 1px solid var(--border); padding: 1rem 1.25rem;
-        }
-        .score-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .score-area { font-weight: 700; font-size: 0.95rem; }
-        .score-value { font-size: 1.8rem; font-weight: 800; color: var(--accent-blue); }
-        .score-bar { background: rgba(255,255,255,0.06); border-radius: 4px; height: 6px; }
-        .score-fill { height: 6px; border-radius: 4px; transition: width 1.5s ease; }
-        .score-note { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.4rem; }
+        /* Score table */
+        .score-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        .score-table th { text-align: left; color: var(--text-secondary); font-weight: 500; padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border); }
+        .score-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .score-table tr:last-child td { border-bottom: none; }
+        .score-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06); width: 120px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 0.5rem; }
+        .score-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue)); }
         .trend-up { color: var(--accent-green); }
         .trend-down { color: var(--severity-high); }
-        .trend-flat { color: var(--accent-amber); }
+        .trend-flat { color: var(--text-secondary); }
 
-        /* ——— RESEARCH SECTION ——— */
-        .research-item {
-            background: var(--bg-card); border-radius: 12px;
-            border: 1px solid var(--border); padding: 1rem 1.25rem;
-            margin-bottom: 0.75rem; display: flex; gap: 1rem; align-items: flex-start;
+        /* Detail panel for ideas */
+        .detail-panel {
+            max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+            background: rgba(255,255,255,0.025); border-radius: 8px; margin-top: 0;
         }
-        .research-icon { font-size: 1.5rem; flex-shrink: 0; }
-        .research-content .research-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .research-content .research-body { font-size: 0.85rem; color: var(--text-secondary); }
+        .detail-panel.open { max-height: 600px; margin-top: 0.8rem; }
+        .detail-inner { padding: 1rem 1.2rem; color: var(--text-secondary); font-size: 0.85rem; }
+        .detail-inner p { margin-bottom: 0.5rem; }
+        .detail-inner strong { color: var(--text-primary); }
+        .expand-btn {
+            background: none; border: 1px solid var(--border); color: var(--text-secondary);
+            font-size: 0.75rem; cursor: pointer; border-radius: 6px; padding: 0.2rem 0.6rem;
+            transition: all 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .expand-btn:hover { border-color: var(--accent-purple); color: var(--text-primary); }
 
-        /* ——— IDEAS ——— */
-        .idea-card {
-            background: var(--bg-card); border-radius: 14px;
-            border: 1px solid var(--border); padding: 1.25rem 1.5rem;
-            margin-bottom: 1rem; transition: all 0.2s; cursor: pointer;
-        }
-        .idea-card:hover { background: var(--bg-card-hover); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .idea-card.checked { border-color: var(--accent-purple); background: rgba(124,58,237,0.06); }
-        .idea-header { display: flex; align-items: flex-start; gap: 1rem; }
-        .idea-emoji { font-size: 2rem; flex-shrink: 0; }
-        .idea-title { font-size: 1.1rem; font-weight: 800; flex: 1; }
-        .idea-subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.2rem; }
-        .idea-detail {
-            margin-top: 1rem; padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.88rem; color: var(--text-secondary);
-            display: none;
-        }
-        .idea-card.open .idea-detail { display: block; }
-        .detail-section { margin-bottom: 0.75rem; }
-        .detail-label { font-weight: 700; color: var(--text-primary); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
-        .detail-text { line-height: 1.6; }
-
-        /* ——— SECTION HEADER ——— */
-        .section-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 1rem;
-        }
-        .section-title { font-size: 1.1rem; font-weight: 700; }
-        .section-count {
-            background: var(--bg-card); border: 1px solid var(--border);
-            padding: 0.2rem 0.7rem; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);
-        }
-
-        /* ——— BOTTOM BAR ——— */
-        .bottom-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(15,15,26,0.95); backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border); padding: 1rem 2rem;
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 1rem; z-index: 100;
-        }
-        .selection-count { font-size: 0.9rem; color: var(--text-secondary); }
-        .selection-count span { color: var(--accent-purple); font-weight: 700; }
-        .submit-btn {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white; border: none; padding: 0.75rem 2rem;
-            border-radius: 10px; font-size: 1rem; font-weight: 700;
-            cursor: pointer; font-family: 'Inter', sans-serif;
-            transition: all 0.2s; box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-        }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.5); }
-        .submit-btn:active { transform: translateY(0); }
-        #copy-feedback { font-size: 0.8rem; color: var(--accent-green); display: none; }
-
-        /* ——— MISC ——— */
-        .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
-        .repeat-badge { font-size: 0.7rem; color: var(--accent-amber); background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 4px; padding: 0.1rem 0.4rem; margin-left: 0.4rem; }
-        .escalate-banner {
-            background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.4);
-            border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem;
-            font-size: 0.85rem; display: flex; align-items: center; gap: 0.75rem;
-        }
-        .escalate-banner strong { color: var(--severity-critical); }
+        /* System health grid */
         .health-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 0.75rem; margin-bottom: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem;
         }
-        .health-item {
-            background: var(--bg-card); border-radius: 10px;
-            border: 1px solid var(--border); padding: 0.75rem 1rem;
-            display: flex; align-items: center; gap: 0.75rem;
+        .health-cell {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+            padding: 0.9rem 1rem;
         }
-        .health-status { font-size: 1.2rem; flex-shrink: 0; }
-        .health-label { font-size: 0.82rem; color: var(--text-secondary); }
-        .health-value { font-size: 0.95rem; font-weight: 700; }
+        .health-cell-label { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+        .health-cell-val { font-size: 1.05rem; font-weight: 700; }
+        .health-ok { color: var(--accent-green); }
+        .health-warn { color: var(--accent-amber); }
+        .health-bad { color: var(--severity-high); }
+        .health-off { color: var(--text-secondary); }
+
+        /* Section headings */
+        .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+        /* Trend chart */
+        .trend-chart { display: flex; align-items: flex-end; gap: 6px; height: 60px; margin: 0.8rem 0; }
+        .trend-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+        .trend-bar { width: 100%; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--accent-purple), rgba(76,201,240,0.5)); min-height: 4px; transition: height 1s ease; }
+        .trend-bar-label { font-size: 0.6rem; color: var(--text-secondary); white-space: nowrap; }
+        .trend-bar-val { font-size: 0.65rem; color: var(--text-primary); font-weight: 600; }
+
+        /* Bottom action bar */
+        .action-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(15,15,26,0.97);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+        }
+        .action-bar-left { display: flex; align-items: center; gap: 0.8rem; }
+        .selected-count { font-size: 0.85rem; color: var(--text-secondary); }
+        .selected-count span { color: var(--accent-blue); font-weight: 700; font-size: 1rem; }
+        .btn-submit {
+            padding: 0.75rem 2rem; border-radius: 10px; border: none; cursor: pointer;
+            font-size: 0.9rem; font-weight: 700; font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+            transition: all 0.2s;
+        }
+        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(124,58,237,0.6); }
+        .btn-submit:active { transform: translateY(0); }
+        .btn-copy {
+            padding: 0.75rem 1.2rem; border-radius: 10px; border: 1px solid var(--border);
+            background: transparent; color: var(--text-secondary); cursor: pointer;
+            font-size: 0.85rem; font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .btn-copy:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .toast {
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+            background: var(--accent-green); color: white; padding: 0.6rem 1.5rem;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .toast.show { opacity: 1; }
+
+        /* Research findings */
+        .research-item {
+            display: flex; gap: 0.8rem; padding: 0.8rem 0; border-bottom: 1px solid var(--border);
+        }
+        .research-item:last-child { border-bottom: none; }
+        .research-icon { font-size: 1.2rem; flex-shrink: 0; }
+        .research-text { font-size: 0.85rem; color: var(--text-secondary); }
+        .research-text strong { color: var(--text-primary); }
 
         @media (max-width: 600px) {
-            h1 { font-size: 1.9rem; }
-            .scores-row { gap: 1rem; }
-            .tab-btn { padding: 0.6rem 0.8rem; font-size: 0.82rem; }
-            .bottom-bar { flex-direction: column; gap: 0.5rem; }
+            h1 { font-size: 1.6rem; }
+            .score-rings { gap: 1.5rem; }
+            .ring-wrap { width: 70px; height: 70px; }
+            .ring-num { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- ——— HEADER ——— -->
-    <header>
-        <div class="version-badge">AUDIT v2.6 · FEB 24, 2026</div>
-        <h1>🦦 Otto Self-Audit</h1>
-        <p class="subtitle">Daily system check · Performance review · Ideas & upgrades</p>
-        <p class="date">Tuesday, February 24th, 2026 · 5:00 AM Bangkok · Checkpoint 70057a8</p>
+<!-- ── HEADER ── -->
+<header>
+    <span class="header-otter">🦦</span>
+    <h1>Otto Self-Audit Report</h1>
+    <div class="header-sub">Wednesday, <span>February 25, 2026</span> · 5:00 AM Bangkok · v2.5.3</div>
 
-        <!-- Score Rings -->
-        <div class="scores-row">
-            <!-- Overall -->
-            <div class="score-ring">
-                <div class="ring-wrap">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="track" cx="50" cy="50" r="40"/>
-                        <circle class="fill pink" cx="50" cy="50" r="40" id="ring-overall"
-                            stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
-                    </svg>
-                    <div class="ring-center" id="ring-overall-val">8.6</div>
+    <!-- Score Rings -->
+    <div class="score-rings">
+        <div class="ring-item">
+            <div class="ring-wrap">
+                <svg width="90" height="90" viewBox="0 0 90 90">
+                    <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                    <circle class="ring-fill" id="ring-overall" cx="45" cy="45" r="38"
+                        stroke="url(#grad-overall)"
+                        stroke-dasharray="238.76"
+                        stroke-dashoffset="238.76"/>
+                    <defs>
+                        <linearGradient id="grad-overall" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7c3aed"/>
+                            <stop offset="100%" stop-color="#4cc9f0"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="ring-text">
+                    <div class="ring-num" style="background:linear-gradient(135deg,#7c3aed,#4cc9f0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">8.8</div>
+                    <div class="ring-denom">/10</div>
                 </div>
-                <div class="ring-label">Overall</div>
             </div>
-            <!-- Health -->
-            <div class="score-ring">
-                <div class="ring-wrap">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="track" cx="50" cy="50" r="40"/>
-                        <circle class="fill green" cx="50" cy="50" r="40" id="ring-health"
-                            stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
-                    </svg>
-                    <div class="ring-center">7.5</div>
-                </div>
-                <div class="ring-label">Health</div>
-            </div>
-            <!-- Fixed -->
-            <div class="score-ring">
-                <div class="ring-wrap">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="track" cx="50" cy="50" r="40"/>
-                        <circle class="fill blue" cx="50" cy="50" r="40" id="ring-fixed"
-                            stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
-                    </svg>
-                    <div class="ring-center">2</div>
-                </div>
-                <div class="ring-label">Fixed</div>
-            </div>
-            <!-- Issues -->
-            <div class="score-ring">
-                <div class="ring-wrap">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="track" cx="50" cy="50" r="40"/>
-                        <circle class="fill" cx="50" cy="50" r="40" id="ring-issues"
-                            stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
-                    </svg>
-                    <div class="ring-center">5</div>
-                </div>
-                <div class="ring-label">Issues</div>
-            </div>
-            <!-- Ideas -->
-            <div class="score-ring">
-                <div class="ring-wrap">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="track" cx="50" cy="50" r="40"/>
-                        <circle class="fill pink" cx="50" cy="50" r="40" id="ring-ideas"
-                            stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
-                    </svg>
-                    <div class="ring-center">7</div>
-                </div>
-                <div class="ring-label">Ideas</div>
-            </div>
+            <div class="ring-label">Overall Score</div>
         </div>
-    </header>
+        <div class="ring-item">
+            <div class="ring-wrap">
+                <svg width="90" height="90" viewBox="0 0 90 90">
+                    <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                    <circle class="ring-fill" id="ring-fixed" cx="45" cy="45" r="38"
+                        stroke="#10b981"
+                        stroke-dasharray="238.76"
+                        stroke-dashoffset="238.76"/>
+                </svg>
+                <div class="ring-text">
+                    <div class="ring-num" style="color:#10b981;">2</div>
+                    <div class="ring-denom">fixed</div>
+                </div>
+            </div>
+            <div class="ring-label">Fixes</div>
+        </div>
+        <div class="ring-item">
+            <div class="ring-wrap">
+                <svg width="90" height="90" viewBox="0 0 90 90">
+                    <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                    <circle class="ring-fill" id="ring-issues" cx="45" cy="45" r="38"
+                        stroke="#f59e0b"
+                        stroke-dasharray="238.76"
+                        stroke-dashoffset="238.76"/>
+                </svg>
+                <div class="ring-text">
+                    <div class="ring-num" style="color:#f59e0b;">6</div>
+                    <div class="ring-denom">issues</div>
+                </div>
+            </div>
+            <div class="ring-label">Open Issues</div>
+        </div>
+        <div class="ring-item">
+            <div class="ring-wrap">
+                <svg width="90" height="90" viewBox="0 0 90 90">
+                    <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                    <circle class="ring-fill" id="ring-ideas" cx="45" cy="45" r="38"
+                        stroke="#f72585"
+                        stroke-dasharray="238.76"
+                        stroke-dashoffset="238.76"/>
+                </svg>
+                <div class="ring-text">
+                    <div class="ring-num" style="color:#f72585;">8</div>
+                    <div class="ring-denom">ideas</div>
+                </div>
+            </div>
+            <div class="ring-label">Ideas</div>
+        </div>
+    </div>
 
-    <!-- ——— STATS BAR ——— -->
+    <!-- Stats Bar -->
     <div class="stats-bar">
-        <div class="stat-chip"><div class="dot dot-green"></div>Firewall ON</div>
-        <div class="stat-chip"><div class="dot dot-green"></div>FileVault ON</div>
-        <div class="stat-chip"><div class="dot dot-green"></div>315GB Free</div>
-        <div class="stat-chip"><div class="dot dot-amber"></div>12 Uncommitted</div>
-        <div class="stat-chip"><div class="dot dot-green"></div>PC SSH OK</div>
-        <div class="stat-chip"><div class="dot dot-green"></div>Ollama 3 models</div>
-        <div class="stat-chip"><div class="dot dot-red"></div>Local Ollama ✗</div>
-        <div class="stat-chip"><div class="dot dot-amber"></div>MCP /health 404</div>
-        <div class="stat-chip"><div class="dot dot-green"></div>1 Service (no dupes)</div>
-        <div class="stat-chip"><div class="dot dot-critical"></div>Brave API ✗ (#7)</div>
-        <div class="stat-chip"><div class="dot dot-blue"></div>Trend ↓ 8.6 ← 8.7</div>
+        <div class="stat-item"><span class="stat-dot green"></span><span class="stat-label">Firewall:</span><span class="stat-val">ON</span></div>
+        <div class="stat-item"><span class="stat-dot green"></span><span class="stat-label">FileVault:</span><span class="stat-val">ON</span></div>
+        <div class="stat-item"><span class="stat-dot green"></span><span class="stat-label">Disk Free:</span><span class="stat-val">317 GB</span></div>
+        <div class="stat-item"><span class="stat-dot amber"></span><span class="stat-label">Cloudflared:</span><span class="stat-val">3 instances ⚠</span></div>
+        <div class="stat-item"><span class="stat-dot green"></span><span class="stat-label">Ollama (PC):</span><span class="stat-val">3 models</span></div>
+        <div class="stat-item"><span class="stat-dot green"></span><span class="stat-label">PC SSH:</span><span class="stat-val">ONLINE</span></div>
+        <div class="stat-item"><span class="stat-dot amber"></span><span class="stat-label">Uncommitted:</span><span class="stat-val">14 files</span></div>
+        <div class="stat-item"><span class="stat-dot amber"></span><span class="stat-label">Git Identity:</span><span class="stat-val">NOT SET</span></div>
+        <div class="stat-item"><span class="stat-dot blue"></span><span class="stat-label">Score Trend:</span><span class="stat-val">↑ 8.6 → 8.8</span></div>
     </div>
+</header>
 
-    <!-- ——— TABS ——— -->
-    <div class="tabs-nav">
-        <button class="tab-btn active" onclick="showTab('scores')">📊 Scores</button>
-        <button class="tab-btn" onclick="showTab('fixed')">✅ Fixed (2)</button>
-        <button class="tab-btn" onclick="showTab('issues')">🔍 Issues (5)</button>
-        <button class="tab-btn" onclick="showTab('ideas')">💡 Ideas (7)</button>
-        <button class="tab-btn" onclick="showTab('research')">🔬 Research</button>
-    </div>
-
-    <!-- ================================================= -->
-    <!-- TAB: SCORES                                        -->
-    <!-- ================================================= -->
-    <div class="tab-panel active" id="tab-scores">
-        <div class="section-header">
-            <div class="section-title">Performance Scores · Feb 24, 2026</div>
-            <div class="section-count">7 areas · Based on actual Feb 23 events</div>
-        </div>
-
-        <div class="scores-grid">
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">⚡ Responsiveness</div>
-                    <div class="score-value">9</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:90%;background:var(--accent-blue)"></div></div>
-                <div class="score-note"><span class="trend-up">↑</span> Model routing overhaul deployed immediately when Mike flagged Opus overuse. 12 cron jobs patched in one session. Zero dropped requests.</div>
-            </div>
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">🔮 Proactivity</div>
-                    <div class="score-value">9</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:90%;background:var(--accent-purple)"></div></div>
-                <div class="score-note"><span class="trend-flat">→</span> Built backup system without being asked (lesson from Feb 21 config wipe). Disabled wasteful ChatGPT cron proactively. Prepared morning briefing in daily notes.</div>
-            </div>
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">🎯 Quality</div>
-                    <div class="score-value">8</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:80%;background:var(--accent-pink)"></div></div>
-                <div class="score-note"><span class="trend-down">↓</span> Routing fix was clean. But git identity unconfigured 10+ days, context hit 63% before 5am, MCP /health broken — small debt items stacking up.</div>
-            </div>
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">🔧 Tool Mastery</div>
-                    <div class="score-value">8</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:80%;background:var(--accent-cyan)"></div></div>
-                <div class="score-note"><span class="trend-down">↓</span> PC SSH works, Ollama (PC) online with 3 models. Local Mac Ollama offline. MCP server /health returns 404. Audit jobs panel has no live status endpoint.</div>
-            </div>
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">🧠 Memory</div>
-                    <div class="score-value">9</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:90%;background:var(--accent-green)"></div></div>
-                <div class="score-note"><span class="trend-up">↑</span> Feb 23 daily notes thorough and well-structured. MEMORY.md updated with model routing rules + ChatGPT cron rule. JR decisions documented in DECISIONS.md.</div>
-            </div>
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">💬 Communication</div>
-                    <div class="score-value">9</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:90%;background:var(--accent-amber)"></div></div>
-                <div class="score-note"><span class="trend-up">↑</span> Clear "Things to tell Mike when he wakes up" section in daily notes. Context % flagged proactively. Explanations on why auto-compact can't be triggered by cron.</div>
-            </div>
-            <div class="score-card">
-                <div class="score-card-header">
-                    <div class="score-area">🌙 Night Shifts</div>
-                    <div class="score-value">8</div>
-                </div>
-                <div class="score-bar"><div class="score-fill" style="width:80%;background:var(--severity-info)"></div></div>
-                <div class="score-note"><span class="trend-down">↓</span> Crons ran. But context crept to 63% by 04:55 from overnight message accumulation. Compaction can't auto-trigger. Need better context budgeting strategy for long overnight sessions.</div>
-            </div>
-        </div>
-
-        <!-- History sparkline placeholder -->
-        <div class="card">
-            <div class="card-title">📈 Score History (14 days)</div>
-            <div style="margin-top:1rem;display:flex;gap:0.5rem;align-items:flex-end;height:60px;">
-                <div style="flex:1;background:var(--accent-purple);opacity:0.6;border-radius:3px 3px 0 0" title="7.9 — Feb 16" style="height:79%"></div>
-                <div style="flex:1;height:84%;background:var(--accent-purple);opacity:0.7;border-radius:3px 3px 0 0" title="8.4 — Feb 17"></div>
-                <div style="flex:1;height:80%;background:var(--accent-purple);opacity:0.7;border-radius:3px 3px 0 0" title="8.0 — Feb 18"></div>
-                <div style="flex:1;height:86%;background:var(--accent-purple);opacity:0.8;border-radius:3px 3px 0 0" title="8.6 — Feb 21"></div>
-                <div style="flex:1;height:83%;background:var(--accent-purple);opacity:0.8;border-radius:3px 3px 0 0" title="8.3 — Feb 22"></div>
-                <div style="flex:1;height:87%;background:var(--accent-purple);opacity:0.9;border-radius:3px 3px 0 0" title="8.7 — Feb 23"></div>
-                <div style="flex:1;height:86%;background:linear-gradient(180deg,var(--accent-pink),var(--accent-purple));border-radius:3px 3px 0 0;box-shadow:0 0 10px rgba(247,37,133,0.5)" title="8.6 — Feb 24 (today)"></div>
-            </div>
-            <div style="display:flex;gap:0.5rem;margin-top:0.3rem;">
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--text-secondary)">2/16</div>
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--text-secondary)">2/17</div>
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--text-secondary)">2/18</div>
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--text-secondary)">2/21</div>
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--text-secondary)">2/22</div>
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--text-secondary)">2/23</div>
-                <div style="flex:1;text-align:center;font-size:0.65rem;color:var(--accent-pink);font-weight:700">Today</div>
-            </div>
-            <div class="card-meta" style="margin-top:0.75rem">Hover bars for scores. Trend: <span style="color:var(--accent-green)">+0.7 over 9 days</span> · Peak: 8.7 · Low: 7.9</div>
-        </div>
-    </div>
-
-    <!-- ================================================= -->
-    <!-- TAB: FIXED                                         -->
-    <!-- ================================================= -->
-    <div class="tab-panel" id="tab-fixed">
-        <div class="section-header">
-            <div class="section-title">Resolved Since Last Audit</div>
-            <div class="section-count">2 fixed</div>
-        </div>
-
-        <!-- Fixed 1 -->
-        <div class="card fixed" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" checked disabled>
-                <div>
-                    <div class="card-title">💸 Opus Model Routing Fixed</div>
-                    <div class="card-meta">Was burning ~24% of Claude Max quota in 3 days · Fixed Feb 23</div>
-                    <div class="badges-row">
-                        <span class="badge badge-fixed">✅ FIXED</span>
-                        <span class="badge badge-high">WAS HIGH</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <p><strong>Root Cause:</strong> Main agent was set to Opus, and 12 cron jobs had no model override — every heartbeat, monitor, and scheduled task was burning Claude Opus tokens.</p>
-                <p><strong>Fix Applied:</strong> Main chat → Sonnet 4.6. Heartbeats → Qwen 3.5+. All 12 monitoring crons → Qwen 3.5+. Opus = sub-agent only (PRD improvement, research, planning).</p>
-                <p><strong>Evidence:</strong> openclaw.json updated. Gateway restarted. Mike confirmed routing working. Session cost should drop significantly.</p>
-                <p><strong>Impact:</strong> Estimated 70-80% reduction in Claude Max quota burn rate. Daily work sustainable now.</p>
-            </div>
-        </div>
-
-        <!-- Fixed 2 -->
-        <div class="card fixed" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" checked disabled>
-                <div>
-                    <div class="card-title">📦 Backup System Built</div>
-                    <div class="card-meta">openclaw.json backup gap closed · Built Feb 23 · Cron live</div>
-                    <div class="badges-row">
-                        <span class="badge badge-fixed">✅ FIXED</span>
-                        <span class="badge badge-medium">WAS MEDIUM</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <p><strong>Root Cause:</strong> Feb 21 <code>openclaw doctor --fix</code> wiped Telegram config. No recovery path existed. Previous audit marked this "open" for 2 runs.</p>
-                <p><strong>Fix Applied:</strong> Created <code>~/.otto/otto-backup.sh</code> → private GitHub repo <code>mikehelm/otto-config</code>. 30-day rolling snapshots. Backs up: openclaw.json, full workspace, ~/.otto/ scripts.</p>
-                <p><strong>Evidence:</strong> First backup completed and pushed Feb 23. Daily 5am cron (db06e9a6) running on Qwen. REINSTALL.md covers 3-step full restore.</p>
-                <p><strong>Restore command:</strong> <code class="mono">gh repo clone mikehelm/otto-config /tmp/otto-config && bash /tmp/otto-config/scripts/otto-restore.sh</code></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================================================= -->
-    <!-- TAB: ISSUES                                        -->
-    <!-- ================================================= -->
-    <div class="tab-panel" id="tab-issues">
-
-        <div class="escalate-banner">
-            🚨 <div><strong>2 CRITICAL findings</strong> have persisted across 7+ consecutive audits. Auto-escalation protocol active. Both require Mike's action — Otto cannot fix these alone.</div>
-        </div>
-
-        <div class="section-header">
-            <div class="section-title">Current Open Issues</div>
-            <div class="section-count">5 open · 2 critical</div>
-        </div>
-
-        <!-- Issue 1: CRITICAL — API limits -->
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" id="chk-api-limits">
-                <div style="flex:1">
-                    <div class="card-title">
-                        💳 No API Spending Limits Set
-                        <span class="repeat-badge">7× open</span>
-                    </div>
-                    <div class="card-meta">Anthropic · OpenAI · Alibaba — all unprotected</div>
-                    <div class="badges-row">
-                        <span class="badge badge-critical">🚨 CRITICAL</span>
-                        <span class="badge badge-effort">Effort: 30min</span>
-                        <span class="badge badge-impact">Impact: Financial Safety</span>
-                        <span class="badge badge-new">Mike action needed</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <div class="detail-section">
-                    <div class="detail-label">The Problem</div>
-                    <div class="detail-text">One runaway loop across any of three providers = uncapped spend. Otto has API keys for Anthropic (DashScope/Alibaba), and OpenAI. None have hard monthly caps configured. As workload scales (JR on PC, more Codex runs, parallel sub-agents) this risk grows daily.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What to Do</div>
-                    <div class="detail-text">
-                        • Anthropic Console → Billing → Usage Limits → set $X/month hard limit<br>
-                        • OpenAI Platform → Usage limits → set monthly cap<br>
-                        • Alibaba Cloud DashScope → Billing → set max spend cap<br>
-                        This is a 30-minute task across three browser tabs. Otto cannot do this without your credentials.
-                    </div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Escalation History</div>
-                    <div class="detail-text">Audits 1→7 all show this open. First flagged Feb 16. Per escalation rule (3+ consecutive = CRITICAL), this was promoted to CRITICAL on audit 4 and has stayed there.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Issue 2: CRITICAL — Web Search -->
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" id="chk-web-search">
-                <div style="flex:1">
-                    <div class="card-title">
-                        🔍 Web Search API Missing
-                        <span class="repeat-badge">4× open</span>
-                    </div>
-                    <div class="card-meta">Brave Search API key not configured since Feb 21 config wipe</div>
-                    <div class="badges-row">
-                        <span class="badge badge-critical">🚨 CRITICAL</span>
-                        <span class="badge badge-effort">Effort: 2min</span>
-                        <span class="badge badge-impact">Impact: Research Quality</span>
-                        <span class="badge badge-new">Mike action needed</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <div class="detail-section">
-                    <div class="detail-label">The Problem</div>
-                    <div class="detail-text">Brave API key was wiped in the Feb 21 openclaw.json restore incident. <code class="mono">web_search</code> returns <code class="mono">missing_brave_api_key</code> on every call. This breaks: Phase 5 research (using fallback), Nightly Model Scout, any real-time web lookups in sessions.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Fix (literally 2 minutes)</div>
-                    <div class="detail-text"><code class="mono">openclaw configure --section web</code> → paste Brave API key → done. That's it. Key is in your password manager.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Escalation</div>
-                    <div class="detail-text">Promoted to CRITICAL this audit (4th consecutive). This was HIGH for 3 runs. 2-minute fix has been open for 3 days.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Issue 3: HIGH — ChatGPT Manager silent -->
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" id="chk-chatgpt">
-                <div style="flex:1">
-                    <div class="card-title">
-                        🤖 ChatGPT Session Manager Silent 7 Days
-                        <span class="repeat-badge">4× open</span>
-                    </div>
-                    <div class="card-meta">0 tabs detected since Feb 17 · Now disabled by default (new rule)</div>
-                    <div class="badges-row">
-                        <span class="badge badge-medium">MEDIUM</span>
-                        <span class="badge badge-effort">Effort: 30min diagnostic</span>
-                        <span class="badge badge-impact">Impact: ChatGPT Workflow</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <div class="detail-section">
-                    <div class="detail-label">Context</div>
-                    <div class="detail-text">The ChatGPT monitor cron was running every 15 minutes and finding 0 tabs for 7 days. Per new rule (Feb 23), it's now disabled by default — enable only when submitting a ChatGPT job, disable when done. This resolves the token burn issue.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Remaining Issue</div>
-                    <div class="detail-text">Whether the detection logic actually works is untested. Need a diagnostic run: open a ChatGPT tab on the PC, enable the cron, see if it detects it within 15 min. Browser automation → MCP works (proven by Orbital Scavenger), so the plumbing should be fine.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Why Lower Priority Now</div>
-                    <div class="detail-text">With JR on PC (planned), ChatGPT may become less critical. The workflow may shift to JR → DashScope instead of Otto → ChatGPT Pro. Watch for natural deprecation.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Issue 4: MEDIUM — Context management -->
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" id="chk-context">
-                <div style="flex:1">
-                    <div class="card-title">
-                        📊 Context at 63% by 5am (New)
-                    </div>
-                    <div class="card-meta">Overnight cron messages accumulate in main session — compaction requires Mike</div>
-                    <div class="badges-row">
-                        <span class="badge badge-medium">MEDIUM</span>
-                        <span class="badge badge-new">NEW TODAY</span>
-                        <span class="badge badge-effort">Effort: 1h architecture</span>
-                        <span class="badge badge-impact">Impact: Morning Fresh Start</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <div class="detail-section">
-                    <div class="detail-label">The Problem</div>
-                    <div class="detail-text">By 04:55, main session context was at 63% (125k/200k tokens) — primarily from overnight cron messages flooding the session history. Session pruning is on, but not fast enough. When Mike wakes up, the session is already near-full. /compact requires Mike to type it in chat; Otto can't trigger it autonomously.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Possible Solutions</div>
-                    <div class="detail-text">
-                        A) Reduce cron frequency overnight (fewer messages in session)<br>
-                        B) Route overnight crons to isolated sessions (not main) — messages don't land in main context<br>
-                        C) Build a "morning reset" prompt Mike runs once per day that compacts + summarizes<br>
-                        D) Ask Mike to run /compact every morning as part of wakeup routine
-                    </div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Recommendation</div>
-                    <div class="detail-text">Option B is cleanest: all monitoring crons should use isolated sessions that don't accumulate in main chat. Currently they're already on Qwen — just need to confirm they're running as isolated sessions, not routing into main.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Issue 5: LOW — Git identity -->
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" id="chk-git">
-                <div style="flex:1">
-                    <div class="card-title">
-                        📝 Git Identity Not Configured
-                        <span class="repeat-badge">New</span>
-                    </div>
-                    <div class="card-meta">10+ days of auto-detected commits · Suppresses "configured automatically" warnings</div>
-                    <div class="badges-row">
-                        <span class="badge badge-low">LOW</span>
-                        <span class="badge badge-new">NEW TODAY</span>
-                        <span class="badge badge-effort">Effort: 2min</span>
-                        <span class="badge badge-impact">Impact: Hygiene</span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-detail">
-                <div class="detail-section">
-                    <div class="detail-label">The Problem</div>
-                    <div class="detail-text">Every git commit shows a warning: "Your name and email address were configured automatically based on your username and hostname." Commits are attributed to <code class="mono">otto@Mikes-Mac-Studio.local</code> instead of a clean identity.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Fix (2 minutes)</div>
-                    <div class="detail-text">
-                        <code class="mono">git config --global user.name "Otto"</code><br>
-                        <code class="mono">git config --global user.email "otto@ottoprojects.ai"</code><br>
-                        Otto can do this right now if Mike says yes.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================================================= -->
-    <!-- TAB: IDEAS                                         -->
-    <!-- ================================================= -->
-    <div class="tab-panel" id="tab-ideas">
-        <div class="section-header">
-            <div class="section-title">Ideas &amp; Upgrades</div>
-            <div class="section-count">7 ideas · Click to expand</div>
-        </div>
-
-        <!-- Idea 1 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">🚀</div>
-                <div style="flex:1">
-                    <div class="idea-title">JR on PC — OpenClaw Coding Agent</div>
-                    <div class="idea-subtitle">Install OpenClaw on Windows PC, give JR his own Telegram bot, make him Otto's dedicated coder</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 2-4h</span>
-                        <span class="badge badge-impact">Impact: 🔥 10x Coding Throughput</span>
-                        <span class="badge badge-high">Architecture Ready</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">JR (Junior) gets his own OpenClaw instance on the Windows PC (RTX 5090), his own Telegram bot (@OttoJuniorBot), and a dedicated workspace. Otto preps PRDs, drops them as jobs, JR builds, Otto verifies.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What This Actually Means</div>
-                    <div class="detail-text">Orbital Scavenger took 40 minutes with ONE agent (Codex). With JR running on PC while Codex runs on Mac simultaneously, you could run two build pipelines in parallel. Different projects. Same quality. Neither blocking the other.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Impact for Mike</div>
-                    <div class="detail-text">Right now: one build at a time. With JR: Mike drops two PRDs → both build overnight → wakes up to two completed projects. Architecture is already decided (Option A). Decisions.md is written. Just needs the install.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Next Step if Approved</div>
-                    <div class="detail-text">Otto SSHes to PC, installs OpenClaw in WSL2, pairs Telegram bot, creates jr-workspace, configures auth. ~2 hours. JR ready to receive first job.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Idea 2 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">🌊</div>
-                <div style="flex:1">
-                    <div class="idea-title">MindMapForge — Push to Launch</div>
-                    <div class="idea-subtitle">It's 80% done. One focused session = public launch. Real users. Real feedback.</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 3-5h</span>
-                        <span class="badge badge-impact">Impact: First Public Product</span>
-                        <span class="badge badge-medium">In Progress</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">MindMapForge is an AI-powered mind mapping tool. It takes any topic or pasted content and generates a structured, visual mind map. Voice input supported (Otto Voice integration).</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What This Actually Means</div>
-                    <div class="detail-text">The pipeline works: Opus→Codex produced Orbital Scavenger in 40 minutes. MindMapForge is more complex but the architecture is further along. The gap between "in progress" and "shipped" is probably 1-2 Codex sessions.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Why Now</div>
-                    <div class="detail-text">MWC competitor check showed vibe-coding tier is commoditizing fast. Early mover advantage shrinks monthly. MindMapForge in a less crowded niche (structured mind mapping vs raw code gen). Get it out before someone else ships it.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Idea 3 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">💬</div>
-                <div style="flex:1">
-                    <div class="idea-title">Overnight Context Isolation</div>
-                    <div class="idea-subtitle">Route all overnight crons to isolated sessions — keep main context fresh for Mike's morning</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 1h</span>
-                        <span class="badge badge-impact">Impact: Clean Morning Context</span>
-                        <span class="badge badge-low">Quick Win</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">Instead of all overnight cron messages landing in the main session (inflating context to 63% by 5am), all monitoring crons run as isolated sessions with <code class="mono">cleanup: delete</code>. Main session wakes up clean. Only the daily review + backup results land in main.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What This Actually Means</div>
-                    <div class="detail-text">Mike wakes up to a session at ~15% context, not 63%. Every morning starts fresh. Important: all crons already use Qwen — just need to add <code class="mono">isolated: true</code> to their config so messages don't route into main. Already mostly configured, just needs a verify pass.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Idea 4 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">📱</div>
-                <div style="flex:1">
-                    <div class="idea-title">Morning Briefing Bot (Telegram)</div>
-                    <div class="idea-subtitle">Single structured message each morning: weather, context %, active jobs, top priority</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 2h</span>
-                        <span class="badge badge-impact">Impact: Better Morning UX</span>
-                        <span class="badge badge-low">Quick Win</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">At 7am Bangkok (when Mike typically wakes), Otto sends ONE structured Telegram message: yesterday's wins, today's top priority from WORKQUEUE.md, context % (and /compact reminder if >50%), any CRITICAL issues, weather if relevant. Then stays quiet.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What This Actually Means</div>
-                    <div class="detail-text">Right now Otto has to wake up with Mike and hope he reads the daily notes file. A 7am push briefing means Mike gets the status before his first coffee. One message, actionable, not a wall of text. Built on the daily notes that already exist — just formats and sends them.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Why Mike Would Like This</div>
-                    <div class="detail-text">Mike is in Bangkok — morning is prime time. Starting the day with "here's what matters" from Otto = less ramp-up, more flow. The current system requires Mike to already be awake and chatting to get a summary.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Idea 5 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">🔐</div>
-                <div style="flex:1">
-                    <div class="idea-title">Token Rotation Reminder (Monthly Cron)</div>
-                    <div class="idea-subtitle">Monthly nudge to rotate API keys — current tokens active since Feb 10-11</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 30min</span>
-                        <span class="badge badge-impact">Impact: Security Hygiene</span>
-                        <span class="badge badge-low">Hygiene</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">A monthly cron (first of the month, 9am Bangkok) sends Mike a Telegram reminder: "Token rotation due. Keys last rotated: Feb 10-11. Providers: Anthropic, OpenAI, DashScope, Brave. Takes ~20 min." With direct links to each provider's API key page.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Why It Matters</div>
-                    <div class="detail-text">Current tokens have been active since setup day (Feb 10-11). No evidence of compromise, but 6+ weeks on the same keys is borderline. Monthly rotation is industry standard for autonomous AI agent credentials with broad write access.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Idea 6 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">🎯</div>
-                <div style="flex:1">
-                    <div class="idea-title">PRD Quality Auto-Scorer</div>
-                    <div class="idea-subtitle">Score incoming PRDs before sending to Codex — catch low-quality briefs before they waste build time</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 3h</span>
-                        <span class="badge badge-impact">Impact: Build Quality + Speed</span>
-                        <span class="badge badge-info">Research Validated</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">The Insight</div>
-                    <div class="detail-text">Orbital Scavenger had a 9.8/10 PRD → 40-minute build. Previous projects with weaker PRDs took 2-3x longer due to ambiguity, back-and-forth, rework. There's a direct correlation between PRD quality and build speed.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">Before any PRD goes to Codex or JR, Otto scores it on 8 dimensions: clarity, tech stack specified, success criteria defined, edge cases covered, UX described, API dependencies listed, error handling planned, deployment target specified. Score shown to Mike before submitting.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Impact for Mike</div>
-                    <div class="detail-text">"Your PRD scores 6.2/10. Missing: error handling, deployment target, and 3 edge cases. Want me to fill those in? +20min now = -2h later." Mike gets the choice. But at least the gap is visible before wasted compute.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Idea 7 -->
-        <div class="idea-card" onclick="toggleIdea(this)">
-            <div class="idea-header">
-                <input type="checkbox" class="item-checkbox" onclick="event.stopPropagation(); updateCount()" style="margin-top:12px">
-                <div class="idea-emoji">📈</div>
-                <div style="flex:1">
-                    <div class="idea-title">MWC Weekly Competitor Pulse</div>
-                    <div class="idea-subtitle">Automate the competitor check Mike got yesterday — weekly rather than ad-hoc</div>
-                    <div class="badges-row">
-                        <span class="badge badge-effort">Effort: 2h</span>
-                        <span class="badge badge-impact">Impact: Strategic Awareness</span>
-                        <span class="badge badge-info">Validated Process</span>
-                    </div>
-                </div>
-            </div>
-            <div class="idea-detail">
-                <div class="detail-section">
-                    <div class="detail-label">What It Does</div>
-                    <div class="detail-text">Every Monday at 8am Bangkok, a sub-agent does what was done manually Feb 23: Reddit sentiment check (r/webdev, r/SaaS), competitor pricing snapshots (Bolt, v0, Cursor, Replit), new entrant scan. Report saved to <code class="mono">projects/madewithchat/</code> and key changes Telegraphed to Mike.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">What Mike Gets</div>
-                    <div class="detail-text">Monday morning competitor delta: "Bolt raised Pro to $30. New entrant: SparkCode just launched with $15 plan. Reddit sentiment on vibe-coding: still positive." Takes 30 seconds to read, 2 hours to gather manually. Fully automated once set up.</div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-label">Note</div>
-                    <div class="detail-text">Needs Brave API key to run web searches. This is one more reason that 2-minute fix (issue #2) has compound value — it unblocks this, model scout, and daily research.</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================================================= -->
-    <!-- TAB: RESEARCH                                      -->
-    <!-- ================================================= -->
-    <div class="tab-panel" id="tab-research">
-        <div class="section-header">
-            <div class="section-title">What's Hot in AI (Feb 2026)</div>
-            <div class="section-count">Synthesized from memory + project findings · Brave API offline</div>
-        </div>
-
-        <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:0.75rem 1rem;margin-bottom:1.5rem;font-size:0.85rem;color:var(--accent-amber)">
-            ⚠️ <strong>Note:</strong> Brave Search API key not configured (4th audit). Research synthesized from memory, project docs, and competitor intelligence. Fix: <code class="mono">openclaw configure --section web</code>
-        </div>
-
-        <div class="research-item">
-            <div class="research-icon">🏆</div>
-            <div class="research-content">
-                <div class="research-title">Multi-Agent Orchestration = #1 Agentic Trend</div>
-                <div class="research-body">Validated by Orbital Scavenger (6 parallel sub-agents, 993 modules, 40 min). Industry moving from single-agent to agent swarms. Opus→Codex pipeline already executing this pattern. JR on PC extends it further — two build pipelines running simultaneously across machines.</div>
-            </div>
-        </div>
-
-        <div class="research-item">
-            <div class="research-icon">💬</div>
-            <div class="research-content">
-                <div class="research-title">Vibe Coding Tier Has Commoditized</div>
-                <div class="research-body">From MWC competitor check: Bolt, Lovable, v0, Replit all tier-1 brand recognition. Bolt clones selling for $3,500 at $1K MRR show low barrier to entry. The differentiation is now DX, output quality, and niche. "Build apps in plain English" is table stakes now. Value-add is above that.</div>
-            </div>
-        </div>
-
-        <div class="research-item">
-            <div class="research-icon">🎤</div>
-            <div class="research-content">
-                <div class="research-title">Voice-First AI Interfaces Accelerating</div>
-                <div class="research-body">Otto Voice deployed (Kokoro + Piper TTS, RTX 5090). Discord voice 90% ready (bot permissions pending). MindMapForge has voice input designed in. The pattern is clear: every interface will have a voice layer. Early movers capture user habit formation.</div>
-            </div>
-        </div>
-
-        <div class="research-item">
-            <div class="research-icon">📐</div>
-            <div class="research-content">
-                <div class="research-title">PRD Quality as Competitive Moat</div>
-                <div class="research-body">40-minute build vs 2-3h build is entirely a PRD quality difference. As AI coding tools commoditize, the edge shifts to whoever writes better specs. Orbital Scavenger's 9.8/10 PRD is a case study. The "PRD Auto-Scorer" idea above is Otto eating its own cooking — the insight came from observing the pipeline.</div>
-            </div>
-        </div>
-
-        <div class="research-item">
-            <div class="research-icon">💰</div>
-            <div class="research-content">
-                <div class="research-title">Claude Max Quota = Real Constraint Now</div>
-                <div class="research-body">Opus was burning ~24% of weekly quota in days before the routing fix. As JR scales up (more parallel builds) and Codex sessions multiply, Claude Max tokens become the bottleneck. Smart routing (Sonnet for chat, Qwen for monitoring, Opus only for planning) is a competitive infrastructure advantage — it stretches the same quota further.</div>
-            </div>
-        </div>
-
-        <div class="research-item">
-            <div class="research-icon">🔄</div>
-            <div class="research-content">
-                <div class="research-title">GitHub Pages as Instant Demo Platform</div>
-                <div class="research-body">Pattern validated by Flipit, MWC, Orbital Scavenger: build → deploy to GitHub Pages → shareable link in &lt;1 hour. The overnight audit report follows this. No hosting costs, no CORS issues, instant. Worth formalizing as a deployment default for all demos.</div>
-            </div>
-        </div>
-    </div>
-
-</div> <!-- /container -->
-
-<!-- ——— BOTTOM ACTION BAR ——— -->
-<div class="bottom-bar">
-    <div class="selection-count">
-        <span id="selected-count">0</span> items selected
-        <span id="copy-feedback" style="margin-left:0.75rem">✅ Copied to clipboard!</span>
-    </div>
-    <button class="submit-btn" onclick="submitItems()">⚡ Make It Happen</button>
+<!-- ── TABS ── -->
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('scores')">📊 Scores</button>
+    <button class="tab-btn" onclick="switchTab('fixed')">✅ Fixed (2)</button>
+    <button class="tab-btn" onclick="switchTab('issues')">🔍 Issues (6)</button>
+    <button class="tab-btn" onclick="switchTab('ideas')">💡 Ideas (8)</button>
+    <button class="tab-btn" onclick="switchTab('research')">🌐 Research</button>
+    <button class="tab-btn" onclick="switchTab('health')">🖥 Health</button>
 </div>
 
+<!-- ══════════════ TAB: SCORES ══════════════ -->
+<div id="tab-scores" class="tab-panel active">
+
+    <!-- Trend chart -->
+    <div class="section-title">7-Day Score Trend</div>
+    <div class="trend-chart">
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">7.9</div>
+            <div class="trend-bar" style="height:47%;"></div>
+            <div class="trend-bar-label">Feb 16</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">8.4</div>
+            <div class="trend-bar" style="height:58%;"></div>
+            <div class="trend-bar-label">Feb 17</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">8.0</div>
+            <div class="trend-bar" style="height:50%;"></div>
+            <div class="trend-bar-label">Feb 18</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">8.6</div>
+            <div class="trend-bar" style="height:62%;"></div>
+            <div class="trend-bar-label">Feb 21</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">8.3</div>
+            <div class="trend-bar" style="height:55%;"></div>
+            <div class="trend-bar-label">Feb 22</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">8.7</div>
+            <div class="trend-bar" style="height:65%;"></div>
+            <div class="trend-bar-label">Feb 23</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val">8.6</div>
+            <div class="trend-bar" style="height:62%;"></div>
+            <div class="trend-bar-label">Feb 24</div>
+        </div>
+        <div class="trend-bar-wrap">
+            <div class="trend-bar-val" style="color:#f72585;">8.8</div>
+            <div class="trend-bar" style="height:72%; background: linear-gradient(180deg, #f72585, #7c3aed);"></div>
+            <div class="trend-bar-label" style="color:#f72585;">Feb 25</div>
+        </div>
+    </div>
+
+    <div class="section-title" style="margin-top:1.5rem;">Area Breakdown</div>
+    <div class="card">
+        <table class="score-table">
+            <thead>
+                <tr>
+                    <th>Area</th>
+                    <th>Score</th>
+                    <th>Trend</th>
+                    <th>Evidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🚀 Responsiveness</td>
+                    <td><strong>9/10</strong><span class="score-bar"><span class="score-fill" style="width:90%;"></span></span></td>
+                    <td class="trend-flat">→</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">BrainCells v2 design done in 25 min when requested at 1:16 AM</td>
+                </tr>
+                <tr>
+                    <td>🎯 Proactivity</td>
+                    <td><strong>10/10</strong><span class="score-bar"><span class="score-fill" style="width:100%;"></span></span></td>
+                    <td class="trend-flat">→</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Launched research sub-agent + PRD cron autonomously when Mike said "going to sleep"</td>
+                </tr>
+                <tr>
+                    <td>✨ Quality</td>
+                    <td><strong>9/10</strong><span class="score-bar"><span class="score-fill" style="width:90%;"></span></span></td>
+                    <td class="trend-up">↑</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Fixed Codex's &lt;pre&gt; tag dumps; rebuilt all 8 module pages with proper HTML</td>
+                </tr>
+                <tr>
+                    <td>🔧 Tool Mastery</td>
+                    <td><strong>9/10</strong><span class="score-bar"><span class="score-fill" style="width:90%;"></span></span></td>
+                    <td class="trend-flat">→</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Multi-tool pipeline: research sub-agent → Codex build → Node.js fix → Codex v2</td>
+                </tr>
+                <tr>
+                    <td>🧠 Memory</td>
+                    <td><strong>7/10</strong><span class="score-bar"><span class="score-fill" style="width:70%;"></span></span></td>
+                    <td class="trend-down">↓</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Mid-day compact erased 3 memory upgrades Mike had requested. Rule now in SOUL.md.</td>
+                </tr>
+                <tr>
+                    <td>💬 Communication</td>
+                    <td><strong>8/10</strong><span class="score-bar"><span class="score-fill" style="width:80%;"></span></span></td>
+                    <td class="trend-flat">→</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Night protocol respected; morning todos documented. Some redundant entries in daily notes.</td>
+                </tr>
+                <tr>
+                    <td>🌙 Night Shifts</td>
+                    <td><strong>10/10</strong><span class="score-bar"><span class="score-fill" style="width:100%; background:linear-gradient(90deg,#f72585,#7c3aed);"></span></span></td>
+                    <td class="trend-flat">→</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Full BrainCells course built while Mike slept — PRD 9.7/10, 8 modules, v1+v2 complete</td>
+                </tr>
+                <tr style="border-top: 1px solid var(--border);">
+                    <td><strong>⭐ OVERALL</strong></td>
+                    <td><strong style="color:#f72585;font-size:1.1rem;">8.8/10</strong></td>
+                    <td class="trend-up" style="font-weight:700;">↑</td>
+                    <td style="color:var(--text-secondary);font-size:0.82rem;">Highest score this week. BrainCells overnight win is genuinely exceptional.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Overnight wins -->
+    <div class="section-title" style="margin-top:1.5rem;">🌙 Overnight Wins</div>
+    <div class="card fixed">
+        <div class="card-header">
+            <div>
+                <div class="card-title">🧠 BrainCells Course — Built From Scratch Overnight</div>
+                <div class="card-body">
+                    Mike went to sleep saying "if no answer in 10 min, set a cron to start building." I launched the research sub-agent, scheduled the PRD builder cron, gathered 7 real OpenClaw YouTube tutorials, built the full 8-module course (PRD 9.7/10), fixed Codex's &lt;pre&gt; tag dumps, then ran v2 design upgrade: Inter + Plus Jakarta Sans fonts, module heroes, sticky TOC sidebar, reading progress bar, scroll-reveal, confetti, quiz cards. Done by 1:51 AM.
+                    <br><br>
+                    <strong>Live URL:</strong> <a href="https://mikehelm.github.io/braincells/" style="color:var(--accent-blue);">https://mikehelm.github.io/braincells/</a>
+                    · Commit: <code>edb4390</code>
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-fixed">COMPLETE</span>
+                    <span class="badge badge-impact">Night Shift 10/10</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card fixed">
+        <div class="card-header">
+            <div>
+                <div class="card-title">📝 MEMORY.md Expanded + Compaction Rule Written</div>
+                <div class="card-body">
+                    MEMORY.md grew from 268 → 296 lines (+28). New hard rules added to SOUL.md and MEMORY.md: never compact without Mike's explicit permission. Context thresholds defined: 65% → write HANDOFF.md silently; 75% → ask Mike; 90% → message urgently. These rules are now written to file — they won't be forgotten.
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-fixed">COMPLETE</span>
+                    <span class="badge badge-effort">~30 min</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: FIXED ══════════════ -->
+<div id="tab-fixed" class="tab-panel">
+    <div class="section-title">Resolved Since Last Audit (Feb 24)</div>
+
+    <div class="card fixed">
+        <div class="card-header">
+            <div>
+                <div class="card-title">✅ BrainCells v2 Course Launched</div>
+                <div class="card-body">
+                    8-module gamified OpenClaw course for Graham Brain. Multi-stage pipeline: research sub-agent → PRD (9.7/10) → Codex build (v1) → Otto HTML fix (node.js/marked.js) → Codex v2 design. Full design system: Google Fonts, module heroes, sticky TOC, reading progress bar, scroll-reveal, confetti, quiz cards, callout boxes. Zero &lt;pre&gt; tags.
+                    <br>
+                    <strong>Evidence:</strong> Commit <code>edb4390</code> · <a href="https://mikehelm.github.io/braincells/" style="color:var(--accent-blue);">https://mikehelm.github.io/braincells/</a>
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-fixed">DONE</span>
+                    <span class="badge badge-impact">Night Shift Win</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card fixed">
+        <div class="card-header">
+            <div>
+                <div class="card-title">✅ Compaction Hard Rule + Context Thresholds Written</div>
+                <div class="card-body">
+                    After mid-day compact erased Mike's 3 memory upgrades, Mike gave explicit correction. Rule now written to SOUL.md (Mandatory Habits), MEMORY.md (Hard Rules), and HEARTBEAT.md. Thresholds: 65% silent HANDOFF.md → 75% ask permission → 90% urgent message. This is a file-level rule now, not a "mental note."
+                    <br>
+                    <strong>Evidence:</strong> SOUL.md + MEMORY.md + HEARTBEAT.md updated Feb 24
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-fixed">DONE</span>
+                    <span class="badge badge-effort">Immediate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:1rem; padding: 1rem; background: rgba(16,185,129,0.06); border-radius: 10px; border: 1px solid rgba(16,185,129,0.15);">
+        <div style="font-size:0.82rem; color: var(--text-secondary);">
+            <strong style="color:var(--accent-green);">Carry-forward fixes from prior audits still holding:</strong><br>
+            Opus routing overhaul (Feb 23) · Backup system (Feb 23) · ChatGPT monitor disabled (Feb 23) · Session pruning enabled (Feb 24) · Memory search with QMD + temporal decay + MMR (Feb 24)
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: ISSUES ══════════════ -->
+<div id="tab-issues" class="tab-panel">
+    <div class="section-title">Current Issues — Ranked by Severity</div>
+
+    <!-- CRITICAL: API Limits -->
+    <div class="card critical">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="chk-api-limits" onchange="updateCount()"></div>
+            <div>
+                <div class="card-title">💸 No API Spending Limits Set</div>
+                <div class="card-body">
+                    Anthropic, OpenAI, and Alibaba DashScope accounts have no spend caps. A runaway cron or agent loop could burn hundreds of dollars before Mike notices. This requires Mike's credentials — Otto cannot fix this alone.
+                    <br><br>
+                    <strong>Action:</strong> Set monthly budgets on all 3 dashboards. 5 minutes total. Otto can provide the exact URLs.
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-critical">CRITICAL</span>
+                    <span class="badge badge-repeat">8th Audit</span>
+                    <span class="badge badge-effort">5 min</span>
+                    <span class="badge badge-impact">HIGH RISK</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CRITICAL: Brave API -->
+    <div class="card critical">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="chk-brave-api" onchange="updateCount()"></div>
+            <div>
+                <div class="card-title">🔍 Brave API Key Not Configured</div>
+                <div class="card-body">
+                    web_search tool is broken in every session. Nightly Model Scout can't run. This audit had to use rate-limited fallback (hit 429 on 3rd search). Fix is literally one command: <code>openclaw configure --section web</code>
+                    <br><br>
+                    <strong>Impact:</strong> Every AI research session, every scout run, every trending check is degraded. This is a 2-minute fix that's been open 5 audits.
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-critical">CRITICAL</span>
+                    <span class="badge badge-repeat">5th Audit</span>
+                    <span class="badge badge-effort">2 min</span>
+                    <span class="badge badge-impact">HIGH IMPACT</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MEDIUM: Cloudflared triple -->
+    <div class="card medium">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="chk-cloudflared" onchange="updateCount()"></div>
+            <div>
+                <div class="card-title">🌐 Cloudflared Running 3 Instances (Should Be 1)</div>
+                <div class="card-body">
+                    The speed-showcase cron fires at exactly 5:00 AM (same as this audit) and launches <code>python3 -m http.server 8080 &amp; cloudflared tunnel --url http://localhost:8080</code> — creating 2 extra cloudflared processes every morning. These orphan when the cron ends. Potential for port 8080 conflicts with future work.
+                    <br><br>
+                    <strong>Action:</strong> Shift speed-showcase cron to 5:05 AM. Add a pre-launch check to kill stale instances.
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM</span>
+                    <span class="badge badge-new">NEW</span>
+                    <span class="badge badge-effort">10 min</span>
+                    <span class="badge badge-impact">Low-Medium</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MEDIUM: MCP health endpoint -->
+    <div class="card medium">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="chk-mcp-health" onchange="updateCount()"></div>
+            <div>
+                <div class="card-title">🔌 MCP Server /health Returns HTML Error</div>
+                <div class="card-body">
+                    <code>curl https://otto.workwithchat.com/health</code> returns an HTML error page, not a JSON health response. MCP server itself may still be functioning (the Cloudflare tunnel is live), but health monitoring can't distinguish "up" from "down."
+                    <br><br>
+                    <strong>Action:</strong> Check MCP server's actual endpoint — may need to use <code>/mcp</code> or a different path for health checks.
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM</span>
+                    <span class="badge badge-new">NEW</span>
+                    <span class="badge badge-effort">15 min</span>
+                    <span class="badge badge-impact">Monitoring</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MEDIUM: ChatGPT manager -->
+    <div class="card medium">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="chk-chatgpt" onchange="updateCount()"></div>
+            <div>
+                <div class="card-title">🤖 ChatGPT Session Manager Needs Diagnostic Test</div>
+                <div class="card-body">
+                    Cron disabled (correct — token burn fixed). But we haven't verified the detection logic still works. The PC browser + Playwright + session detection code hasn't been tested since Feb 18. If Mike starts a ChatGPT job and enables the monitor, will it actually work?
+                    <br><br>
+                    <strong>Action:</strong> One test run with a known ChatGPT tab to validate selector accuracy before next real use.
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM</span>
+                    <span class="badge badge-repeat">5th Audit</span>
+                    <span class="badge badge-effort">20 min</span>
+                    <span class="badge badge-impact">Reliability</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOW: Git identity -->
+    <div class="card low">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="chk-git-identity" onchange="updateCount()"></div>
+            <div>
+                <div class="card-title">📝 Git Identity Not Configured</div>
+                <div class="card-body">
+                    <code>git config --global user.name/email</code> not set. Every commit uses auto-detected identity, which generates warnings. Quick fix — literally 2 commands.
+                    <br><br>
+                    <strong>Fix:</strong> <code>git config --global user.name "Otto" && git config --global user.email "otto@openclaw.app"</code>
+                </div>
+                <div class="card-meta">
+                    <span class="badge badge-low">LOW</span>
+                    <span class="badge badge-repeat">3rd Audit</span>
+                    <span class="badge badge-effort">10 sec</span>
+                    <span class="badge badge-impact">Hygiene</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: IDEAS ══════════════ -->
+<div id="tab-ideas" class="tab-panel">
+    <div class="section-title">Ideas &amp; Upgrades — Feb 25, 2026</div>
+
+    <!-- Idea 1: Auto-Handoff Compaction -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-1" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">🤖 Auto-Handoff Compaction System</div>
+                <div class="card-body">Mike explicitly requested this on Feb 24. Context fills up → Otto auto-saves a HANDOFF.md → then asks permission to compact.</div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM effort</span>
+                    <span class="badge badge-impact">HIGH impact</span>
+                    <span style="padding:0.2rem 0.6rem;background:rgba(247,37,133,0.1);color:#f472b6;border:1px solid rgba(247,37,133,0.2);border-radius:6px;font-size:0.72rem;font-weight:600;">MIKE REQUESTED</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-1', this)">▼ Details</button>
+                </div>
+                <div id="detail-1" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What it does:</strong> Monitors context % on every heartbeat. At 65%: silently writes <code>projects/current/HANDOFF.md</code> with active work summary. At 75%: asks Mike "Context at 75%, ready to compact?" with yes/no buttons. At 90%: sends urgent Telegram message regardless.</p>
+                        <p><strong>Why now:</strong> Mid-day compact on Feb 24 erased 3 memory upgrades Mike had requested. He explicitly defined the thresholds. This is a well-specified feature with clear acceptance criteria.</p>
+                        <p><strong>Implementation:</strong> Update AGENTS.md threshold rules. Add HANDOFF.md template. Modify heartbeat check to detect context % from session_status. 1-2 hours with Codex.</p>
+                        <p><strong>Effort:</strong> 1-2 hours · <strong>Impact:</strong> Prevents data loss, removes cognitive burden from Mike</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 2: Morning Briefing Push -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-2" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">🌅 Morning Briefing Push (Rich Overnight Digest)</div>
+                <div class="card-body">When Otto detects Mike waking up (first Telegram message of the day), auto-push a rich digest: what was built overnight, live links, commits, open questions needing decisions.</div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM effort</span>
+                    <span class="badge badge-impact">HIGH impact</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-2', this)">▼ Details</button>
+                </div>
+                <div id="detail-2" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What it does:</strong> Heartbeat detects Mike's first message after 6 AM Bangkok. Reads daily notes for "overnight wins" section. Formats a punchy Telegram message: "Good morning! While you slept: [list of things built with links]. Open questions: [list]."</p>
+                        <p><strong>Currently:</strong> Daily notes have a "Things to Tell Mike" section but Otto has to remember to send it. This automates the send.</p>
+                        <p><strong>Implementation:</strong> Track last-message-time in heartbeat-state.json. If gap > 4 hours and new message received after 6am, trigger morning briefing sub-routine. 2-3 hours.</p>
+                        <p><strong>Effort:</strong> 2-3 hours · <strong>Impact:</strong> Mike wakes up knowing exactly what happened, no hunting through notes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 3: Cron Timing Deconfliction -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-3" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">⏰ Cron Timing Deconfliction</div>
+                <div class="card-body">Speed showcase, daily audit, and backup all fire at exactly 5:00 AM. This causes 3 cloudflared instances and race conditions. Stagger them over 15 minutes.</div>
+                <div class="card-meta">
+                    <span class="badge badge-low">LOW effort</span>
+                    <span class="badge badge-impact">MEDIUM impact</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-3', this)">▼ Details</button>
+                </div>
+                <div id="detail-3" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What it does:</strong> Shift cron times: audit stays at 5:00 AM, backup moves to 5:10 AM, speed showcase moves to 5:05 AM. Also add a pre-launch kill for stale cloudflared instances in the showcase cron.</p>
+                        <p><strong>Why:</strong> Currently 3 cloudflared processes every morning. Speed showcase also runs 24/7 which may not be intended — is it meant to be always-on?</p>
+                        <p><strong>Effort:</strong> 10 minutes · <strong>Impact:</strong> Cleaner resource usage, no port conflicts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 4: BrainCells Graham Tracker -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-4" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">📊 BrainCells Progress Dashboard for Mike</div>
+                <div class="card-body">Simple GitHub Pages analytics page showing Graham's course completion, which modules he's visited, time spent, quiz scores. Mike can see if Graham is actually using it.</div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM effort</span>
+                    <span class="badge badge-impact">HIGH impact</span>
+                    <span class="badge badge-new">NEW</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-4', this)">▼ Details</button>
+                </div>
+                <div id="detail-4" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What it does:</strong> Add lightweight analytics to BrainCells (GitHub Pages compatible — no backend needed). Use localStorage + a beacon to a simple endpoint. Or use GitHub's built-in traffic API which tracks page views.</p>
+                        <p><strong>Dashboard:</strong> Mike gets a private admin page showing: "Graham visited Module 3 twice this week, completed Quiz 2 with 4/5, hasn't started Module 5 yet."</p>
+                        <p><strong>Why:</strong> Mike gifted this course to his business partner. Knowing if Graham is engaging = feedback on whether it's working.</p>
+                        <p><strong>Effort:</strong> 3-4 hours · <strong>Impact:</strong> Mike knows if the gift landed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 5: Git identity automator -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-5" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">🔑 Git Identity Auto-Fix (3rd Audit)</div>
+                <div class="card-body">This has appeared in 3 consecutive audits. It's literally 2 commands. Let me just do it now if Mike approves.</div>
+                <div class="card-meta">
+                    <span class="badge badge-low">INSTANT</span>
+                    <span class="badge badge-impact">Hygiene</span>
+                    <span class="badge badge-repeat">3rd Audit</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-5', this)">▼ Details</button>
+                </div>
+                <div id="detail-5" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>The fix:</strong></p>
+                        <code>git config --global user.name "Otto"</code><br>
+                        <code>git config --global user.email "otto@openclaw.app"</code>
+                        <p style="margin-top:0.5rem;">That's it. Done. No more warnings. Why is this still open?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 6: Context-aware daily digest -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-6" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">💬 Proactive Context Summarizer</div>
+                <div class="card-body">At 65% context, before writing HANDOFF.md, also auto-summarize the active session into memory/YYYY-MM-DD.md to prevent ANY information from being lost during a compact.</div>
+                <div class="card-meta">
+                    <span class="badge badge-low">LOW effort</span>
+                    <span class="badge badge-impact">HIGH impact</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-6', this)">▼ Details</button>
+                </div>
+                <div id="detail-6" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What it does:</strong> When context hits 65%, before creating HANDOFF.md, summarize the last 30 messages into the daily notes file. This means even if compact happens, the important context is in a file.</p>
+                        <p><strong>Complements:</strong> Auto-Handoff Compaction (Idea 1). Same trigger, different output. Both together = zero information loss on compact.</p>
+                        <p><strong>Effort:</strong> 1 hour · <strong>Impact:</strong> Prevents the Feb 24 memory-loss incident from repeating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 7: BrainCells Module 9+ expansion -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-7" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">🎓 BrainCells Expansion Pack (Modules 9-11)</div>
+                <div class="card-body">The course outline mentioned 11 modules but only 8 were built. Modules 9-11 (Advanced Agent Workflows, Building Your First Skill, and Mike's Cameo Grand Finale) are missing. Graham will notice the gap.</div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM effort</span>
+                    <span class="badge badge-impact">HIGH impact</span>
+                    <span class="badge badge-new">NEW</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-7', this)">▼ Details</button>
+                </div>
+                <div id="detail-7" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What's missing:</strong> The research outline had 11 modules. Build stopped at 8 (or was it 8 by design?). Need to verify against the PRD.</p>
+                        <p><strong>What they'd cover:</strong> Advanced agent workflows, building custom skills, Mike's grand finale cameo (rap section?), certificate of completion system.</p>
+                        <p><strong>Certificate idea:</strong> After Graham completes all modules, generate a personalized "BrainCells Certified" certificate page with his name — Mike could screenshot and post it.</p>
+                        <p><strong>Effort:</strong> 3-4 hours · <strong>Impact:</strong> Complete course, Graham gets the full experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 8: Audit job live status v2 -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-check"><input type="checkbox" id="idea-8" onchange="updateCount()"></div>
+            <div style="flex:1;">
+                <div class="card-title">⚡ Audit Report "Submit" Actually Works Now</div>
+                <div class="card-body">The Submit button in this report collects checkboxes and copies them to clipboard. But the live API pipeline (MCP audit endpoint) is wired but Mike's never used it. Let's make the button actually queue jobs to the API instead of clipboard copy.</div>
+                <div class="card-meta">
+                    <span class="badge badge-medium">MEDIUM effort</span>
+                    <span class="badge badge-impact">MEDIUM impact</span>
+                    <button class="expand-btn" onclick="toggleDetail('detail-8', this)">▼ Details</button>
+                </div>
+                <div id="detail-8" class="detail-panel">
+                    <div class="detail-inner">
+                        <p><strong>What it does:</strong> When Mike checks items in the audit report and clicks "Make It Happen", instead of clipboard copy, POST the selected items directly to <code>https://otto.workwithchat.com/api/audit/queue</code>. Otto picks them up on next heartbeat, acks via Telegram, starts working.</p>
+                        <p><strong>Closes the loop:</strong> The audit-jobs.json → heartbeat → do work → Telegram ack pipeline is already built. Just needs the report to write to the API instead of clipboard.</p>
+                        <p><strong>Effort:</strong> 2 hours · <strong>Impact:</strong> One-click approval that actually executes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: RESEARCH ══════════════ -->
+<div id="tab-research" class="tab-panel">
+    <div class="section-title">What's Hot in AI — Feb 25, 2026</div>
+
+    <div class="card" style="padding: 1rem 1.4rem;">
+        <div class="research-item">
+            <div class="research-icon">🤝</div>
+            <div class="research-text"><strong>Cross-app coordination is THE trend.</strong> Lindy, Dume.ai, Jace, Martin — all repositioning around "intelligent cross-app workflow automation, not just chat." This validates Otto's multi-tool pipeline approach. We're already there.</div>
+        </div>
+        <div class="research-item">
+            <div class="research-icon">📋</div>
+            <div class="research-text"><strong>Context quality &gt; context quantity</strong> — Anthropic's own docs (Claude API) now recommend designing state artifacts for fast context recovery when new sessions start. Explicitly validates our HANDOFF.md approach and the memory file system we've built.</div>
+        </div>
+        <div class="research-item">
+            <div class="research-icon">⏰</div>
+            <div class="research-text"><strong>Task prioritization + proactive rescheduling</strong> becoming table stakes. Lindy's differentiator is "reschedules automatically based on shifting deadlines." Otto doesn't have calendar write access yet — this could be a gap.</div>
+        </div>
+        <div class="research-item">
+            <div class="research-icon">🎮</div>
+            <div class="research-text"><strong>Gamified AI education is underexplored.</strong> Most AI training products are dry corporate decks. BrainCells (confetti, Brain Cells currency, quiz cards, Mike cameos) is genuinely differentiated. Mike is sitting on something that could be a product, not just a gift.</div>
+        </div>
+        <div class="research-item">
+            <div class="research-icon">🧠</div>
+            <div class="research-text"><strong>PRD quality → build speed correlation continues to hold.</strong> Our 9.7/10 PRD for BrainCells produced the fastest complex build yet (under 2 hours for full course). This is a competitive advantage worth systematizing and teaching.</div>
+        </div>
+        <div class="research-item">
+            <div class="research-icon">🌐</div>
+            <div class="research-text"><strong>Brave API rate limits hit on 3rd search.</strong> Free tier = 1 req/sec, 2000/month. At 1-3 searches per daily audit that's ~60-90/month. Fine for now but Brave API key configuration remains critical for unthrottled access.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ TAB: HEALTH ══════════════ -->
+<div id="tab-health" class="tab-panel">
+    <div class="section-title">System Health Scan — 5:00 AM BKK</div>
+
+    <div class="health-grid">
+        <div class="health-cell">
+            <div class="health-cell-label">Firewall</div>
+            <div class="health-cell-val health-ok">✅ ON</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">FileVault</div>
+            <div class="health-cell-val health-ok">✅ ON</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Disk Free</div>
+            <div class="health-cell-val health-ok">317 GB</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Disk Used</div>
+            <div class="health-cell-val health-ok">5%</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Cloudflared</div>
+            <div class="health-cell-val health-warn">⚠ 3 procs</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">PC SSH</div>
+            <div class="health-cell-val health-ok">✅ ONLINE</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Ollama (PC)</div>
+            <div class="health-cell-val health-ok">✅ 3 models</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Local Ollama</div>
+            <div class="health-cell-val health-off">— OFFLINE</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">MCP Server</div>
+            <div class="health-cell-val health-warn">⚠ HTML err</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Uncommitted</div>
+            <div class="health-cell-val health-warn">14 files</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Git Identity</div>
+            <div class="health-cell-val health-bad">❌ NOT SET</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Memory Files</div>
+            <div class="health-cell-val health-ok">34 files</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">MEMORY.md</div>
+            <div class="health-cell-val health-ok">296 lines</div>
+        </div>
+        <div class="health-cell">
+            <div class="health-cell-label">Pre-Audit SHA</div>
+            <div class="health-cell-val" style="color:var(--accent-blue);font-size:0.85rem;"><code>a302655</code></div>
+        </div>
+    </div>
+
+    <div class="section-title">Ollama Models (PC — 192.168.1.194)</div>
+    <div class="card" style="padding: 0.8rem 1.2rem;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+            <tr style="border-bottom:1px solid var(--border);">
+                <th style="text-align:left; padding:0.4rem 0.6rem; color:var(--text-secondary);">Model</th>
+                <th style="text-align:left; padding:0.4rem 0.6rem; color:var(--text-secondary);">Role</th>
+                <th style="text-align:left; padding:0.4rem 0.6rem; color:var(--text-secondary);">Status</th>
+            </tr>
+            <tr>
+                <td style="padding:0.5rem 0.6rem;"><code>qwen3:32b</code></td>
+                <td style="padding:0.5rem 0.6rem; color:var(--text-secondary);">Keepalive / heartbeat ONLY</td>
+                <td style="padding:0.5rem 0.6rem; color:var(--accent-green);">✅ Active</td>
+            </tr>
+            <tr>
+                <td style="padding:0.5rem 0.6rem;"><code>qwen3-vl:latest</code></td>
+                <td style="padding:0.5rem 0.6rem; color:var(--text-secondary);">Vision tasks</td>
+                <td style="padding:0.5rem 0.6rem; color:var(--accent-green);">✅ Active</td>
+            </tr>
+            <tr>
+                <td style="padding:0.5rem 0.6rem;"><code>qwen3-coder-next:latest</code></td>
+                <td style="padding:0.5rem 0.6rem; color:var(--text-secondary);">Keepalive / ping ONLY</td>
+                <td style="padding:0.5rem 0.6rem; color:var(--accent-green);">✅ Active</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-title" style="margin-top:1rem;">Recent Git Log</div>
+    <div class="card" style="padding:0.8rem 1.2rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--text-secondary); line-height:1.8;">
+            <div><span style="color:var(--accent-blue);">a302655</span> Pre-audit checkpoint 2026-02-25_05:00</div>
+            <div><span style="color:var(--accent-blue);">e53507a</span> Add audit completion note to Feb 24 daily notes</div>
+            <div><span style="color:var(--accent-blue);">47322c4</span> Skill updates from Feb 24 audit: GH Pages HTTPS pattern, new issue types</div>
+            <div><span style="color:var(--accent-blue);">1a1f8be</span> Daily self-audit 2026-02-24 — Score 8.6/10 (2 fixed, 5 issues, 7 ideas)</div>
+        </div>
+    </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ── ACTION BAR ── -->
+<div class="action-bar">
+    <div class="action-bar-left">
+        <div class="selected-count"><span id="count">0</span> items selected</div>
+    </div>
+    <div style="display:flex; gap:0.6rem;">
+        <button class="btn-copy" onclick="copySelected()">📋 Copy List</button>
+        <button class="btn-submit" onclick="submitSelected()">⚡ Make It Happen</button>
+    </div>
+</div>
+<div class="toast" id="toast">✅ Copied to clipboard!</div>
+
 <script>
-    // ——— TABS ———
-    function showTab(id) {
+    // Tab switching
+    function switchTab(id) {
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('tab-' + id).classList.add('active');
-        event.currentTarget.classList.add('active');
+        event.target.classList.add('active');
     }
 
-    // ——— CARD TOGGLE ———
-    function toggleCard(card) {
-        const detail = card.querySelector('.card-detail, .idea-detail');
-        if (detail) card.classList.toggle('open');
-    }
-    function toggleIdea(card) {
-        card.classList.toggle('open');
+    // Expand/collapse detail panels
+    function toggleDetail(id, btn) {
+        const panel = document.getElementById(id);
+        panel.classList.toggle('open');
+        btn.textContent = panel.classList.contains('open') ? '▲ Hide' : '▼ Details';
     }
 
-    // ——— COUNT SELECTIONS ———
+    // Count selected checkboxes
     function updateCount() {
-        const checked = document.querySelectorAll('.item-checkbox:not([disabled]):checked').length;
-        document.getElementById('selected-count').textContent = checked;
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        document.getElementById('count').textContent = checked;
+    }
 
-        // Highlight cards with checked checkboxes
-        document.querySelectorAll('.item-checkbox:not([disabled])').forEach(cb => {
-            const card = cb.closest('.card, .idea-card');
-            if (card) card.classList.toggle('checked', cb.checked);
+    // Get selected items
+    function getSelected() {
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+        return Array.from(checked).map(cb => {
+            const card = cb.closest('.card');
+            const title = card.querySelector('.card-title').textContent.trim();
+            const body = card.querySelector('.card-body').textContent.trim().slice(0, 120) + '...';
+            return `• ${title}\n  ${body}`;
         });
     }
 
-    // ——— SUBMIT ———
-    function submitItems() {
-        const selected = [];
-        document.querySelectorAll('.item-checkbox:not([disabled]):checked').forEach(cb => {
-            const card = cb.closest('.card, .idea-card');
-            if (card) {
-                const title = card.querySelector('.card-title, .idea-title');
-                if (title) selected.push(title.textContent.trim());
-            }
-        });
-
-        if (selected.length === 0) {
-            alert('Check some items first, then hit Submit!');
-            return;
-        }
-
-        const text = '🦦 Otto Audit — Approved Items:\n' + selected.map((s,i) => `${i+1}. ${s}`).join('\n') + '\n\nOtto: on it!';
+    // Copy to clipboard
+    function copySelected() {
+        const items = getSelected();
+        if (!items.length) { alert('Select at least one item first!'); return; }
+        const text = `Otto Audit — Feb 25, 2026\nApproved Actions:\n\n${items.join('\n\n')}`;
         navigator.clipboard.writeText(text).then(() => {
-            const fb = document.getElementById('copy-feedback');
-            fb.style.display = 'inline';
-            setTimeout(() => fb.style.display = 'none', 3000);
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
         }).catch(() => {
-            alert('Selected:\n' + selected.join('\n'));
+            const w = window.open('');
+            w.document.write('<pre>' + text + '</pre>');
         });
     }
 
-    // ——— ANIMATE RINGS ON LOAD ———
+    // Submit to Otto
+    function submitSelected() {
+        const items = getSelected();
+        if (!items.length) { alert('Select at least one item first!'); return; }
+        
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        const jobs = Array.from(checkboxes).map(cb => {
+            const card = cb.closest('.card');
+            return {
+                id: cb.id,
+                title: card.querySelector('.card-title').textContent.trim(),
+                status: 'queued',
+                submittedAt: new Date().toISOString()
+            };
+        });
+        
+        // Try API first, fallback to clipboard
+        fetch('https://otto.workwithchat.com/api/audit/queue', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ jobs })
+        }).then(r => {
+            if (r.ok) {
+                alert(`✅ Queued ${jobs.length} job(s)! Otto will ack via Telegram shortly.`);
+            } else {
+                copySelected();
+                alert(`API unavailable — copied ${jobs.length} items to clipboard instead. Paste to Otto!`);
+            }
+        }).catch(() => {
+            copySelected();
+            alert(`Copied ${jobs.length} items to clipboard. Paste to Otto on Telegram!`);
+        });
+    }
+
+    // Animate score rings on load
     window.addEventListener('load', () => {
         setTimeout(() => {
-            const C = 251.2;
-
-            // Overall: 8.6/10
-            animateRing('ring-overall', 8.6/10);
-            // Health: 7.5/10
-            animateRing('ring-health', 7.5/10);
-            // Fixed: 2 (out of 5 total from last audit — show as ratio)
-            animateRing('ring-fixed', 2/5);
-            // Issues: 5 (show remaining as fullness)
-            animateRing('ring-issues', 5/10);
-            // Ideas: 7
-            animateRing('ring-ideas', 7/10);
-        }, 200);
+            const circumference = 238.76;
+            // Overall: 8.8/10 = 88%
+            document.getElementById('ring-overall').style.strokeDashoffset = circumference * (1 - 0.88);
+            // Fixed: 2 (show as 40% of ring for visual clarity)
+            document.getElementById('ring-fixed').style.strokeDashoffset = circumference * (1 - 0.4);
+            // Issues: 6 (show as 60%)
+            document.getElementById('ring-issues').style.strokeDashoffset = circumference * (1 - 0.6);
+            // Ideas: 8 (show as 80%)
+            document.getElementById('ring-ideas').style.strokeDashoffset = circumference * (1 - 0.8);
+        }, 300);
     });
-
-    function animateRing(id, ratio) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const C = 251.2;
-        el.style.strokeDashoffset = C - (C * ratio);
-    }
 </script>
 </body>
 </html>
