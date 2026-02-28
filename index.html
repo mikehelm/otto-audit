@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otto Self-Audit — Feb 26, 2026 🦦</title>
+    <title>Otto Self-Audit — March 1, 2026 🦦</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
             --bg-secondary: #161625;
             --bg-card: #1c1c30;
             --bg-card-hover: #252540;
-            --bg-fixed: #0d2b0d;
+            --bg-fixed: #0d3b0d;
             --text-primary: #e8e8e8;
             --text-secondary: #8888aa;
             --accent-blue: #4cc9f0;
@@ -23,7 +23,6 @@
             --accent-green: #10b981;
             --accent-amber: #f59e0b;
             --accent-cyan: #06b6d4;
-            --accent-orange: #fb923c;
             --severity-critical: #dc2626;
             --severity-high: #ef4444;
             --severity-medium: #f59e0b;
@@ -32,28 +31,27 @@
             --severity-fixed: #10b981;
             --border: rgba(255,255,255,0.08);
             --glow-purple: rgba(124,58,237,0.15);
-            --glow-blue: rgba(76,201,240,0.1);
         }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 2rem 1rem 160px;
+            padding: 2rem 1rem 140px;
             line-height: 1.6;
         }
-        code, .mono { font-family: 'JetBrains Mono', monospace; }
         .container { max-width: 1200px; margin: 0 auto; }
+        code, .mono { font-family: 'JetBrains Mono', monospace; }
 
-        /* HEADER */
+        /* Header */
         header {
             text-align: center;
             margin-bottom: 2.5rem;
-            padding: 2.5rem 2rem 2rem;
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(124,58,237,0.1) 100%);
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(124,58,237,0.08) 100%);
             border-radius: 20px;
             border: 1px solid var(--border);
-            box-shadow: 0 0 80px var(--glow-purple);
+            box-shadow: 0 0 60px var(--glow-purple);
             position: relative;
             overflow: hidden;
         }
@@ -61,1128 +59,931 @@
             content: '';
             position: absolute; top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.06) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(76,201,240,0.06) 0%, transparent 50%);
-            animation: headerGlow 8s ease infinite alternate;
+            background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(76,201,240,0.05) 0%, transparent 50%);
+            animation: hGlow 8s ease infinite alternate;
         }
-        @keyframes headerGlow { 0% { transform: translate(0,0); } 100% { transform: translate(20px,-10px); } }
+        @keyframes hGlow { 0%{transform:translate(0,0)} 100%{transform:translate(20px,-10px)} }
         header > * { position: relative; z-index: 1; }
         h1 {
-            font-size: 2.6rem; font-weight: 800; margin-bottom: 0.4rem;
+            font-size: 2.8rem; font-weight: 800; margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .subtitle { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 0.75rem; }
+        .subtitle { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 0.5rem; }
         .version-badge {
-            display: inline-block; background: var(--accent-purple); color: white;
-            padding: 0.25rem 0.75rem; border-radius: 20px;
-            font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 1rem;
+            display: inline-block; background: var(--accent-purple);
+            color: white; padding: 0.25rem 0.75rem; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.75rem;
         }
-        .date { color: var(--accent-cyan); font-weight: 500; font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; }
-        .new-record {
-            display: inline-block; margin-left: 0.5rem;
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-            color: white; padding: 0.15rem 0.5rem; border-radius: 6px;
-            font-size: 0.65rem; font-weight: 800; letter-spacing: 1px;
-            animation: pulse 2s ease infinite;
-        }
-        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+        .date { color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
 
-        /* SCORE RINGS */
+        /* Score rings section */
         .scores-row {
-            display: flex; justify-content: center; gap: 2.5rem;
-            margin: 2rem 0 1.5rem; flex-wrap: wrap;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 1.5rem; margin-bottom: 2rem;
         }
-        .score-item { text-align: center; }
-        .score-ring { position: relative; width: 130px; height: 130px; margin: 0 auto 0.5rem; }
+        .score-ring-wrap {
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+        }
+        .score-ring {
+            position: relative; width: 90px; height: 90px;
+        }
         .score-ring svg { transform: rotate(-90deg); }
-        .score-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
-        .score-ring-progress { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
-        .score-ring-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
-        .score-ring-value { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-        .score-ring-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: -2px; }
-        .score-label { font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); }
-
-        /* STATS BAR */
-        .stats-bar { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0; }
-        .stat-chip {
-            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-            padding: 0.45rem 0.9rem; border-radius: 10px; font-size: 0.82rem;
-            font-family: 'JetBrains Mono', monospace;
+        .score-ring circle { fill: none; stroke-width: 8; transition: stroke-dashoffset 1.5s ease; }
+        .ring-bg { stroke: rgba(255,255,255,0.06); }
+        .ring-fill { stroke-linecap: round; }
+        .score-value {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.3rem; font-weight: 800; font-family: 'JetBrains Mono', monospace;
         }
-        .stat-chip .label { color: var(--text-secondary); }
-        .stat-chip .value { color: var(--accent-blue); font-weight: 600; }
-        .stat-chip .value.ok { color: var(--accent-green); }
-        .stat-chip .value.err { color: var(--severity-high); }
-        .stat-chip .value.warn { color: var(--accent-amber); }
+        .score-label { font-size: 0.75rem; color: var(--text-secondary); text-align: center; font-weight: 500; }
+        .overall-ring .score-value { font-size: 1.8rem; }
+        .overall-ring .score-ring { width: 120px; height: 120px; }
 
-        .intro {
-            color: var(--text-secondary); max-width: 680px;
-            margin: 1.2rem auto 0; line-height: 1.8; font-size: 0.92rem;
+        /* Stats bar */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem; margin-bottom: 2rem;
         }
+        .stat-card {
+            background: var(--bg-card); border-radius: 12px; padding: 1rem;
+            border: 1px solid var(--border); text-align: center;
+        }
+        .stat-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+        .stat-value { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .stat-label { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-ok { color: var(--accent-green); }
+        .stat-warn { color: var(--accent-amber); }
+        .stat-bad { color: var(--severity-high); }
 
-        /* TABS */
-        .tab-bar {
-            display: flex; gap: 0.5rem; margin-bottom: 2rem; padding: 0.5rem;
-            background: var(--bg-secondary); border-radius: 14px;
-            border: 1px solid var(--border); overflow-x: auto;
-        }
+        /* Tabs */
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
         .tab-btn {
-            padding: 0.7rem 1.3rem; border: none; border-radius: 10px;
-            background: transparent; color: var(--text-secondary);
-            font-weight: 600; font-size: 0.9rem; cursor: pointer;
-            transition: all 0.3s ease; white-space: nowrap; font-family: 'Inter', sans-serif;
+            padding: 0.6rem 1.2rem; border-radius: 10px; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-secondary);
+            cursor: pointer; font-size: 0.9rem; font-weight: 600;
+            transition: all 0.2s; font-family: inherit;
         }
-        .tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
-        .tab-btn.active { background: var(--accent-purple); color: white; }
-        .tab-btn .count {
-            display: inline-block; background: rgba(255,255,255,0.15);
-            padding: 0.1rem 0.45rem; border-radius: 8px;
-            font-size: 0.72rem; margin-left: 0.35rem;
+        .tab-btn.active {
+            background: var(--accent-purple); color: white;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(124,58,237,0.4);
         }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-btn:hover:not(.active) { background: var(--bg-card-hover); color: var(--text-primary); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
 
-        /* CARDS */
+        /* Cards */
         .card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 1.4rem 1.6rem;
-            margin-bottom: 1rem; transition: all 0.3s ease;
-            position: relative; overflow: hidden;
+            background: var(--bg-card); border-radius: 14px; padding: 1.2rem 1.4rem;
+            border: 1px solid var(--border); margin-bottom: 1rem;
+            transition: all 0.2s; position: relative;
         }
-        .card:hover { background: var(--bg-card-hover); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-        .card.fixed-card { background: var(--bg-fixed); border-color: rgba(16,185,129,0.2); }
-        .card.selected { border-color: var(--accent-purple); box-shadow: 0 0 20px rgba(124,58,237,0.2); }
-        .card-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem; }
-        .card-check {
-            width: 22px; height: 22px; min-width: 22px;
-            border: 2px solid rgba(255,255,255,0.2); border-radius: 6px;
-            background: transparent; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s ease; margin-top: 0.15rem;
-        }
-        .card-check:hover { border-color: var(--accent-purple); }
-        .card-check.checked { background: var(--accent-purple); border-color: var(--accent-purple); }
-        .card-check.checked::after { content: '✓'; color: white; font-size: 13px; font-weight: 700; }
-        .card-title { font-size: 1.05rem; font-weight: 700; flex: 1; }
-        .badges { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+        .card:hover { background: var(--bg-card-hover); transform: translateY(-1px); }
+        .card.fixed-card { border-left: 3px solid var(--severity-fixed); background: rgba(16,185,129,0.05); }
+        .card.critical-card { border-left: 3px solid var(--severity-critical); }
+        .card.high-card { border-left: 3px solid var(--severity-high); }
+        .card.medium-card { border-left: 3px solid var(--severity-medium); }
+        .card.low-card { border-left: 3px solid var(--severity-low); }
+        .card.info-card { border-left: 3px solid var(--severity-info); }
+
+        .card-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+        .card-checkbox { width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-purple); flex-shrink: 0; margin-top: 3px; }
+        .card-title { font-weight: 700; font-size: 1rem; flex: 1; }
+        .badges { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
         .badge {
-            padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem;
-            font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+            display: inline-block; padding: 0.15rem 0.55rem; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
         }
-        .badge-critical { background: rgba(220,38,38,0.2); color: #f87171; border: 1px solid rgba(220,38,38,0.3); }
-        .badge-high { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.25); }
-        .badge-medium { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.25); }
-        .badge-low { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.25); }
-        .badge-fixed { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.25); }
-        .badge-info { background: rgba(168,85,247,0.15); color: #c4b5fd; border: 1px solid rgba(168,85,247,0.25); }
-        .badge-effort { background: rgba(76,201,240,0.1); color: var(--accent-blue); border: 1px solid rgba(76,201,240,0.2); }
-        .badge-impact { background: rgba(16,185,129,0.1); color: var(--accent-green); border: 1px solid rgba(16,185,129,0.2); }
-        .badge-new { background: rgba(251,146,60,0.15); color: #fdba74; border: 1px solid rgba(251,146,60,0.25); }
-        .badge-repeat { background: rgba(220,38,38,0.1); color: #fca5a5; border: 1px solid rgba(220,38,38,0.2); }
-        .badge-star { background: rgba(245,158,11,0.15); color: #fde68a; border: 1px solid rgba(245,158,11,0.25); }
-        .card-body { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
-        .card-note {
-            margin-top: 0.75rem; padding: 0.65rem 0.9rem;
-            background: rgba(255,255,255,0.03); border-radius: 8px;
-            border-left: 3px solid var(--accent-purple);
-            font-size: 0.85rem; color: var(--text-secondary);
-        }
-        .card-note strong { color: var(--text-primary); }
-        .evidence {
-            margin-top: 0.75rem; padding: 0.6rem 0.9rem;
-            background: rgba(16,185,129,0.05); border-radius: 8px;
-            border-left: 3px solid var(--accent-green);
-            font-size: 0.85rem; color: #a7f3d0;
-        }
-        .detail-panel {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.3s ease;
-        }
-        .detail-panel.open { max-height: 1000px; }
-        .detail-content {
-            margin-top: 1rem; padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-        .expand-btn {
-            background: none; border: none; color: var(--accent-blue);
-            cursor: pointer; font-size: 0.82rem; font-weight: 600;
-            padding: 0; margin-top: 0.6rem; font-family: 'Inter', sans-serif;
-            display: flex; align-items: center; gap: 0.3rem;
-        }
-        .expand-btn:hover { color: var(--accent-cyan); }
-        .expand-arrow { transition: transform 0.3s ease; }
-        .expand-arrow.rotated { transform: rotate(180deg); }
+        .badge-critical { background: rgba(220,38,38,0.2); color: var(--severity-critical); border: 1px solid rgba(220,38,38,0.4); }
+        .badge-high { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
+        .badge-medium { background: rgba(245,158,11,0.15); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.3); }
+        .badge-low { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .badge-fixed { background: rgba(16,185,129,0.15); color: var(--accent-green); border: 1px solid rgba(16,185,129,0.3); }
+        .badge-info { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+        .badge-effort { background: rgba(76,201,240,0.1); color: var(--accent-cyan); border: 1px solid rgba(76,201,240,0.2); }
+        .badge-impact { background: rgba(247,37,133,0.1); color: #fb7185; border: 1px solid rgba(247,37,133,0.2); }
+        .badge-repeat { background: rgba(220,38,38,0.15); color: #fca5a5; border: 1px solid rgba(220,38,38,0.25); font-size: 0.65rem; }
+        .badge-new { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.25); }
 
-        /* CATEGORY */
-        .category { margin-bottom: 2rem; }
-        .category-header {
-            font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;
-            padding: 0.9rem 1.2rem; background: var(--bg-secondary);
-            border-radius: 12px; border-left: 4px solid var(--accent-purple);
-        }
+        .card-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .card-evidence { font-size: 0.82rem; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; margin-top: 0.4rem; }
 
-        /* SCORE BREAKDOWN */
-        .score-breakdown {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 0.75rem; margin-bottom: 2rem;
-        }
-        .score-row {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 0.9rem 1.1rem;
-        }
-        .score-row-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 600; }
-        .score-row-bar { display: flex; align-items: center; gap: 0.75rem; }
-        .score-bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-        .score-bar-fill { height: 100%; border-radius: 3px; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); }
-        .score-bar-num { font-size: 1rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; min-width: 28px; text-align: right; }
-        .score-trend { font-size: 0.75rem; margin-left: 0.2rem; }
+        /* Ideas detail panel */
+        .idea-detail { display: none; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border); }
+        .idea-detail.open { display: block; }
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.6rem; }
+        .detail-box { background: rgba(255,255,255,0.03); border-radius: 8px; padding: 0.8rem; border: 1px solid var(--border); }
+        .detail-box-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.4rem; }
+        .detail-box-content { font-size: 0.85rem; line-height: 1.5; }
+        .expand-btn { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.25rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-family: inherit; transition: all 0.2s; }
+        .expand-btn:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
 
-        /* RESEARCH SECTION */
-        .research-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        /* Research section */
+        .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1rem; }
         .research-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 1.1rem 1.3rem;
+            background: var(--bg-card); border-radius: 12px; padding: 1.1rem;
+            border: 1px solid var(--border); border-top: 2px solid var(--accent-purple);
         }
-        .research-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
-        .research-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
-        .research-body { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        .research-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .research-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .relevance { display: inline-block; font-size: 0.72rem; color: var(--accent-cyan); margin-top: 0.4rem; font-weight: 600; }
 
-        /* NIGHT SHIFT TIMELINE */
-        .timeline { position: relative; padding-left: 2rem; margin-bottom: 2rem; }
-        .timeline::before {
-            content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
-            width: 2px; background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue), var(--accent-green));
-        }
-        .timeline-item { position: relative; margin-bottom: 1.2rem; }
-        .timeline-dot {
-            position: absolute; left: -2rem; top: 0.35rem;
-            width: 18px; height: 18px; border-radius: 50%;
-            background: var(--bg-card); border: 2px solid var(--accent-purple);
-            display: flex; align-items: center; justify-content: center; font-size: 0.6rem;
-        }
-        .timeline-time { font-size: 0.75rem; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.2rem; }
-        .timeline-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .timeline-body { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        /* Score area breakdown */
+        .score-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 0.8rem; margin-top: 1.5rem; }
+        .score-area-card { background: var(--bg-card); border-radius: 10px; padding: 0.9rem; border: 1px solid var(--border); }
+        .score-area-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+        .score-area-name { font-size: 0.9rem; font-weight: 600; }
+        .score-area-num { font-size: 1.3rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+        .score-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .score-bar-fill { height: 100%; border-radius: 3px; transition: width 1.2s ease; }
+        .score-area-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; }
+        .trend-up { color: var(--accent-green); } .trend-down { color: var(--severity-high); } .trend-same { color: var(--text-secondary); }
 
-        /* BOTTOM BAR */
+        /* Bottom bar */
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: rgba(15,15,26,0.95); backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 1rem 2rem; z-index: 100;
+            background: rgba(22,22,37,0.97); border-top: 1px solid var(--border);
+            backdrop-filter: blur(20px); padding: 1rem 2rem;
             display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-            flex-wrap: wrap;
+            flex-wrap: wrap; z-index: 100;
         }
-        .selected-count { color: var(--text-secondary); font-size: 0.88rem; }
-        .selected-count span { color: var(--accent-blue); font-weight: 700; }
+        .selected-count { color: var(--text-secondary); font-size: 0.9rem; }
+        .selected-count span { color: var(--accent-purple); font-weight: 700; font-size: 1.1rem; }
         .submit-btn {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            color: white; border: none; padding: 0.85rem 2rem;
-            border-radius: 12px; font-weight: 700; font-size: 1rem;
-            cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 15px rgba(124,58,237,0.4);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white; border: none; padding: 0.75rem 2rem; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit;
+            transition: all 0.2s; box-shadow: 0 4px 20px rgba(124,58,237,0.4);
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.5); }
-        .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(124,58,237,0.6); }
         .panic-btn {
-            background: rgba(220,38,38,0.1); color: #f87171;
-            border: 1px solid rgba(220,38,38,0.3); padding: 0.75rem 1.2rem;
-            border-radius: 10px; font-weight: 600; font-size: 0.85rem;
-            cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s ease;
+            background: rgba(239,68,68,0.15); color: var(--severity-high);
+            border: 1px solid rgba(239,68,68,0.3); padding: 0.6rem 1.2rem;
+            border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit;
+            transition: all 0.2s;
         }
-        .panic-btn:hover { background: rgba(220,38,38,0.2); }
-
-        /* NOTIFICATION */
-        .notification {
-            position: fixed; top: 1.5rem; right: 1.5rem; z-index: 200;
-            background: var(--bg-card); border: 1px solid var(--accent-green);
-            border-radius: 12px; padding: 1rem 1.5rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            transform: translateY(-20px); opacity: 0;
-            transition: all 0.4s ease; pointer-events: none;
-            max-width: 400px;
+        .panic-btn:hover { background: rgba(239,68,68,0.25); }
+        #toast {
+            display: none; position: fixed; top: 2rem; right: 2rem;
+            background: var(--accent-green); color: white; padding: 0.75rem 1.5rem;
+            border-radius: 10px; font-weight: 600; z-index: 200;
+            animation: slideIn 0.3s ease;
         }
-        .notification.show { transform: translateY(0); opacity: 1; }
-        .notification-title { font-weight: 700; color: var(--accent-green); margin-bottom: 0.3rem; }
-        .notification-body { font-size: 0.88rem; color: var(--text-secondary); }
+        @keyframes slideIn { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
 
-        /* MISC */
-        .section-intro { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.92rem; line-height: 1.7; }
-        .empty-state { text-align: center; padding: 3rem; color: var(--text-secondary); }
-        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
-        .separator { height: 1px; background: var(--border); margin: 1.5rem 0; }
-        a { color: var(--accent-blue); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .highlight { color: var(--accent-blue); font-weight: 600; }
-        .highlight-green { color: var(--accent-green); font-weight: 600; }
-        .highlight-amber { color: var(--accent-amber); font-weight: 600; }
-        .highlight-red { color: var(--severity-high); font-weight: 600; }
-        .tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 5px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.06); color: var(--text-secondary); margin-right: 0.3rem; }
+        /* Escalation banner */
+        .escalation-banner {
+            background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3);
+            border-radius: 12px; padding: 1rem 1.4rem; margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .escalation-banner .esc-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .escalation-banner .esc-text h4 { color: var(--severity-high); font-size: 1rem; margin-bottom: 0.3rem; }
+        .escalation-banner .esc-text p { color: var(--text-secondary); font-size: 0.87rem; }
 
-        @media (max-width: 600px) { h1 { font-size: 1.8rem; } .scores-row { gap: 1.5rem; } .score-ring { width: 100px; height: 100px; } }
+        section { margin-bottom: 2.5rem; }
+        h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.2rem; }
+        h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- HEADER -->
-    <header>
-        <div class="version-badge">DAILY AUDIT v2.6.0</div>
-        <h1>🦦 Otto Self-Audit</h1>
-        <p class="subtitle">Daily performance review — what I did, what I found, what I want to build</p>
-        <p class="date">Thursday, February 26, 2026 — 5:00 AM Bangkok <span class="new-record">🏆 NEW HIGH</span></p>
+<header>
+    <div class="version-badge">v2.7.0 — MARCH 2026</div>
+    <h1>Otto Self-Audit 🦦</h1>
+    <p class="subtitle">Daily health check, performance scoring, and upgrade proposals</p>
+    <p class="date">Sunday, March 1, 2026 — 03:35 AM Bangkok • Audit #14</p>
 
-        <div class="scores-row">
-            <div class="score-item">
-                <div class="score-ring">
-                    <svg width="130" height="130" viewBox="0 0 130 130">
-                        <circle class="score-ring-bg" cx="65" cy="65" r="55"/>
-                        <circle class="score-ring-progress" cx="65" cy="65" r="55"
-                            stroke="url(#gradMain)"
-                            stroke-dasharray="345.4"
-                            stroke-dashoffset="34.5"
-                            id="ring-main"/>
-                        <defs>
-                            <linearGradient id="gradMain" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#4cc9f0"/>
-                                <stop offset="100%" stop-color="#7c3aed"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <div class="score-ring-text">
-                        <div class="score-ring-value" style="color:#4cc9f0">9.1</div>
-                        <div class="score-ring-label">overall</div>
-                    </div>
-                </div>
-                <div class="score-label">Performance</div>
+    <div class="scores-row" style="margin-top:2rem;">
+        <div class="score-ring-wrap overall-ring">
+            <div class="score-ring">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle class="ring-bg" cx="60" cy="60" r="52"/>
+                    <circle class="ring-fill" cx="60" cy="60" r="52"
+                        stroke="url(#overallGrad)"
+                        stroke-dasharray="326.7"
+                        stroke-dashoffset="65.3"
+                        id="overallRing"/>
+                    <defs>
+                        <linearGradient id="overallGrad" x1="0%" y1="0%" x2="100%">
+                            <stop offset="0%" stop-color="#4cc9f0"/>
+                            <stop offset="100%" stop-color="#7c3aed"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="score-value" style="color:#4cc9f0">8.6</div>
             </div>
-            <div class="score-item">
-                <div class="score-ring">
-                    <svg width="130" height="130" viewBox="0 0 130 130">
-                        <circle class="score-ring-bg" cx="65" cy="65" r="55"/>
-                        <circle class="score-ring-progress" cx="65" cy="65" r="55"
-                            stroke="#10b981"
-                            stroke-dasharray="345.4"
-                            stroke-dashoffset="276.3"
-                            id="ring-fixed"/>
-                    </svg>
-                    <div class="score-ring-text">
-                        <div class="score-ring-value" style="color:#10b981">2</div>
-                        <div class="score-ring-label">fixed</div>
-                    </div>
-                </div>
-                <div class="score-label">Resolved</div>
-            </div>
-            <div class="score-item">
-                <div class="score-ring">
-                    <svg width="130" height="130" viewBox="0 0 130 130">
-                        <circle class="score-ring-bg" cx="65" cy="65" r="55"/>
-                        <circle class="score-ring-progress" cx="65" cy="65" r="55"
-                            stroke="#f72585"
-                            stroke-dasharray="345.4"
-                            stroke-dashoffset="242"
-                            id="ring-ideas"/>
-                    </svg>
-                    <div class="score-ring-text">
-                        <div class="score-ring-value" style="color:#f72585">10</div>
-                        <div class="score-ring-label">ideas</div>
-                    </div>
-                </div>
-                <div class="score-label">Ideas</div>
-            </div>
+            <div class="score-label">Overall Score<br><small style="color:#6ee7b7">↓ from 9.1</small></div>
         </div>
 
-        <div class="stats-bar">
-            <div class="stat-chip"><span class="label">🔥 Firewall </span><span class="value ok">ON</span></div>
-            <div class="stat-chip"><span class="label">🔒 FileVault </span><span class="value ok">ON</span></div>
-            <div class="stat-chip"><span class="label">💾 Disk </span><span class="value ok">314GB free</span></div>
-            <div class="stat-chip"><span class="label">☁️ Cloudflared </span><span class="value ok">1 (fixed!)</span></div>
-            <div class="stat-chip"><span class="label">🤖 Ollama/PC </span><span class="value ok">3 models</span></div>
-            <div class="stat-chip"><span class="label">🖥️ PC SSH </span><span class="value ok">ONLINE</span></div>
-            <div class="stat-chip"><span class="label">🌐 MCP Health </span><span class="value err">BROKEN</span></div>
-            <div class="stat-chip"><span class="label">📊 Usage Scraper </span><span class="value err">ERROR</span></div>
-            <div class="stat-chip"><span class="label">📁 Uncommitted </span><span class="value warn">22 files</span></div>
-            <div class="stat-chip"><span class="label">🧠 PRD Score </span><span class="value ok">9.76/10</span></div>
-        </div>
-
-        <p class="intro">
-            <strong class="highlight">Best night in Otto's history.</strong> MindMapForge went from 80% to 100% + full Intelligence Phase 1 built.
-            Brain Button research (4 ChatGPT Pro sessions) synthesized into a 901-line PRD scoring <strong class="highlight-green">9.76/10</strong> — already past the gate.
-            Two fixes landed (cloudflared ✅, git identity ✅). New high score: 9.1. Build something today.
-        </p>
-    </header>
-
-    <!-- TABS -->
-    <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('scores')">📊 Scores</button>
-        <button class="tab-btn" onclick="switchTab('fixed')">✅ Fixed <span class="count">2</span></button>
-        <button class="tab-btn" onclick="switchTab('issues')">🔍 Issues <span class="count">7</span></button>
-        <button class="tab-btn" onclick="switchTab('ideas')">💡 Ideas <span class="count">10</span></button>
-        <button class="tab-btn" onclick="switchTab('night')">🌙 Night Shift</button>
-        <button class="tab-btn" onclick="switchTab('research')">🔬 Research</button>
-    </div>
-
-    <!-- TAB: SCORES -->
-    <div id="tab-scores" class="tab-content active">
-        <p class="section-intro">
-            Scored against <strong>specific events from the last 48 hours</strong> — not vibes. 
-            Overall <strong class="highlight">9.1/10 ↑ from 8.8</strong> — new all-time high. Night Shifts MVP of the week.
-        </p>
-        <div class="score-breakdown">
-            <div class="score-row">
-                <div class="score-row-label">Responsiveness</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#4cc9f0,#7c3aed)"></div></div>
-                    <div class="score-bar-num" style="color:#4cc9f0">9</div>
-                    <span class="score-trend" style="color:#8888aa">→</span>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center;">
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#10b981" stroke-dasharray="238.8" stroke-dashoffset="23.9"/>
+                    </svg>
+                    <div class="score-value" style="color:#10b981">9</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">MindMapForge completion launched immediately. Caught stale Codex session before it duped work.</div>
+                <div class="score-label">Response</div>
             </div>
-            <div class="score-row">
-                <div class="score-row-label">Proactivity</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:linear-gradient(90deg,#f72585,#7c3aed)"></div></div>
-                    <div class="score-bar-num" style="color:#f72585">10</div>
-                    <span class="score-trend" style="color:#10b981">↑</span>
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#f72585" stroke-dasharray="238.8" stroke-dashoffset="23.9"/>
+                    </svg>
+                    <div class="score-value" style="color:#f72585">9</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">6 ChatGPT Pro research sessions spun up without prompting. Brain Button idea fully built overnight.</div>
+                <div class="score-label">Proactivity</div>
             </div>
-            <div class="score-row">
-                <div class="score-row-label">Quality</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#10b981,#4cc9f0)"></div></div>
-                    <div class="score-bar-num" style="color:#10b981">9</div>
-                    <span class="score-trend" style="color:#8888aa">→</span>
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#f59e0b" stroke-dasharray="238.8" stroke-dashoffset="47.8"/>
+                    </svg>
+                    <div class="score-value" style="color:#f59e0b">8</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">Zero TS errors on all builds. PRD 9.76/10. 25-min BrainCells v2 upgrade. Merge conflict resolution.</div>
+                <div class="score-label">Quality</div>
             </div>
-            <div class="score-row">
-                <div class="score-row-label">Tool Mastery</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#7c3aed,#4cc9f0)"></div></div>
-                    <div class="score-bar-num" style="color:#7c3aed">9</div>
-                    <span class="score-trend" style="color:#8888aa">→</span>
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#4cc9f0" stroke-dasharray="238.8" stroke-dashoffset="23.9"/>
+                    </svg>
+                    <div class="score-value" style="color:#4cc9f0">9</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">Multi-agent orchestration (Opus + 2 Codex instances), ChatGPT Pro monitoring, git merge mastery.</div>
+                <div class="score-label">Tool Mastery</div>
             </div>
-            <div class="score-row">
-                <div class="score-row-label">Memory</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:linear-gradient(90deg,#f59e0b,#10b981)"></div></div>
-                    <div class="score-bar-num" style="color:#f59e0b">8</div>
-                    <span class="score-trend" style="color:#10b981">↑</span>
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#a855f7" stroke-dasharray="238.8" stroke-dashoffset="47.8"/>
+                    </svg>
+                    <div class="score-value" style="color:#a855f7">8</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">Good capture. -2 for chatgpt-sessions.json counter stuck at 0 despite 4+ actual sessions.</div>
+                <div class="score-label">Memory</div>
             </div>
-            <div class="score-row">
-                <div class="score-row-label">Communication</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#06b6d4,#10b981)"></div></div>
-                    <div class="score-bar-num" style="color:#06b6d4">9</div>
-                    <span class="score-trend" style="color:#10b981">↑</span>
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#06b6d4" stroke-dasharray="238.8" stroke-dashoffset="23.9"/>
+                    </svg>
+                    <div class="score-value" style="color:#06b6d4">9</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">Night protocol honored perfectly. Clean morning handoffs. One-liner summaries, not essays.</div>
+                <div class="score-label">Comms</div>
             </div>
-            <div class="score-row">
-                <div class="score-row-label">Night Shifts</div>
-                <div class="score-row-bar">
-                    <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:linear-gradient(90deg,#f72585,#fb923c)"></div></div>
-                    <div class="score-bar-num" style="color:#f72585">10</div>
-                    <span class="score-trend" style="color:#8888aa">→</span>
+            <div class="score-ring-wrap">
+                <div class="score-ring">
+                    <svg width="90" height="90" viewBox="0 0 90 90">
+                        <circle class="ring-bg" cx="45" cy="45" r="38"/>
+                        <circle class="ring-fill" cx="45" cy="45" r="38" stroke="#f72585" stroke-dasharray="238.8" stroke-dashoffset="23.9"/>
+                    </svg>
+                    <div class="score-value" style="color:#f72585">9</div>
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.3rem">2 full Codex builds + 4 research sessions + Opus PRD synthesis. Most productive night ever measured.</div>
-            </div>
-        </div>
-
-        <!-- Score trend mini chart (text-based) -->
-        <div class="card" style="background:var(--bg-secondary)">
-            <div class="card-title" style="margin-bottom:1rem;">📈 Score Trend (Feb 16 → Today)</div>
-            <div style="display:flex;gap:0.5rem;align-items:flex-end;height:80px;padding-bottom:0.5rem">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-purple);opacity:0.5;border-radius:4px 4px 0 0;height:calc(7.9/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/16</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">7.9</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-purple);opacity:0.6;border-radius:4px 4px 0 0;height:calc(8.4/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/17</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.4</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-purple);opacity:0.6;border-radius:4px 4px 0 0;height:calc(8.0/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/18</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.0</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-purple);opacity:0.7;border-radius:4px 4px 0 0;height:calc(8.6/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/21</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.6</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-purple);opacity:0.7;border-radius:4px 4px 0 0;height:calc(8.3/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/22</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.3</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-blue);opacity:0.8;border-radius:4px 4px 0 0;height:calc(8.7/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/23</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.7</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-blue);opacity:0.8;border-radius:4px 4px 0 0;height:calc(8.6/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/24</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.6</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:var(--accent-blue);border-radius:4px 4px 0 0;height:calc(8.8/10 * 70px)"></div>
-                    <span style="font-size:0.65rem;color:var(--text-secondary)">2/25</span>
-                    <span style="font-size:0.7rem;font-weight:600;color:var(--text-secondary)">8.8</span>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem">
-                    <div style="width:32px;background:linear-gradient(180deg,#f72585,#7c3aed);border-radius:4px 4px 0 0;height:calc(9.1/10 * 70px);box-shadow:0 0 12px rgba(247,37,133,0.5)"></div>
-                    <span style="font-size:0.65rem;color:var(--accent-pink);font-weight:700">TODAY</span>
-                    <span style="font-size:0.75rem;font-weight:800;color:var(--accent-pink)">9.1 🏆</span>
-                </div>
+                <div class="score-label">Night Shifts</div>
             </div>
         </div>
     </div>
+</header>
 
-    <!-- TAB: FIXED -->
-    <div id="tab-fixed" class="tab-content">
-        <p class="section-intro">Two issues closed since yesterday's audit — one system fix, one auto-applied escalation.</p>
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-card">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-value stat-ok">ON</div>
+        <div class="stat-label">Firewall</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🔐</div>
+        <div class="stat-value stat-ok">ON</div>
+        <div class="stat-label">FileVault</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">💾</div>
+        <div class="stat-value stat-ok">320 GB</div>
+        <div class="stat-label">Disk Free</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">⚙️</div>
+        <div class="stat-value stat-ok">2</div>
+        <div class="stat-label">Services Running</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">☁️</div>
+        <div class="stat-value stat-ok">×1</div>
+        <div class="stat-label">Cloudflared (clean)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🤖</div>
+        <div class="stat-value stat-ok">3 models</div>
+        <div class="stat-label">Ollama (PC)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📄</div>
+        <div class="stat-value stat-warn">24</div>
+        <div class="stat-label">Uncommitted Files</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🧠</div>
+        <div class="stat-value">50</div>
+        <div class="stat-label">Memory Files</div>
+    </div>
+</div>
 
-        <div class="card fixed-card">
-            <div class="card-header">
-                <div class="card-title">✅ Cloudflared Triple Instance — Killed</div>
-            </div>
+<!-- Escalation Banners -->
+<div class="escalation-banner">
+    <div class="esc-icon">🚨</div>
+    <div class="esc-text">
+        <h4>CRITICAL ESCALATION: API Spending Limits — 10th Consecutive Audit Open</h4>
+        <p>No spend caps on Anthropic, OpenAI, or Alibaba. Otto cannot fix this — needs Mike's login on each dashboard. 2 min per provider. This is the only finding that could actually hurt.</p>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('fixed')">✅ Fixed (2)</button>
+    <button class="tab-btn" onclick="switchTab('issues')">🔍 Issues (8)</button>
+    <button class="tab-btn" onclick="switchTab('ideas')">💡 Ideas (9)</button>
+    <button class="tab-btn" onclick="switchTab('research')">🌐 Research</button>
+    <button class="tab-btn" onclick="switchTab('scores')">📊 Scores</button>
+</div>
+
+<!-- FIXED TAB -->
+<div class="tab-panel active" id="tab-fixed">
+    <h2>✅ Fixed Since Last Audit</h2>
+
+    <div class="card fixed-card">
+        <div class="card-header">
+            <div class="card-title">🗂️ Pre-Audit Git Checkpoint — 24 Files Committed</div>
+            <div class="badges"><span class="badge badge-fixed">FIXED</span></div>
+        </div>
+        <div class="card-desc">The 22-file uncommitted mess from Feb 26 (plus 2 new ones) is now captured. Pre-audit checkpoint fired at 03:35 AM: <code>memory/2026-03-01.md</code>, <code>skills/api-research/</code>, <code>skills/bug-escalation/</code>, MrDoit job files, MindMapForge screenshots, and more. Commit created.</div>
+        <div class="card-evidence">✓ git commit: "Pre-audit checkpoint 2026-03-01_03:35" — 24 files staged and committed</div>
+    </div>
+
+    <div class="card fixed-card">
+        <div class="card-header">
+            <div class="card-title">🌐 MindMapForge Voice — Web Speech API Fallback Deployed</div>
+            <div class="badges"><span class="badge badge-fixed">FIXED</span></div>
+        </div>
+        <div class="card-desc">OpenAI user transcription in <code>type: "realtime"</code> sessions may not be supported at all — confirmed by deep dive tonight. Added Web Speech API (Chrome-native, free, zero latency) as parallel transcription. Commit <code>cf2cf86</code> deployed live to Netlify. Voice connects, AI responds, user audio transcribed.</div>
+        <div class="card-evidence">✓ Deploy: https://mindmapforge-jr-test.netlify.app | Commit: cf2cf86 | Method: netlify deploy --prod --build</div>
+    </div>
+</div>
+
+<!-- ISSUES TAB -->
+<div class="tab-panel" id="tab-issues">
+    <h2>🔍 Current Issues</h2>
+
+    <h3>🔴 Critical</h3>
+
+    <div class="card critical-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Set API Spending Limits (Anthropic + OpenAI + Alibaba)">
+            <div class="card-title">💳 API Spending Limits: None Set on Any Provider</div>
             <div class="badges">
-                <span class="badge badge-fixed">FIXED</span>
-                <span class="badge badge-medium">WAS: MEDIUM</span>
-                <span class="tag">1st audit</span>
+                <span class="badge badge-critical">CRITICAL</span>
+                <span class="badge badge-repeat">🔁 10th audit</span>
             </div>
-            <div class="card-body" style="margin-top:0.75rem">
-                Yesterday's audit caught the speed-showcase cron (4:00 AM Bangkok) colliding with the self-review cron (5:00 AM Bangkok) — spawning 3 cloudflared instances instead of 1.
-                Today: <strong class="highlight-green">1 instance</strong>. The showcase cron was staggered to 4:30 AM.
-            </div>
-            <div class="evidence">✓ Confirmed: <code>ps aux | grep cloudflare</code> → 1 process (PID 40703, running since Feb 13)</div>
         </div>
+        <div class="card-desc">No spend caps on Anthropic ($100/mo Claude Max), OpenAI ($200/mo ChatGPT), or Alibaba (DashScope). A runaway cron could rack up a surprise bill. Otto <strong>cannot fix this</strong> — needs Mike's login credentials on each provider dashboard. Each takes ~2 minutes.</div>
+        <div class="card-evidence">⚠ Escalated at audit #3. Still open at audit #10. Human action required.</div>
+    </div>
 
-        <div class="card fixed-card">
-            <div class="card-header">
-                <div class="card-title">✅ Git Identity Not Configured — Auto-Applied</div>
-            </div>
+    <div class="card critical-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Configure Brave API Key for Web Search">
+            <div class="card-title">🔍 Brave API Key Not Configured — Web Search Intermittent</div>
             <div class="badges">
-                <span class="badge badge-fixed">FIXED</span>
-                <span class="badge badge-low">WAS: LOW</span>
-                <span class="tag">4th audit → escalated</span>
+                <span class="badge badge-critical">CRITICAL</span>
+                <span class="badge badge-repeat">🔁 7th audit</span>
             </div>
-            <div class="card-body" style="margin-top:0.75rem">
-                Open for 4 consecutive audits (Feb 21, 22, 23, 24, 25). Escalation rule triggered: "auto-apply on repeat 4."
-                Applied this run: <code>git config user.name "Otto"</code> + <code>git config user.email "otto@openclaw.ai"</code>.
-                No more "configured automatically based on hostname" warnings in commit output.
-            </div>
-            <div class="evidence">✓ Confirmed: <code>git config user.name</code> → "Otto" | email → "otto@openclaw.ai"</div>
         </div>
+        <div class="card-desc">Web search worked THIS run (results returned for AI trends) but has hit rate limits in 6 of 7 previous audits. Without a key, research phase is unreliable. Fix: <code>openclaw configure --section web</code>. 2 minutes. Free tier is plenty for daily audits.</div>
+        <div class="card-evidence">⚠ run: openclaw configure → set BRAVE_API_KEY. Check clawhub.com for key instructions.</div>
     </div>
 
-    <!-- TAB: ISSUES -->
-    <div id="tab-issues" class="tab-content">
-        <p class="section-intro">7 findings — 1 new HIGH (usage scraper), 2 CRITICAL (API limits ×9, Brave ×6), 2 MEDIUM repeats. Check items you want Otto to tackle.</p>
+    <h3>🟠 High</h3>
 
-        <!-- CRITICAL -->
-        <div class="category">
-            <div class="category-header">🔴 CRITICAL — Needs Mike's Hand</div>
-
-            <div class="card" id="c-api-limits">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-api-limits')"></div>
-                    <div class="card-title">No API Spending Limits Set</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-critical">CRITICAL</span>
-                    <span class="badge badge-repeat">9th audit 🚨</span>
-                    <span class="tag">Anthropic</span>
-                    <span class="tag">OpenAI</span>
-                    <span class="tag">Alibaba</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Still no hard spending caps on any API dashboard. If a cron goes haywire or a bad prompt loop occurs, there's nothing stopping a runaway bill.
-                    <strong>Otto cannot do this</strong> — needs login credentials for each dashboard. 2 minutes per provider.
-                </div>
-                <div class="card-note">
-                    <strong>Action:</strong> Anthropic → Settings → Billing → Spending limits.<br>
-                    OpenAI → API → Billing → Usage limits. Alibaba → DashScope → Billing.
-                </div>
-            </div>
-
-            <div class="card" id="c-brave-api">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-brave-api')"></div>
-                    <div class="card-title">Brave API Key Not Properly Configured</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-critical">CRITICAL</span>
-                    <span class="badge badge-repeat">6th audit</span>
-                    <span class="tag">web_search</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Web search worked this run (results returned from Brave) but rate limits hit mid-audit on the 3rd query.
-                    Free tier = ~60-90 searches/month. The key exists but isn't optimally configured.
-                    Fix: <code>openclaw configure --section web</code> — set a proper paid key.
-                </div>
-                <div class="card-note"><strong>Command:</strong> <code>openclaw configure --section web</code> — takes 2 minutes</div>
+    <div class="card high-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Fix BrainCells Morning Status Cron">
+            <div class="card-title">🧠 BrainCells Morning Cron: "Message failed"</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH</span>
+                <span class="badge badge-new">NEW</span>
             </div>
         </div>
+        <div class="card-desc">BrainCells morning status cron fired on Feb 28 and returned "Message failed". The cron runs — the Telegram send is failing. Could be wrong chat ID, bot permissions, or message format. Without this, BrainCells has no daily status delivery to Mike.</div>
+        <div class="card-evidence">Source: memory/2026-02-28.md — "BrainCells Morning Status Cron: Failed with 'Message failed'"</div>
+    </div>
 
-        <!-- HIGH -->
-        <div class="category">
-            <div class="category-header">🟠 HIGH — Otto Can Fix</div>
-
-            <div class="card" id="c-usage-scraper">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-usage-scraper')"></div>
-                    <div class="card-title">Claude Usage Scraper in ERROR State</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-high">HIGH</span>
-                    <span class="badge badge-new">NEW</span>
-                    <span class="tag">cost visibility</span>
-                    <span class="tag">automation</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Cron <code>2fc9e65b</code> (Claude Usage Scraper, runs hourly) is showing <strong class="highlight-red">error</strong> status.
-                    Without this running, there's zero visibility into actual Claude API spend. 
-                    Could be a selector change on Anthropic's dashboard, auth token expiry, or browser relay issue.
-                </div>
-                <div class="card-note"><strong>Fix plan:</strong> Inspect cron logs, identify the error, patch the scraper script. Likely 15-30 min work.</div>
+    <div class="card high-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Fix Claude Usage Scraper Error State">
+            <div class="card-title">📊 Claude Usage Scraper in ERROR State — Spend Invisible</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH</span>
+                <span class="badge badge-repeat">🔁 2nd audit</span>
             </div>
         </div>
+        <div class="card-desc">The cron that tracks Claude API spend shows "error" status. Without it, Mike has zero visibility into how much Claude usage is happening. Combine this with no spend caps (Critical ↑) and this is how surprise bills happen. Needs investigation and patch.</div>
+        <div class="card-evidence">Repeat count: 2. Source: last-audit-state.json (2026-02-26 finding)</div>
+    </div>
 
-        <!-- MEDIUM -->
-        <div class="category">
-            <div class="category-header">🟡 MEDIUM — Background Items</div>
+    <h3>🟡 Medium</h3>
 
-            <div class="card" id="c-mcp-health">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-mcp-health')"></div>
-                    <div class="card-title">MCP Server /health Returns HTML Error</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-medium">MEDIUM</span>
-                    <span class="badge badge-repeat">2nd audit</span>
-                    <span class="tag">mcp</span>
-                    <span class="tag">cloudflare tunnel</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    <code>https://otto.workwithchat.com/health</code> returns HTML instead of JSON.
-                    The cloudflared tunnel itself is fine (1 healthy instance). The health endpoint path is wrong or the route isn't registered.
-                    Audit job queue API (<code>/api/audit/</code>) may also be affected.
-                </div>
-                <div class="card-note"><strong>Fix:</strong> SSH to MCP server, check registered routes, add proper <code>/health</code> JSON endpoint.</div>
-            </div>
-
-            <div class="card" id="c-chatgpt-counter">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-chatgpt-counter')"></div>
-                    <div class="card-title">ChatGPT Session Counter Stuck at Zero</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-medium">MEDIUM</span>
-                    <span class="badge badge-repeat">6th audit</span>
-                    <span class="tag">metric bug</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    <code>memory/chatgpt-sessions.json</code> shows <code>tabsChecked: 0, responsesCaptured: 0</code> despite capturing 4 ChatGPT Pro research sessions overnight (Intelligence Engine, Template Library 1470 lines, UX Architecture, Academic Research).
-                    The sessions are being captured — the counter just isn't incrementing.
-                </div>
-                <div class="card-note"><strong>Fix:</strong> Find where counter should be incremented in chatgpt-session-monitor skill. Add increment on each successful capture.</div>
+    <div class="card medium-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Fix MCP Server /health Endpoint">
+            <div class="card-title">🔌 MCP Server /health Returns Non-JSON (3rd Audit)</div>
+            <div class="badges">
+                <span class="badge badge-medium">MEDIUM</span>
+                <span class="badge badge-repeat">🔁 3rd audit</span>
             </div>
         </div>
+        <div class="card-desc">cloudflared is running cleanly (1 instance). MCP automation server is running. But <code>/health</code> returns HTML instead of JSON. The tunnel is live — the health endpoint path is wrong. Find the correct path in <code>mcp-automation-server/dist/index.js</code> and update health check.</div>
+        <div class="card-evidence">Services online: cloudflared PID 1015, mcp-server PID 1019. Health endpoint path mismatch.</div>
+    </div>
 
-        <!-- LOW -->
-        <div class="category">
-            <div class="category-header">🔵 LOW — Quick Hygiene Wins</div>
-
-            <div class="card" id="c-cron-stagger">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-cron-stagger')"></div>
-                    <div class="card-title">Self-Review + Daily Backup Both at 5:00 AM Bangkok</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-low">LOW</span>
-                    <span class="badge badge-new">NEW</span>
-                    <span class="tag">cron collision</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Crons <code>38085745</code> (self-review) and <code>db06e9a6</code> (daily backup) both fire at exactly <strong>5:00 AM Bangkok</strong>.
-                    Both are isolated sessions so low risk, but wastes startup resources and could cause git conflicts.
-                    Fix: stagger backup to 5:10 AM.
-                </div>
+    <div class="card medium-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Fix ChatGPT Session Manager Counter Bug">
+            <div class="card-title">🤖 ChatGPT Session Manager: tabsChecked Always 0</div>
+            <div class="badges">
+                <span class="badge badge-medium">MEDIUM</span>
+                <span class="badge badge-repeat">🔁 7th audit</span>
             </div>
+        </div>
+        <div class="card-desc">chatgpt-sessions.json shows <code>tabsChecked: 0</code> despite 4+ actual sessions captured overnight every run. The session management IS working — the counter increment isn't. Pure metric bug. The session pending re: MindMapForge transcription from tonight is still waiting on ChatGPT Pro.</div>
+        <div class="card-evidence">chatgpt-sessions.json counter never increments. Fix the increment logic in session manager skill.</div>
+    </div>
 
-            <div class="card" id="c-uncommitted">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'c-uncommitted')"></div>
-                    <div class="card-title">22 Uncommitted Files — Research Docs Untracked</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-low">LOW</span>
-                    <span class="badge badge-new">NEW</span>
-                    <span class="tag">git hygiene</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Brain Button research bundle (PRD 901 lines, template library 1470 lines, 3 other research docs), screenshots from overnight sessions, project dirs — all untracked.
-                    Pre-audit checkpoint captured them but they should have been committed during the overnight build. Fix: <code>git add -A && git commit -m "chore: brain button research + overnight artifacts"</code>.
-                </div>
+    <div class="card medium-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Resolve MindMapForge OpenAI Transcription">
+            <div class="card-title">🎙️ MindMapForge Voice: OpenAI Transcription Still Unresolved</div>
+            <div class="badges">
+                <span class="badge badge-medium">MEDIUM</span>
+                <span class="badge badge-new">NEW</span>
+            </div>
+        </div>
+        <div class="card-desc">Tonight's debug session found 6 root causes and fixed 5. The 6th — whether <code>conversation.item.input_audio_transcription.completed</code> fires in <code>type: "realtime"</code> GA sessions — is still unknown. Web Speech API fallback deployed as bridge. ChatGPT Pro research submitted (URL: <code>chatgpt.com/c/69a341b1...</code>). Need to check that chat for the answer.</div>
+        <div class="card-evidence">Commit cf2cf86 deployed. Research pending in ChatGPT Pro tab. Check tab for response → implement fix.</div>
+    </div>
+
+    <h3>🔵 Low</h3>
+
+    <div class="card low-card">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Stagger BrainCells + Self-Review crons">
+            <div class="card-title">⏰ Cron Scheduling Review (Mar 1)</div>
+            <div class="badges">
+                <span class="badge badge-low">LOW</span>
+                <span class="badge badge-new">NEW</span>
+            </div>
+        </div>
+        <div class="card-desc"><code>crontab -l</code> returns empty — OpenClaw manages crons internally. But BrainCells morning status cron failing + the previous cron collision risk (fixed in Feb 25) means it's worth auditing what jobs fire when. Run <code>openclaw cron list</code> and verify timing.</div>
+        <div class="card-evidence">crontab -l empty output. OpenClaw internal scheduler not visible via crontab. Check with openclaw cron list.</div>
+    </div>
+</div>
+
+<!-- IDEAS TAB -->
+<div class="tab-panel" id="tab-ideas">
+    <h2>💡 Ideas & Upgrades</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1.5rem;font-size:0.9rem;">Check the ones you want. Hit "Make It Happen" and Otto gets to work. Ideas are ranked by impact × effort.</p>
+
+    <!-- Idea 1 -->
+    <div class="card" id="idea-1">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Auto-research ChatGPT Pro tabs on wakeup">
+            <div class="card-title">🔭 Auto-Capture ChatGPT Pro Research on Wakeup</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH IMPACT</span>
+                <span class="badge badge-effort">30 min effort</span>
+                <span class="badge badge-impact">saves hours</span>
+            </div>
+        </div>
+        <div class="card-desc">When Mike wakes up, Otto auto-checks all pending ChatGPT Pro research tabs, captures responses, and delivers a 3-line morning brief with findings. Tonight's MindMapForge transcription answer is sitting in a tab right now.</div>
+        <button class="expand-btn" onclick="toggleDetail('d1')">▾ Details</button>
+        <div class="idea-detail" id="d1">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Adds a wakeup cron (7 AM Bangkok): connect to PC Chrome, scan all tabs matching chatgpt.com/c/*, detect completed responses, capture them, match to pending research in memory/, deliver summary to Telegram.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">Right now Otto submits research and forgets. Mike has to remember to check. This closes the loop automatically. The MindMapForge transcription answer from tonight would be waiting in Telegram when Mike wakes at 9 AM.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Technical Approach</div><div class="detail-box-content">Extend chatgpt-session-manager skill with a "wakeup scan" phase. Match pending research URLs in memory/reviews/pending-research.json. Use pc-browser-automation skill to extract responses.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Source Inspiration</div><div class="detail-box-content">Tonight Otto submitted a ChatGPT Pro research question (MindMapForge transcription) and it's sitting untriaged. Without this, Otto has to be manually asked to check — losing hours.</div></div>
             </div>
         </div>
     </div>
 
-    <!-- TAB: IDEAS -->
-    <div id="tab-ideas" class="tab-content">
-        <p class="section-intro">10 ideas this cycle — biggest batch yet. Top picks: Brain Button (PRD is done, just needs Codex), Usage Scraper fix (cost visibility), and MiniMax trial (20x cheaper). Check what you want built.</p>
-
-        <!-- READY TO BUILD -->
-        <div class="category">
-            <div class="category-header">🚀 Ready to Build (PRD Done)</div>
-
-            <div class="card" id="idea-brain-button">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-brain-button')"></div>
-                    <div class="card-title">🧠 Brain Button — Build It Now</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-star">⭐ TOP PICK</span>
-                    <span class="badge badge-new">PRD 9.76/10</span>
-                    <span class="badge badge-effort">Effort: Low (PRD done)</span>
-                    <span class="badge badge-impact">Impact: 🔥🔥🔥🔥🔥</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    The Brain Button PRD is sitting at <strong class="highlight-green">9.76/10</strong> with 901 lines of fully-specified implementation.
-                    Three ChatGPT Pro sessions + Opus synthesis. Ready for Codex CLI execution right now.
-                </div>
-                <button class="expand-btn" onclick="toggleDetail('brain-button-detail', this)">
-                    <span>Show full spec</span> <span class="expand-arrow">▼</span>
-                </button>
-                <div id="brain-button-detail" class="detail-panel">
-                    <div class="detail-content card-body">
-                        <strong>What it does:</strong><br>
-                        Hover any MindMapForge node → 🧠 brain icon appears at edge. Click → AI suggests next nodes from 50-template library in &lt;200ms (no API). Right-click → Deep Mode: lateral thinking, web search, creative angles. Suggestions cascade as ghost nodes (progressively faded, 2-3 levels deep).<br><br>
-                        <strong>Three modes:</strong><br>
-                        • <span class="highlight">Instant Mode</span> — template match, &lt;200ms, zero API cost<br>
-                        • <span class="highlight">Smart Mode</span> — 1-3s cheap API call with context packet<br>
-                        • <span class="highlight">Deep Mode</span> — full context, lateral thinking, web search<br><br>
-                        <strong>Meta-Prompt System:</strong> Dynamically builds optimal prompt from node label + ancestors + siblings + domain + user vocabulary + stage of map. A prompt that builds prompts.<br><br>
-                        <strong>Build command:</strong> <code>codex --model gpt-5.3-codex --full-auto "Build Brain Button feature per BRAIN-BUTTON-PRD.md in projects/mindmapforge/"</code>
-                    </div>
-                </div>
+    <!-- Idea 2 -->
+    <div class="card" id="idea-2">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="API Spend Dashboard — daily Telegram alert">
+            <div class="card-title">💰 API Spend Radar — Daily Telegram Alert</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH IMPACT</span>
+                <span class="badge badge-effort">45 min effort</span>
+                <span class="badge badge-impact">prevents surprise bills</span>
             </div>
         </div>
-
-        <!-- QUICK WINS -->
-        <div class="category">
-            <div class="category-header">⚡ Quick Wins (&lt;30 min)</div>
-
-            <div class="card" id="idea-usage-scraper">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-usage-scraper')"></div>
-                    <div class="card-title">📊 Fix Claude Usage Scraper</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-high">HIGH PRIORITY</span>
-                    <span class="badge badge-effort">Effort: 15-30 min</span>
-                    <span class="badge badge-impact">Impact: Cost Visibility</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Currently in ERROR state. Without it, Mike has zero visibility into live Claude API spend. 
-                    Investigate cron logs, find what broke (probably a Anthropic dashboard UI change), patch the scraper.
-                    Otto can do this autonomously.
-                </div>
-            </div>
-
-            <div class="card" id="idea-commit-research">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-commit-research')"></div>
-                    <div class="card-title">📁 Commit Brain Button Research Bundle</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-low">LOW</span>
-                    <span class="badge badge-effort">Effort: 2 min</span>
-                    <span class="badge badge-impact">Impact: Git Hygiene</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    22 untracked files including 901-line PRD, 1470-line template library, 3 research docs, screenshots.
-                    One git commit to clean this up. Should have happened overnight — doing it now.
-                </div>
-            </div>
-
-            <div class="card" id="idea-cron-stagger">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-cron-stagger')"></div>
-                    <div class="card-title">⏱️ Stagger Audit + Backup Crons</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-low">LOW</span>
-                    <span class="badge badge-effort">Effort: 5 min</span>
-                    <span class="badge badge-impact">Impact: System Hygiene</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Move backup cron from 5:00 AM → 5:10 AM Bangkok so they don't compete for git locks.
-                    Otto can do this with approval (gateway config change requires Mike's yes per hard rule).
-                </div>
-            </div>
-        </div>
-
-        <!-- MEDIUM BUILDS -->
-        <div class="category">
-            <div class="category-header">🔨 Medium Builds (1-3 hours)</div>
-
-            <div class="card" id="idea-minimax">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-minimax')"></div>
-                    <div class="card-title">💰 MiniMax M2.5 Trial for JR Batch Work</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-star">💡 COST SAVER</span>
-                    <span class="badge badge-effort">Effort: 1-2 hrs</span>
-                    <span class="badge badge-impact">Impact: 20x Cheaper</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    MiniMax M2.5 is #1 on OpenRouter right now. SWE-Bench <strong>80.2%</strong> (vs Opus 80.8%). 
-                    Pricing: <strong>$0.30/$1.10</strong> per million tokens — about <strong>20x cheaper than Opus</strong>.
-                    Route one JR batch coding job through MiniMax API, compare output quality. Could reshape our cost structure.
-                </div>
-                <button class="expand-btn" onclick="toggleDetail('minimax-detail', this)">
-                    <span>Show details</span> <span class="expand-arrow">▼</span>
-                </button>
-                <div id="minimax-detail" class="detail-panel">
-                    <div class="detail-content card-body">
-                        <strong>Why now:</strong> MiniMax M2.5 just hit #1 on OpenRouter — adoption exploding. Near-Opus performance at 1/20th the cost.<br><br>
-                        <strong>Test plan:</strong> Pick a contained JR coding task (feature branch, 50-200 lines), route to MiniMax via OpenRouter API, eval output quality, compare to Codex output. Budget: &lt;$0.10.<br><br>
-                        <strong>If it passes:</strong> Route all non-critical JR batch jobs through MiniMax. Use Codex for Opus-level tasks only.<br><br>
-                        <strong>Routing key:</strong> <code>OPENROUTER_API_KEY</code> in JR config → <code>minimax/minimax-m2.5</code>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" id="idea-xcode-integration">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-xcode-integration')"></div>
-                    <div class="card-title">🍎 Xcode 26.3 Agentic Coding — Explore Integration</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-new">ANNOUNCED 4H AGO</span>
-                    <span class="badge badge-effort">Effort: 2-4 hrs</span>
-                    <span class="badge badge-impact">Impact: Native iOS/macOS builds</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Apple just announced Xcode 26.3 with <strong>native Claude Agent + Codex agentic coding</strong>.
-                    If Mike ever wants an iOS or macOS app (Dashboard, Otto Voice native?), this is a massive shortcut.
-                    Worth exploring the API surface while it's fresh. Otto could build the Dashboard v3 as a real macOS app via Xcode agentic mode.
-                </div>
-            </div>
-
-            <div class="card" id="idea-calendar-write">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-calendar-write')"></div>
-                    <div class="card-title">📅 Calendar Write Access — Industry Standard Now</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-info">TRENDING</span>
-                    <span class="badge badge-effort">Effort: 2-3 hrs</span>
-                    <span class="badge badge-impact">Impact: Proactive Scheduling</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    Every top AI assistant (Lindy, Dume, Wing) now does task prioritization + automatic rescheduling via calendar write.
-                    Otto can read calendar but can't write. Adding Google Calendar write via OAuth would unlock: auto-blocking deep work time,
-                    rescheduling when MindMapForge build runs long, morning agenda setting overnight.
-                </div>
-            </div>
-
-            <div class="card" id="idea-research-pipeline">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-research-pipeline')"></div>
-                    <div class="card-title">🔄 Formalize Research-to-PRD Pipeline as a Skill</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-info">SKILL</span>
-                    <span class="badge badge-effort">Effort: 1-2 hrs</span>
-                    <span class="badge badge-impact">Impact: Repeatability</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    The ChatGPT Pro → memory capture → Opus synthesis → PRD scoring pipeline just produced a <strong>9.76/10 PRD overnight</strong>.
-                    That's 3 times it's worked (BrainCells, MindMapForge Intelligence, Brain Button). 
-                    Time to write it as a skill (<code>skills/research-to-prd/SKILL.md</code>) so any future project gets this pipeline automatically.
-                </div>
-            </div>
-
-            <div class="card" id="idea-deepseeek-watch">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-deepseeek-watch')"></div>
-                    <div class="card-title">👁️ DeepSeek V4 Watch — Set Alert When Released</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-info">RESEARCH</span>
-                    <span class="badge badge-effort">Effort: 30 min</span>
-                    <span class="badge badge-impact">Impact: Model Strategy</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    DeepSeek V4 is imminent — trained on Blackwell chips, no public benchmarks yet.
-                    Last DeepSeek release (R1) caused a market disruption. V4 could be as significant.
-                    Set a Nightly Model Scout watch task that pings Mike on Telegram the moment V4 drops.
-                </div>
-            </div>
-
-            <div class="card" id="idea-braincells-product">
-                <div class="card-header">
-                    <div class="card-check" onclick="toggleCheck(this, 'idea-braincells-product')"></div>
-                    <div class="card-title">🎓 BrainCells — Productize It</div>
-                </div>
-                <div class="badges">
-                    <span class="badge badge-info">IDEA</span>
-                    <span class="badge badge-effort">Effort: Medium (product work)</span>
-                    <span class="badge badge-impact">Impact: Revenue / Brand</span>
-                </div>
-                <div class="card-body" style="margin-top:0.75rem">
-                    BrainCells is polished enough to be a real product, not just a gift for Graham.
-                    The gamified OpenClaw course framework (8 modules, confetti, quiz cards, Brain Cell currency) is a template that could be applied to ANY software tool.
-                    Option: open source it, charge for "powered by BrainCells" license, or use it for OpenClaw user onboarding.
-                </div>
+        <div class="card-desc">Fix the broken Claude usage scraper AND add OpenAI + Alibaba scrapers. Every morning: "Yesterday's spend: Claude $X, OpenAI $X, Alibaba $X. Running total: $X/$X budget." Mike gets spend visibility without logging in.</div>
+        <button class="expand-btn" onclick="toggleDetail('d2')">▾ Details</button>
+        <div class="idea-detail" id="d2">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Scrapes usage APIs for each provider (Anthropic /usage, OpenAI /usage, Alibaba DashScope usage endpoint). Aggregates into a daily spend summary. Fires a Telegram message at 8 AM Bangkok. Stores history in memory/spend-history.json.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">API costs are invisible right now. The Claude scraper is broken (2nd audit), no OpenAI tracker exists, no Alibaba tracker. With $300+/mo in subscriptions plus API calls, a runaway cron could add $50-200 without notice.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Quick Win Inside This</div><div class="detail-box-content">Fixing the Claude usage scraper alone is a 10-min fix. The full dashboard is 45 min. Could ship the Claude fix first as a quick win, then expand to other providers.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Source</div><div class="detail-box-content">Direct consequence of "API Spending Limits: None Set" (10th audit open). This doesn't REPLACE setting limits — it provides visibility while we wait for Mike to set them.</div></div>
             </div>
         </div>
     </div>
 
-    <!-- TAB: NIGHT SHIFT -->
-    <div id="tab-night" class="tab-content">
-        <p class="section-intro">Feb 25 midnight → Feb 26 5 AM. Most productive night ever recorded. Two full Codex builds, four ChatGPT Pro research sessions, one 9.76/10 PRD synthesized. Night Shifts: <strong class="highlight">10/10</strong>.</p>
-
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-dot">🔨</div>
-                <div class="timeline-time">~1:45 AM</div>
-                <div class="timeline-title">MindMapForge Completion Build — Codex CLI</div>
-                <div class="timeline-body">
-                    Opus audit identified 5 critical gaps (80% complete). Codex CLI built all 5 in <strong>7 minutes</strong>:
-                    voice auto-structuring, ghost node UI controls, super prompt export wiring, voice→ghost suggestions, batch_add tool.
-                    576 additions across 12 files. TypeScript: zero errors. Committed as <code>beafab5</code>.
-                </div>
+    <!-- Idea 3 -->
+    <div class="card" id="idea-3">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="MindMapForge: voice node auto-detection + multi-voice themes">
+            <div class="card-title">🗺️ MindMapForge: GLM-5 Voice Personas per Node Type</div>
+            <div class="badges">
+                <span class="badge badge-medium">MED IMPACT</span>
+                <span class="badge badge-effort">2h Codex</span>
+                <span class="badge badge-impact">delightful UX</span>
             </div>
-            <div class="timeline-item">
-                <div class="timeline-dot">🧪</div>
-                <div class="timeline-time">~1:55 AM</div>
-                <div class="timeline-title">4× ChatGPT Pro Research Sessions Launched</div>
-                <div class="timeline-body">
-                    Intelligence Engine PRD, Brain Button Template Library (1470 lines), UX Architecture (782 lines), Academic Research (508 lines).
-                    All running in parallel on ChatGPT Pro (o3-pro). Monitoring cron enabled for capture.
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot">🍎</div>
-                <div class="timeline-time">~2:20 AM</div>
-                <div class="timeline-title">Codex for Mac — Intelligence Phase 1 (5 commits)</div>
-                <div class="timeline-body">
-                    Codex for Mac built Intelligence Layer on <code>feat/intelligence-phase1</code>: foundation types + store, STT/LLM function calling, React Flow UI, template ghosts, auto-layout + conversation context.
-                    TypeScript errors caught and fixed by Codex CLI in 2 min. Merged to main. Build passes clean. ✅
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot">🛑</div>
-                <div class="timeline-time">~2:25 AM</div>
-                <div class="timeline-title">Caught Stale Codex Session Before Duplicate</div>
-                <div class="timeline-body">
-                    Detected week-old Codex session still referencing MindMapForge work. Killed it before it could overwrite the fresh Codex for Mac build. Prevented potential 2-hour waste.
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot">📚</div>
-                <div class="timeline-time">~3:10 AM</div>
-                <div class="timeline-title">All 4 Research Docs Captured + Saved</div>
-                <div class="timeline-body">
-                    Intelligence Engine Research (832 lines), Brain Button Template Library (1470 lines), UX Architecture (782 lines), Academic Research (508 lines).
-                    Saved to <code>projects/mindmapforge/</code>. Opus sub-agent spawned immediately to synthesize.
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot">🏆</div>
-                <div class="timeline-time">~3:50 AM</div>
-                <div class="timeline-title">Brain Button PRD — 9.76/10 ✅ Gate Cleared</div>
-                <div class="timeline-body">
-                    Opus synthesized 4 research docs + Brain Button concepts into a 901-line PRD scoring <strong class="highlight-green">9.76/10</strong> (gate: 9.7+).
-                    Includes: 50-template knowledge base structure, three-mode prompt system, ghost cascade UI, meta-prompt architecture.
-                    Ready for Codex build. This is the highest-value deliverable of the night.
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-dot">📊</div>
-                <div class="timeline-time">~4:00 AM</div>
-                <div class="timeline-title">Nightly Model Scout — MiniMax M2.5 Discovery</div>
-                <div class="timeline-body">
-                    <strong>MiniMax M2.5</strong>: SWE-Bench 80.2%, $0.30/$1.10 per M tokens (~20x cheaper than Opus). #1 on OpenRouter right now.
-                    <strong>DeepSeek V4</strong>: imminent, Blackwell chips. Watch this week.
-                    Estimation calibration updated: 0.06x multiplier (Codex is 15-30x faster once PRD is solid).
-                </div>
+        </div>
+        <div class="card-desc">Now that voice connects and Web Speech transcription works, assign different TTS voices per node type: root node = deep authoritative voice, branches = neutral, leaf ideas = quick/casual. Makes the mind map feel alive.</div>
+        <button class="expand-btn" onclick="toggleDetail('d3')">▾ Details</button>
+        <div class="idea-detail" id="d3">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">When GLM-5 generates a node, it tags it with a "voice" based on depth: depth 0 = alloy, depth 1 = echo, depth 2+ = shimmer. The realtime API speaks the node label in the appropriate voice as it appears.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">Voice mind mapping is novel. Most tools do text. Adding spatial audio (different voices for different levels) would be a first. Demo-worthy feature — could be a video showcase.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Prereq</div><div class="detail-box-content">OpenAI transcription fix (or Web Speech confirmed stable). Voice already connects. This is a feature build on top of working infrastructure.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Effort Breakdown</div><div class="detail-box-content">30 min: design voice assignment logic. 60 min: Codex implements TTS per node. 30 min: test + deploy. Total: ~2h wall-clock.</div></div>
             </div>
         </div>
     </div>
 
-    <!-- TAB: RESEARCH -->
-    <div id="tab-research" class="tab-content">
-        <p class="section-intro">What's trending in AI assistants and agentic tools as of Feb 26, 2026. Applied to Otto's roadmap.</p>
-
-        <div class="research-grid">
-            <div class="research-card">
-                <div class="research-icon">🍎</div>
-                <div class="research-title">Xcode 26.3 — Native Agentic Coding</div>
-                <div class="research-body">
-                    Apple announced Xcode 26.3 support for Claude Agent + Codex agentic coding just <strong>4 hours ago</strong> (6:30 AM PST).
-                    Xcode can now break down tasks, plan across files, write code autonomously, and create PRs.
-                    If Mike ever wants a native macOS/iOS app, this is the pipeline.
-                    <br><br><em>Relevance: Dashboard v3 as real NSApp? Otto Voice native client? Otto as Xcode agent?</em>
-                </div>
+    <!-- Idea 4 -->
+    <div class="card" id="idea-4">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="MrDoit skill — persist job queue in Telegram buttons">
+            <div class="card-title">🤖 MrDoit Telegram Job Board — Status Buttons</div>
+            <div class="badges">
+                <span class="badge badge-medium">MED IMPACT</span>
+                <span class="badge badge-effort">1h effort</span>
+                <span class="badge badge-impact">visibility + control</span>
             </div>
-            <div class="research-card">
-                <div class="research-icon">💰</div>
-                <div class="research-title">MiniMax M2.5 — 20× Cost Drop</div>
-                <div class="research-body">
-                    SWE-Bench 80.2% (vs Opus 80.8%) — essentially equivalent for coding tasks.
-                    Pricing: $0.30/$1.10 per million tokens. Opus is ~$15/$75.
-                    #1 adoption on OpenRouter this week. Alibaba consolidating Qwen3.5 + GLM-5 + MiniMax into unified subscription.
-                    <br><br><em>Relevance: JR batch work, non-critical builds, high-volume tasks → route to MiniMax.</em>
-                </div>
-            </div>
-            <div class="research-card">
-                <div class="research-icon">🌊</div>
-                <div class="research-title">DeepSeek V4 — Imminent</div>
-                <div class="research-body">
-                    Training reportedly complete on Blackwell chips. No benchmarks leaked yet. Expected release this week.
-                    DeepSeek R1's release caused ~$600B market wipeout. V4 could be similarly disruptive.
-                    <br><br><em>Relevance: If V4 = R1-level disruption, could change entire model routing strategy overnight. Watch closely.</em>
-                </div>
-            </div>
-            <div class="research-card">
-                <div class="research-icon">🔗</div>
-                <div class="research-title">Cross-App Coordination — #1 Trend</div>
-                <div class="research-body">
-                    Lindy, Dume, Jace, Wing all repositioning around "intelligent workflow automation across business systems."
-                    The differentiator is no longer model quality — it's integration breadth (calendar, email, CRM, Slack, GitHub).
-                    <br><br><em>Relevance: Otto already there (Telegram, calendar read, SSH, browser, GitHub). Calendar write + email write = full set.</em>
-                </div>
-            </div>
-            <div class="research-card">
-                <div class="research-icon">📅</div>
-                <div class="research-title">Calendar Write = Table Stakes</div>
-                <div class="research-body">
-                    Every major AI assistant now does task prioritization + automatic rescheduling via calendar write.
-                    Lindy: "reschedules automatically based on shifting deadlines." Wing: "blocks time for deep work."
-                    This is no longer a premium feature — it's expected.
-                    <br><br><em>Gap: Otto can read calendar but not write. Google Calendar OAuth → 2-3 hour integration.</em>
-                </div>
-            </div>
-            <div class="research-card">
-                <div class="research-icon">🤖</div>
-                <div class="research-title">Democratization of AI Automation</div>
-                <div class="research-body">
-                    Non-technical users building complex workflows via natural language is the #1 2026 trend.
-                    "Whenever someone purchases → generate email + CRM entry + schedule call" — no code required.
-                    OpenClaw's model (skills + crons + agents) is well-positioned for this.
-                    <br><br><em>Relevance: BrainCells course teaches this exact workflow to Graham. Could be a broader product.</em>
-                </div>
+        </div>
+        <div class="card-desc">When Mike assigns a job to MrDoit via Telegram, Otto sends a message with inline buttons: [⏳ Queued] [🔨 Working] [✅ Done] [❌ Cancel]. Buttons update live as MrDoit works. Mike can see all active jobs without asking.</div>
+        <button class="expand-btn" onclick="toggleDetail('d4')">▾ Details</button>
+        <div class="idea-detail" id="d3">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Uses Telegram inline buttons (already supported by OpenClaw) to create live status cards per job. Otto edits the message as status changes. Cancel button kills the sub-agent.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">Right now MrDoit jobs are "fire and forget" — Mike has no visibility into what's running or how long it's taking. This adds a control plane to the delegation pattern without adding friction.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Source</div><div class="detail-box-content">MrDoit discussion Feb 28: Mike confirmed MrDoit is a delegation pattern, not a separate agent. This formalizes the pattern with proper UX.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Prereq</div><div class="detail-box-content">None. Telegram inline buttons already work (seen in self-audit page). MrDoit job queue already in mrdoit-last-job.md.</div></div>
             </div>
         </div>
     </div>
+
+    <!-- Idea 5 -->
+    <div class="card" id="idea-5">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="BrainCells: auto-nightly synthesis from Mike's day notes">
+            <div class="card-title">🧠 BrainCells: Nightly Note Synthesis Auto-Mode</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH IMPACT</span>
+                <span class="badge badge-effort">2h Codex</span>
+                <span class="badge badge-impact">Mike's second brain</span>
+            </div>
+        </div>
+        <div class="card-desc">BrainCells already exists. Add an 11 PM cron: Otto reads today's memory file, extracts key decisions/ideas/actions, and feeds them to BrainCells for synthesis and storage. Mike wakes up to "Yesterday synthesized: 3 insights, 2 connections to prior work."</div>
+        <button class="expand-btn" onclick="toggleDetail('d5')">▾ Details</button>
+        <div class="idea-detail" id="d5">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Scheduled synthesis: reads memory/YYYY-MM-DD.md nightly, extracts structured entities (decisions, ideas, problems, wins), feeds to BrainCells memory engine, surfaces connections to older memories.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">BrainCells as a manual tool is underused. Automating the intake makes it genuinely useful as a second brain — not just a demo. Every day's work automatically flows into long-term memory without Mike doing anything.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Bonus</div><div class="detail-box-content">Also fix the broken BrainCells morning status cron while we're in there. Kill two birds.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Risk</div><div class="detail-box-content">LOW. BrainCells is already built and deployed. This is just an intake pipeline feeding it.</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 6 -->
+    <div class="card" id="idea-6">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Kato integration — passive monitoring agent">
+            <div class="card-title">🐱 Kato Integration — Passive Context Monitor</div>
+            <div class="badges">
+                <span class="badge badge-medium">MED IMPACT</span>
+                <span class="badge badge-effort">3h effort</span>
+                <span class="badge badge-impact">ambient intelligence</span>
+            </div>
+        </div>
+        <div class="card-desc">Kato was paired to Telegram on Feb 28 but doesn't do anything yet. Give Kato a role: passive monitor of Mike's Telegram messages, summarizing context for Otto when needed. "Kato noticed you mentioned X 3 times this week" type insights.</div>
+        <button class="expand-btn" onclick="toggleDetail('d6')">▾ Details</button>
+        <div class="idea-detail" id="d6">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Kato listens on Telegram, extracts recurring themes, projects, frustrations. Weekly summary to Otto: "Mike mentioned MindMapForge 12 times. Mentioned Netlify deploy issues 4 times. New project hint: 'something with calendars'."</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">Otto has selective memory per session. Kato as a passive observer means patterns that span weeks get noticed — things Otto would miss because they're spread across sessions.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Source</div><div class="detail-box-content">Kato paired Feb 28. Currently idle. Research trend: "reactive chatbots → proactive digital teammates" — Kato is the proactive pattern.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Approach</div><div class="detail-box-content">Create a kato-monitor skill. Define Kato's system prompt (passive, summarizer, not executor). Weekly Telegram digest to Otto's session.</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 7 -->
+    <div class="card" id="idea-7">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Claude Code 2.0 multi-agent — replace solo Codex pattern">
+            <div class="card-title">🚀 Claude Code 2.0 Multi-Agent — Parallel Build Mode</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH IMPACT</span>
+                <span class="badge badge-effort">4h to set up</span>
+                <span class="badge badge-impact">2x build speed</span>
+            </div>
+        </div>
+        <div class="card-desc">Claude Code 2.0 (launched Feb 24) adds multi-agent orchestration + persistent memory across sessions. Current pattern: one Codex agent. New pattern: Opus coordinates 2-3 Claude Code agents working on different modules simultaneously.</div>
+        <button class="expand-btn" onclick="toggleDetail('d7')">▾ Details</button>
+        <div class="idea-detail" id="d7">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Opus PRD splits work into 3 parallel tracks (e.g., MindMapForge: Track A=voice pipeline, Track B=GLM integration, Track C=UI polish). 3 Claude Code agents run simultaneously. Otto monitors and merges. Wall-clock time cut by ~60%.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">Current wall-clock: 20-45 min. Multi-agent wall-clock: 10-20 min. Claude + Codex available on GitHub Copilot Business now (Feb 26 announcement). Could use existing infrastructure.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Research Source</div><div class="detail-box-content">Web search hit: "Claude Code 2.0 Launched: multi-agent orchestration, persistent memory, CI/CD integration" — Feb 24, 2026. GitHub Copilot Business + Claude announced Feb 26.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Risk / Prereq</div><div class="detail-box-content">Medium. Need to test Claude Code 2.0 CLI and verify ACP harness supports it. Could run first test on a small feature (BrainCells cron fix) to validate the pattern.</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 8 -->
+    <div class="card" id="idea-8">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="Calendar write access for Otto">
+            <div class="card-title">📅 Calendar Write Access — Otto Schedules Stuff</div>
+            <div class="badges">
+                <span class="badge badge-medium">MED IMPACT</span>
+                <span class="badge badge-effort">2h setup</span>
+                <span class="badge badge-impact">table stakes 2026</span>
+            </div>
+        </div>
+        <div class="card-desc">Research finding: calendar write access is becoming table stakes for AI assistants in 2026. Otto can read calendar via existing tools but can't CREATE events. "Schedule MindMapForge review for tomorrow 10 AM" should work in Telegram.</div>
+        <button class="expand-btn" onclick="toggleDetail('d8')">▾ Details</button>
+        <div class="idea-detail" id="d8">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Creates a calendar-write skill using macOS `icalbuddy` or AppleScript to create events. Mike says "schedule X for Friday 2pm" in Telegram and it appears in Calendar.app + Mike's iPhone.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">Every meeting, code review, deploy window Otto handles should auto-block calendar. Currently this requires manual steps. The scheduling step is a human tax on every plan Otto makes.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Quick path</div><div class="detail-box-content">macOS has `osascript` calendar access without OAuth. Test: `osascript -e 'tell application "Calendar" to make new event at end of calendar "Home"'`. No browser automation needed.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Source</div><div class="detail-box-content">Research: "Calendar write access becoming table stakes for AI assistants — gap in Otto's current setup" (from last-audit-state.json research findings).</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Idea 9 -->
+    <div class="card" id="idea-9">
+        <div class="card-header">
+            <input type="checkbox" class="card-checkbox" data-title="MrDoit M2/M3/M4/M5 — batch ship overnight">
+            <div class="card-title">🏭 MrDoit Job Queue Backlog — Ship M2–M5 Tonight</div>
+            <div class="badges">
+                <span class="badge badge-high">HIGH IMPACT</span>
+                <span class="badge badge-effort">4h autonomous</span>
+                <span class="badge badge-impact">clear the backlog</span>
+            </div>
+        </div>
+        <div class="card-desc">There are 4 unprocessed MrDoit job files in the workspace: <code>mrdoit-m2-job.md</code>, <code>mrdoit-m3-job.md</code>, <code>mrdoit-m4-job.md</code>, <code>mrdoit-m5-job.md</code>. These are queued jobs that never shipped. Run tonight while Mike sleeps.</div>
+        <button class="expand-btn" onclick="toggleDetail('d9')">▾ Details</button>
+        <div class="idea-detail" id="d9">
+            <div class="detail-grid">
+                <div class="detail-box"><div class="detail-box-label">What This Does</div><div class="detail-box-content">Otto reads each mrdoit-MX-job.md, spawns a sub-agent (MrDoit pattern), executes the job, commits results, reports status to memory. All 4 run in parallel overnight. Mike wakes up to 4 completed tasks.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Why Mike Should Care</div><div class="detail-box-content">These jobs were queued and forgotten. They represent real backlog work sitting untouched. The overnight window (3:35 AM→9 AM = 5.5 hours) is plenty of time.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Risk</div><div class="detail-box-content">Depends on job contents — Otto should read each file first and flag anything risky before executing. Low risk if jobs are coding/research tasks.</div></div>
+                <div class="detail-box"><div class="detail-box-label">Autonomous Mode</div><div class="detail-box-content">Otto handles everything. Morning Telegram: "M2-M5 shipped. Here's what got done: [summary]." No Mike involvement needed unless a job is blocked.</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- RESEARCH TAB -->
+<div class="tab-panel" id="tab-research">
+    <h2>🌐 What's Hot in AI — March 2026</h2>
+    <div class="research-grid">
+        <div class="research-card">
+            <h4>🤖 Claude Code 2.0 — Multi-Agent Orchestration</h4>
+            <p>Launched Feb 24, 2026. Adds persistent memory across sessions, native CI/CD integration, team collaboration mode. Multi-agent coordination built in. Codex is now competition.</p>
+            <span class="relevance">↳ Relevance: High — Otto's Opus+Codex pipeline could upgrade to Claude Code 2.0 multi-agent</span>
+        </div>
+        <div class="research-card">
+            <h4>🐙 Claude + Codex on GitHub Copilot</h4>
+            <p>Feb 26, 2026: Both Claude and Codex now available on GitHub Copilot Business & Pro. Three agent modes: Local (fast), Cloud (autonomous), Background (async). Changes the competitive landscape for agentic coding.</p>
+            <span class="relevance">↳ Relevance: High — watch for integration opportunities with Otto's codebase workflow</span>
+        </div>
+        <div class="research-card">
+            <h4>📋 Proactive Teammates vs Reactive Chatbots</h4>
+            <p>2026 trend: AI assistants repositioning as "proactive digital teammates" (Dume, Lindy, Jace all doing this). The diff: they anticipate, don't just respond. Otto already does this (heartbeats, crons, night shifts) — but could lean in harder.</p>
+            <span class="relevance">↳ Relevance: High — Kato idea + BrainCells nightly synthesis fit perfectly here</span>
+        </div>
+        <div class="research-card">
+            <h4>🗓️ Calendar + Email as AI Table Stakes</h4>
+            <p>Every top-ranked AI assistant in 2026 writes to calendars and drafts emails. Task automation across scheduling, email, CRM now expected. Otto is behind here — read-only calendar access is insufficient.</p>
+            <span class="relevance">↳ Relevance: High — Calendar Write Access idea directly addresses this gap</span>
+        </div>
+        <div class="research-card">
+            <h4>🔧 Claude Tool Search Tool</h4>
+            <p>Anthropic released "Tool Search Tool" — allows Claude to discover which tools to call based on natural language descriptions, not just JSON schemas. MCP tool discovery improves dramatically.</p>
+            <span class="relevance">↳ Relevance: Medium — could improve Otto's MCP server tool routing accuracy</span>
+        </div>
+        <div class="research-card">
+            <h4>💬 Natural Language Workflow Builders</h4>
+            <p>"Whenever someone purchases a product, generate onboarding email, create CRM entry, schedule follow-up call" — users now describe intent, AI builds the automation. No-code trend accelerating.</p>
+            <span class="relevance">↳ Relevance: Medium — MrDoit job queue + Telegram natural language delegation is Otto's version of this</span>
+        </div>
+    </div>
+</div>
+
+<!-- SCORES TAB -->
+<div class="tab-panel" id="tab-scores">
+    <h2>📊 Performance Breakdown</h2>
+    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.5rem;">Scores based on SPECIFIC events from memory/2026-03-01.md and memory/2026-02-28.md. Score period: Feb 28 midnight → Mar 1 3:35 AM.</p>
+
+    <div class="score-breakdown">
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">🎯 Responsiveness</div>
+                <div class="score-area-num" style="color:#10b981">9 <span class="trend-same" style="font-size:0.8rem">→</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:90%;background:#10b981"></div></div>
+            <div class="score-area-note">MindMapForge voice debug: found 6 root causes within a single session. Deployed Web Speech fallback by 02:44 AM. Fast triage, faster fix.</div>
+        </div>
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">🔮 Proactivity</div>
+                <div class="score-area-num" style="color:#f72585">9 <span class="trend-down" style="font-size:0.8rem">↓</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:90%;background:#f72585"></div></div>
+            <div class="score-area-note">Added new RULES to RULES.md proactively (research before coding). Submitted ChatGPT Pro research before Mike asked. Submitted pre-audit checkpoint before cron ran. -1 from 10 because BrainCells cron failure wasn't caught proactively.</div>
+        </div>
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">✨ Quality</div>
+                <div class="score-area-num" style="color:#f59e0b">8 <span class="trend-same" style="font-size:0.8rem">→</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:80%;background:#f59e0b"></div></div>
+            <div class="score-area-note">Opus sub-agent root cause analysis was thorough (6 causes identified). Web Speech fallback works. BUT: OpenAI transcription still unresolved, previous attempts in wrong location (data channel vs session creation) cost time.</div>
+        </div>
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">🛠️ Tool Mastery</div>
+                <div class="score-area-num" style="color:#4cc9f0">9 <span class="trend-same" style="font-size:0.8rem">→</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:90%;background:#4cc9f0"></div></div>
+            <div class="score-area-note">Opus sub-agent used effectively for deep code analysis. Netlify deploy via correct method (netlify deploy --prod --build, not git push). PC Ollama still online. All tools working.</div>
+        </div>
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">🧠 Memory</div>
+                <div class="score-area-num" style="color:#a855f7">8 <span class="trend-same" style="font-size:0.8rem">→</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:80%;background:#a855f7"></div></div>
+            <div class="score-area-note">Today's memory file (2026-03-01.md) created and detailed. Kimi cost decision documented. Gateway crash diagnosis preserved. BUT: 24 uncommitted files again (fixed by this audit's checkpoint).</div>
+        </div>
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">💬 Communication</div>
+                <div class="score-area-num" style="color:#06b6d4">9 <span class="trend-same" style="font-size:0.8rem">→</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:90%;background:#06b6d4"></div></div>
+            <div class="score-area-note">Gateway crash explanation was clear: "all 3 crashes were my own gateway restart commands" — honest, specific, no deflection. New RULES.md entries are clear and actionable. On brand throughout.</div>
+        </div>
+        <div class="score-area-card">
+            <div class="score-area-header">
+                <div class="score-area-name">🌙 Night Shifts</div>
+                <div class="score-area-num" style="color:#f72585">9 <span class="trend-down" style="font-size:0.8rem">↓</span></div>
+            </div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:90%;background:#f72585"></div></div>
+            <div class="score-area-note">Deep MindMapForge audit from 00:00–02:44 AM. 6 root causes found. Web Speech API deployed. Architecture decision documented. Kimi cost reviewed and filed. Solid night. -1 because BrainCells cron failed silently overnight without detection.</div>
+        </div>
+    </div>
+
+    <!-- Score History Chart -->
+    <div style="margin-top:2rem;background:var(--bg-card);border-radius:14px;padding:1.5rem;border:1px solid var(--border);">
+        <h3>Score Trend (Last 7 Audits)</h3>
+        <div style="display:flex;align-items:flex-end;gap:0.8rem;height:80px;margin-top:1rem;">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-purple);width:100%;border-radius:4px 4px 0 0" title="8.3"></div>
+                <span style="font-size:0.7rem;color:var(--text-secondary)">Feb 21<br>8.3</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-purple);width:100%;border-radius:4px 4px 0 0" title="8.7"></div>
+                <span style="font-size:0.7rem;color:var(--text-secondary)">Feb 22<br>8.7</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-purple);width:100%;border-radius:4px 4px 0 0" title="8.7"></div>
+                <span style="font-size:0.7rem;color:var(--text-secondary)">Feb 23<br>8.7</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-purple);width:100%;border-radius:4px 4px 0 0" title="8.6"></div>
+                <span style="font-size:0.7rem;color:var(--text-secondary)">Feb 24<br>8.6</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-purple);width:100%;border-radius:4px 4px 0 0" title="8.8"></div>
+                <span style="font-size:0.7rem;color:var(--text-secondary)">Feb 25<br>8.8</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-blue);width:100%;border-radius:4px 4px 0 0" title="9.1"></div>
+                <span style="font-size:0.7rem;color:var(--accent-blue)">Feb 26<br><strong>9.1</strong></span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;flex:1">
+                <div style="background:var(--accent-amber);width:100%;border-radius:4px 4px 0 0" title="8.6"></div>
+                <span style="font-size:0.7rem;color:var(--accent-amber)">Mar 1<br>8.6</span>
+            </div>
+        </div>
+        <p style="color:var(--text-secondary);font-size:0.82rem;margin-top:1rem;">Note: Feb 27–28 had no formal audit run (cron may have been inactive). Score dip from 9.1→8.6 reflects BrainCells cron failure going undetected overnight.</p>
+    </div>
+</div>
 
 </div><!-- /container -->
 
-<!-- BOTTOM BAR -->
+<!-- Bottom Bar -->
 <div class="bottom-bar">
-    <div class="selected-count"><span id="selected-count">0</span> items selected — check boxes above to queue work for Otto</div>
-    <div style="display:flex;gap:0.75rem;align-items:center">
-        <button class="panic-btn" onclick="panicUndo()">⏮ Panic Undo <span style="font-size:0.75rem;opacity:0.7">3fb1b7c</span></button>
-        <button class="submit-btn" id="submit-btn" disabled onclick="submitChecked()">🚀 Make It Happen</button>
-    </div>
+    <div class="selected-count">Selected: <span id="selCount">0</span> items</div>
+    <button class="panic-btn" onclick="panicUndo()">⏪ Panic Undo</button>
+    <button class="submit-btn" onclick="submitSelected()">⚡ Make It Happen</button>
 </div>
 
-<!-- NOTIFICATION -->
-<div class="notification" id="notification">
-    <div class="notification-title" id="notif-title">✅ Queued for Otto</div>
-    <div class="notification-body" id="notif-body">Items queued. Otto will start working.</div>
-</div>
+<div id="toast">✅ Jobs queued! Otto will get to work.</div>
 
 <script>
-    // Tab switching
-    function switchTab(name) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('tab-' + name).classList.add('active');
-        event.target.classList.add('active');
-    }
-
-    // Checkbox toggle
-    const selected = new Set();
-    function toggleCheck(el, id) {
-        el.classList.toggle('checked');
-        const card = document.getElementById(id);
-        if (el.classList.contains('checked')) {
-            selected.add(id);
-            card.classList.add('selected');
-        } else {
-            selected.delete(id);
-            card.classList.remove('selected');
-        }
-        document.getElementById('selected-count').textContent = selected.size;
-        document.getElementById('submit-btn').disabled = selected.size === 0;
-    }
-
-    // Detail panel toggle
-    function toggleDetail(id, btn) {
-        const panel = document.getElementById(id);
-        const arrow = btn.querySelector('.expand-arrow');
-        panel.classList.toggle('open');
-        arrow.classList.toggle('rotated');
-        btn.querySelector('span').textContent = panel.classList.contains('open') ? 'Hide details' : 'Show details';
-    }
-
-    // Submit action
-    function submitChecked() {
-        const items = Array.from(selected);
-        const labels = items.map(id => document.getElementById(id)?.querySelector('.card-title')?.textContent?.trim() || id);
-        const payload = JSON.stringify({ jobs: items, labels, submittedAt: new Date().toISOString() }, null, 2);
-        
-        // Try clipboard
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(payload);
-        }
-        
-        showNotif('🚀 Jobs Queued!', `${items.length} item${items.length > 1 ? 's' : ''} queued for Otto. Payload copied to clipboard.`);
-        
-        // Save to audit-jobs
-        console.log('Audit submission:', payload);
-    }
-
-    // Panic undo
-    function panicUndo() {
-        const msg = 'Run: cd /Users/otto/.openclaw/workspace && git reset --hard 3fb1b7c\n\nThis restores to pre-audit checkpoint. Committed at 5:00 AM Bangkok Feb 26, 2026.';
-        showNotif('⏮ Panic Undo', 'Checkpoint: 3fb1b7c — git reset --hard 3fb1b7c');
-        if (navigator.clipboard) navigator.clipboard.writeText('cd /Users/otto/.openclaw/workspace && git reset --hard 3fb1b7c');
-    }
-
-    // Notification
-    function showNotif(title, body) {
-        const notif = document.getElementById('notification');
-        document.getElementById('notif-title').textContent = title;
-        document.getElementById('notif-body').textContent = body;
-        notif.classList.add('show');
-        setTimeout(() => notif.classList.remove('show'), 4000);
-    }
-
-    // Animate score rings on load
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            // Main ring: 9.1/10 = 91% of 345.4 = 314.3 offset from full
-            document.getElementById('ring-main').style.strokeDashoffset = 345.4 * (1 - 0.91);
-        }, 300);
+function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => {
+        b.classList.toggle('active', b.textContent.toLowerCase().includes(name) || 
+            (name==='fixed'&&b.textContent.includes('Fixed')) ||
+            (name==='issues'&&b.textContent.includes('Issues')) ||
+            (name==='ideas'&&b.textContent.includes('Ideas')) ||
+            (name==='research'&&b.textContent.includes('Research')) ||
+            (name==='scores'&&b.textContent.includes('Scores')));
     });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-'+name).classList.add('active');
+}
+
+document.querySelectorAll('.card-checkbox').forEach(cb => {
+    cb.addEventListener('change', updateCount);
+});
+
+function updateCount() {
+    const n = document.querySelectorAll('.card-checkbox:checked').length;
+    document.getElementById('selCount').textContent = n;
+}
+
+function toggleDetail(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('open');
+}
+
+function submitSelected() {
+    const checked = [...document.querySelectorAll('.card-checkbox:checked')].map(c => c.dataset.title);
+    if (!checked.length) { alert('Select at least one item first!'); return; }
+    const text = 'Otto audit jobs queued:\n' + checked.map((t,i)=>`${i+1}. ${t}`).join('\n');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).catch(()=>{});
+    }
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => toast.style.display='none', 3000);
+}
+
+function panicUndo() {
+    if (confirm('Roll back to pre-audit git checkpoint? This undoes any changes made during this audit.')) {
+        const msg = 'To panic undo:\ngit reset --hard HEAD~1\n(or: git log --oneline to find checkpoint commit)';
+        alert(msg);
+    }
+}
+
+// Animate score bars on load
+window.addEventListener('load', () => {
+    const heights = [83, 87, 87, 86, 88, 91, 86];
+    const max = 91;
+    document.querySelectorAll('.stats-bar .stat-card + .stat-card').forEach(()=>{});
+    // Animate chart bars
+    const bars = document.querySelectorAll('.bottom-bar + * .score-bar-fill, [title]');
+    const chartBars = document.querySelectorAll('[style*="background:var(--accent-purple)"], [style*="background:var(--accent-blue)"], [style*="background:var(--accent-amber)"]');
+    const scoreValues = [8.3,8.7,8.7,8.6,8.8,9.1,8.6];
+    chartBars.forEach((bar, i) => {
+        if (i < scoreValues.length) {
+            const pct = (scoreValues[i] / 10) * 100;
+            bar.style.height = '0%';
+            bar.style.transition = 'height 1s ease ' + (i * 0.1) + 's';
+            setTimeout(() => bar.style.height = pct+'%', 100);
+        }
+    });
+});
 </script>
 </body>
 </html>
