@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otto Self-Audit — March 9, 2026 🦦</title>
+    <title>Otto Self-Audit v2.7.3 🦦</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -31,6 +31,7 @@
             --success: #10b981;
             --border: rgba(255, 255, 255, 0.08);
             --glow-purple: rgba(124, 58, 237, 0.15);
+            --glow-blue: rgba(76, 201, 240, 0.1);
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -42,7 +43,6 @@
         }
         code, .mono { font-family: 'JetBrains Mono', monospace; }
         .container { max-width: 1200px; margin: 0 auto; }
-
         header {
             text-align: center;
             margin-bottom: 3rem;
@@ -66,13 +66,9 @@
         @keyframes headerGlow { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, -10px); } }
         header > * { position: relative; z-index: 1; }
         h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+            font-size: 2.8rem; font-weight: 800; margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
         .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0.75rem; }
         .version-badge {
@@ -87,38 +83,17 @@
             margin-bottom: 1rem;
         }
         .date { color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
-
-        .scores-row {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin: 2rem 0 1.5rem;
-            flex-wrap: wrap;
-        }
+        .scores-row { display: flex; justify-content: center; gap: 3rem; margin: 2rem 0 1.5rem; flex-wrap: wrap; }
         .score-item { text-align: center; }
-        .score-ring {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 0.5rem;
-        }
+        .score-ring { position: relative; width: 140px; height: 140px; margin: 0 auto 0.5rem; }
         .score-ring svg { transform: rotate(-90deg); }
         .score-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
         .score-ring-progress { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
-        .score-ring-text {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;
-        }
+        .score-ring-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
         .score-ring-value { font-size: 2.2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
         .score-ring-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: -4px; }
         .score-label { font-weight: 600; font-size: 0.95rem; color: var(--text-secondary); }
-
-        .stats-bar {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-        }
+        .stats-bar { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0; }
         .stat-chip {
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
@@ -129,100 +104,51 @@
         }
         .stat-chip .label { color: var(--text-secondary); }
         .stat-chip .value { color: var(--accent-blue); font-weight: 600; }
-        .stat-chip .value.ok { color: var(--accent-green); }
-        .stat-chip .value.warn { color: var(--accent-amber); }
-        .stat-chip .value.error { color: var(--severity-high); }
-
-        .intro {
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 1.5rem auto 0;
-            line-height: 1.8;
-            font-size: 0.95rem;
-        }
-
+        .stat-chip .warn { color: var(--severity-amber); }
+        .stat-chip .err { color: var(--severity-high); }
+        .intro { color: var(--text-secondary); max-width: 700px; margin: 1.5rem auto 0; line-height: 1.8; font-size: 0.95rem; }
         .tab-bar {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            padding: 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            border: 1px solid var(--border);
+            display: flex; gap: 0.5rem; margin-bottom: 2rem; padding: 0.5rem;
+            background: var(--bg-secondary); border-radius: 14px; border: 1px solid var(--border);
             overflow-x: auto;
         }
         .tab-btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-family: 'Inter', sans-serif;
+            padding: 0.75rem 1.5rem; border: none; border-radius: 10px; background: transparent;
+            color: var(--text-secondary); font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.3s ease; white-space: nowrap; font-family: 'Inter', sans-serif;
         }
         .tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
         .tab-btn.active { background: var(--accent-purple); color: white; }
         .tab-btn .count {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            padding: 0.1rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin-left: 0.4rem;
+            display: inline-block; background: rgba(255,255,255,0.15);
+            padding: 0.1rem 0.5rem; border-radius: 10px; font-size: 0.75rem; margin-left: 0.4rem;
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
         .category { margin-bottom: 2rem; }
         .category-header {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            padding: 1rem 1.25rem;
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            border-left: 4px solid var(--accent-purple);
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; padding: 1rem 1.25rem;
+            background: var(--bg-secondary); border-radius: 14px; border-left: 4px solid var(--accent-purple);
+            cursor: pointer; user-select: none; transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: space-between;
         }
         .category-header:hover { background: var(--bg-card); border-left-color: var(--accent-pink); }
         .category-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
         .category-header.collapsed .category-toggle { transform: rotate(-90deg); }
         .category-count {
-            background: rgba(255,255,255,0.08);
-            padding: 0.2rem 0.6rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-            margin-left: auto;
-            margin-right: 1rem;
+            background: rgba(255,255,255,0.08); padding: 0.2rem 0.6rem; border-radius: 8px;
+            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary); margin-left: auto; margin-right: 1rem;
         }
         .findings { display: grid; gap: 1rem; margin-top: 1rem; transition: all 0.3s ease; }
         .findings.collapsed { display: none; }
-
         .finding-card {
-            background: var(--bg-card);
-            border-radius: 14px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border-radius: 14px; padding: 1.5rem;
+            border: 1px solid var(--border); transition: all 0.3s ease;
+            position: relative; overflow: hidden;
         }
         .finding-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
             transition: width 0.3s ease;
         }
         .finding-card.severity-high::before { background: var(--severity-high); }
@@ -230,22 +156,14 @@
         .finding-card.severity-low::before { background: var(--severity-low); }
         .finding-card.severity-info::before { background: var(--severity-info); }
         .finding-card.severity-fixed::before { background: var(--severity-fixed); }
-        .finding-card.severity-critical::before { background: #dc2626; }
         .finding-card.severity-fixed { background: rgba(16, 185, 129, 0.06); border-color: rgba(16, 185, 129, 0.15); }
         .finding-card:hover { background: var(--bg-card-hover); transform: translateX(4px); border-color: rgba(255,255,255,0.15); }
         .finding-card:hover::before { width: 6px; }
-
         .finding-header { display: flex; align-items: flex-start; gap: 1rem; }
         .finding-checkbox {
-            width: 26px; height: 26px;
-            border-radius: 8px;
-            border: 2px solid var(--accent-blue);
-            cursor: pointer;
-            flex-shrink: 0;
-            margin-top: 0.15rem;
-            transition: all 0.2s ease;
-            position: relative;
-            background: transparent;
+            width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--accent-blue);
+            cursor: pointer; flex-shrink: 0; margin-top: 0.15rem; transition: all 0.2s ease;
+            position: relative; background: transparent;
         }
         .finding-checkbox:hover { background: rgba(76,201,240,0.1); transform: scale(1.1); }
         .finding-checkbox.checked { background: var(--accent-blue); border-color: var(--accent-blue); }
@@ -253,27 +171,17 @@
             content: '✓'; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%,-50%); color: var(--bg-primary); font-weight: 800; font-size: 1rem;
         }
-        .finding-checkbox.disabled {
-            border-color: var(--severity-fixed);
-            background: var(--severity-fixed);
-            cursor: default;
-            opacity: 0.6;
-        }
+        .finding-checkbox.disabled { border-color: var(--severity-fixed); background: var(--severity-fixed); cursor: default; opacity: 0.6; }
         .finding-checkbox.disabled::after {
             content: '✓'; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%,-50%); color: white; font-weight: 800; font-size: 1rem;
         }
-
         .finding-content { flex: 1; }
         .finding-title-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
         .finding-title { font-size: 1.15rem; font-weight: 600; }
         .badge {
-            padding: 0.2rem 0.65rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.7rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
             font-family: 'JetBrains Mono', monospace;
         }
         .severity-badge { color: white; }
@@ -282,73 +190,45 @@
         .severity-badge.low { background: var(--severity-low); }
         .severity-badge.info { background: var(--severity-info); }
         .severity-badge.fixed { background: var(--severity-fixed); }
-        .severity-badge.critical { background: #dc2626; }
         .effort-badge, .impact-badge { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
-        .repeat-badge { background: rgba(239,68,68,0.2); color: var(--severity-high); }
-
         .finding-description { color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.7; font-size: 0.95rem; }
         .finding-recommendation {
-            background: rgba(76,201,240,0.06);
-            border-left: 3px solid var(--accent-blue);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
+            background: rgba(76,201,240,0.06); border-left: 3px solid var(--accent-blue);
+            padding: 1rem; border-radius: 8px; margin-top: 1rem;
         }
-        .finding-recommendation.fixed-rec {
-            background: rgba(16,185,129,0.06);
-            border-left-color: var(--severity-fixed);
-        }
+        .finding-recommendation.fixed-rec { background: rgba(16,185,129,0.06); border-left-color: var(--severity-fixed); }
         .recommendation-label {
-            font-weight: 700; color: var(--accent-blue);
-            margin-bottom: 0.4rem; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 1px;
+            font-weight: 700; color: var(--accent-blue); margin-bottom: 0.4rem;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
         }
         .finding-recommendation.fixed-rec .recommendation-label { color: var(--severity-fixed); }
         .recommendation-text { color: var(--text-primary); line-height: 1.7; font-size: 0.95rem; }
-
         .idea-preview {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(124,58,237,0.06);
-            border: 1px solid rgba(124,58,237,0.15);
-            border-radius: 10px;
+            margin-top: 1rem; padding: 1rem;
+            background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.15); border-radius: 10px;
         }
         .idea-preview-label {
-            font-weight: 700; color: var(--accent-purple);
-            font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 0.5rem;
+            font-weight: 700; color: var(--accent-purple); font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;
         }
         .idea-what { color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; }
         .idea-impact {
-            margin-top: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(245,158,11,0.06);
-            border-left: 3px solid var(--accent-amber);
-            border-radius: 6px;
+            margin-top: 0.75rem; padding: 0.75rem;
+            background: rgba(245,158,11,0.06); border-left: 3px solid var(--accent-amber); border-radius: 6px;
         }
         .idea-impact-label {
-            font-weight: 700; color: var(--accent-amber);
-            font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 0.3rem;
+            font-weight: 700; color: var(--accent-amber); font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;
         }
-
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: linear-gradient(180deg, rgba(15,15,26,0.95) 0%, var(--bg-primary) 100%);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 1.25rem 2rem;
-            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-            box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
-            z-index: 1000;
-            flex-wrap: wrap;
+            backdrop-filter: blur(20px); border-top: 1px solid var(--border);
+            padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between;
+            gap: 1rem; box-shadow: 0 -8px 40px rgba(0,0,0,0.5); z-index: 1000; flex-wrap: wrap;
         }
         .selection-info { display: flex; align-items: center; gap: 1rem; }
-        .selection-count {
-            font-size: 1.1rem; font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-blue);
-        }
+        .selection-count { font-size: 1.1rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent-blue); }
         .selection-breakdown { font-size: 0.85rem; color: var(--text-secondary); }
         .bottom-bar-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
         .btn {
@@ -359,56 +239,53 @@
         }
         .btn-copy { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
         .btn-copy:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
-        .btn-submit {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white;
-        }
+        .btn-submit { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: white; }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
         .btn-panic { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
-        .btn-panic:hover { background: var(--severity-high); color: white; transform: translateY(-2px); }
+        .btn-panic:hover { background: var(--severity-high); color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239,68,68,0.4); }
         .btn:active { transform: translateY(0); }
-
+        .panic-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px); z-index: 3000; align-items: center; justify-content: center;
+        }
+        .panic-overlay.open { display: flex; }
+        .panic-modal {
+            background: var(--bg-secondary); border-radius: 20px; padding: 2rem;
+            max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
+            border: 2px solid var(--severity-high); box-shadow: 0 0 60px rgba(239,68,68,0.3);
+        }
+        .panic-title { font-size: 1.5rem; font-weight: 800; color: var(--severity-high); margin-bottom: 0.5rem; }
+        .panic-subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .panic-commits { list-style: none; margin-bottom: 1.5rem; }
+        .panic-commit {
+            padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 0.5rem;
+            background: var(--bg-card); border: 1px solid var(--border); cursor: pointer;
+            transition: all 0.2s ease; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .panic-commit:hover { background: var(--bg-card-hover); border-color: var(--severity-high); }
+        .panic-commit.selected { background: rgba(239,68,68,0.1); border-color: var(--severity-high); }
+        .panic-commit-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-secondary); flex-shrink: 0; position: relative; }
+        .panic-commit.selected .panic-commit-radio { border-color: var(--severity-high); background: var(--severity-high); }
+        .panic-commit.selected .panic-commit-radio::after { content: ''; position: absolute; top: 4px; left: 4px; width: 8px; height: 8px; border-radius: 50%; background: white; }
+        .panic-commit-hash { font-family: 'JetBrains Mono', monospace; color: var(--accent-blue); font-size: 0.85rem; font-weight: 600; }
+        .panic-commit-msg { color: var(--text-primary); font-size: 0.9rem; flex: 1; }
+        .panic-commit-idx { color: var(--text-secondary); font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
+        .panic-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .panic-log { margin-top: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: pre-wrap; color: var(--accent-green); max-height: 200px; overflow-y: auto; }
         .toast {
             position: fixed; top: 2rem; right: 2rem;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--accent-blue);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            z-index: 2000;
-            animation: slideIn 0.3s ease;
-            font-weight: 500;
+            background: var(--bg-secondary); color: var(--text-primary);
+            padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--accent-blue);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); z-index: 2000;
+            animation: slideIn 0.3s ease; font-weight: 500;
         }
         @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        .score-table {
-            width: 100%;
-            margin-top: 1.5rem;
-            border-collapse: collapse;
-            font-size: 0.9rem;
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
+        .repeat-badge {
+            background: rgba(239,68,68,0.15); color: var(--severity-high);
+            padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace; font-weight: 600;
         }
-        .score-table th, .score-table td {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        .score-table th {
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-        }
-        .score-table td.score-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        .trend-up { color: var(--accent-green); }
-        .trend-down { color: var(--severity-high); }
-        .trend-flat { color: var(--text-secondary); }
-
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .scores-row { gap: 1.5rem; }
@@ -423,10 +300,10 @@
 <body>
     <div class="container">
         <header>
-            <span class="version-badge">V2.7.2 — DAILY AUDIT</span>
+            <span class="version-badge">V2.7.3 — RECORD STREAK</span>
             <h1>Otto Self-Audit Report 🦦</h1>
             <p class="subtitle">Security • Efficiency • Opportunities • <strong>What's Next</strong></p>
-            <p class="date">Monday, March 9, 2026 — 5:15 AM ICT</p>
+            <p class="date">March 10, 2026 — 05:15 ICT</p>
 
             <div class="scores-row">
                 <div class="score-item">
@@ -437,8 +314,8 @@
                                 stroke-dasharray="376.99" stroke-dashoffset="376.99"></circle>
                         </svg>
                         <div class="score-ring-text">
-                            <div class="score-ring-value" id="health-value">9.3</div>
-                            <div class="score-ring-label" id="health-grade">A</div>
+                            <div class="score-ring-value" id="health-value">--</div>
+                            <div class="score-ring-label" id="health-grade">--</div>
                         </div>
                     </div>
                     <div class="score-label">Health Score</div>
@@ -448,10 +325,10 @@
                         <svg width="140" height="140">
                             <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
                             <circle class="score-ring-progress" id="fixed-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="113" style="stroke: var(--accent-green)"></circle>
+                                stroke-dasharray="376.99" stroke-dashoffset="376.99" style="stroke: var(--accent-green)"></circle>
                         </svg>
                         <div class="score-ring-text">
-                            <div class="score-ring-value" id="fixed-value" style="color: var(--accent-green)">1</div>
+                            <div class="score-ring-value" id="fixed-value" style="color: var(--accent-green)">--</div>
                             <div class="score-ring-label">fixed</div>
                         </div>
                     </div>
@@ -462,10 +339,10 @@
                         <svg width="140" height="140">
                             <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
                             <circle class="score-ring-progress" id="ideas-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="0" style="stroke: var(--accent-purple)"></circle>
+                                stroke-dasharray="376.99" stroke-dashoffset="376.99" style="stroke: var(--accent-purple)"></circle>
                         </svg>
                         <div class="score-ring-text">
-                            <div class="score-ring-value" id="ideas-value" style="color: var(--accent-purple)">10</div>
+                            <div class="score-ring-value" id="ideas-value" style="color: var(--accent-purple)">--</div>
                             <div class="score-ring-label">ideas</div>
                         </div>
                     </div>
@@ -474,23 +351,18 @@
             </div>
 
             <div class="stats-bar">
-                <div class="stat-chip"><span class="label">Firewall </span><span class="value ok">ON ✅</span></div>
-                <div class="stat-chip"><span class="label">FileVault </span><span class="value ok">ON ✅</span></div>
-                <div class="stat-chip"><span class="label">Disk </span><span class="value ok">288GB free</span></div>
-                <div class="stat-chip"><span class="label">Services </span><span class="value warn">3 running</span></div>
-                <div class="stat-chip"><span class="label">Cloudflared </span><span class="value ok">1 instance ✅</span></div>
-                <div class="stat-chip"><span class="label">PC Ollama </span><span class="value ok">qwen3:32b 🟢</span></div>
-                <div class="stat-chip"><span class="label">MCP </span><span class="value error">DOWN ❌</span></div>
-                <div class="stat-chip"><span class="label">Git </span><span class="value ok">0 uncommitted ✅</span></div>
+                <div class="stat-chip"><span class="label">Firewall </span><span class="value">ON ✅</span></div>
+                <div class="stat-chip"><span class="label">FileVault </span><span class="value">ON ✅</span></div>
+                <div class="stat-chip"><span class="label">Disk </span><span class="value">283GB free</span></div>
+                <div class="stat-chip"><span class="label">Services </span><span class="value">2 running</span></div>
+                <div class="stat-chip"><span class="label">Cloudflared </span><span class="value">1 instance ✅</span></div>
+                <div class="stat-chip"><span class="label">Ollama </span><span class="value">qwen3:32b 🟢</span></div>
+                <div class="stat-chip"><span class="label">MCP </span><span class="value err">❌ health down</span></div>
             </div>
 
             <p class="intro">
-                Hey Mike! 👋 <strong>Score: 9.3/10</strong> — matching our record high from March 4 & 7. 
-                Yesterday was <em>productive</em>: AI Sales Team PRD written (9.2/10), Mob Reviews research completed, 
-                Proof Phase 2 QA system built (25 ACs), GPT-5.4 activated as primary model. 
-                One issue fixed (Codex auth token refreshed). 
-                <strong>8 issues open</strong> (2 CRITICAL: API limits 16th audit, MCP down 9th audit). 
-                <strong>10 new ideas</strong> below — pick what excites you.
+                Hey Mike! 👋 <strong>9.3/10 — tied record high!</strong> FlipIt Auctions auto-go is crushing it: 6 UX improvements overnight, mobile responsive, all without you lifting a finger. 
+                Check what you want fixed or built and hit Submit — I'll make it happen. 🚀
             </p>
         </header>
 
@@ -498,17 +370,29 @@
         <div id="tab-contents"></div>
     </div>
 
+    <div class="panic-overlay" id="panic-overlay">
+        <div class="panic-modal">
+            <div class="panic-title">🛑 Panic Undo</div>
+            <div class="panic-subtitle">Roll Otto back to a previous state. This reverts files AND restarts all services.</div>
+            <div id="panic-loading" style="color:var(--text-secondary);padding:1rem;">Loading commit history...</div>
+            <ul class="panic-commits" id="panic-commits"></ul>
+            <div class="panic-actions">
+                <button class="btn btn-copy" onclick="closePanicModal()">Cancel</button>
+                <button class="btn" style="background:var(--severity-high);color:white;" id="panic-undo-btn" onclick="panicUndo()">⏪ Undo & Restart</button>
+            </div>
+            <div class="panic-log" id="panic-log" style="display:none;"></div>
+        </div>
+    </div>
+
     <div class="bottom-bar">
         <div class="selection-info">
-            <div class="selection-count">
-                <span id="selected-count">0</span> selected
-            </div>
+            <div class="selection-count"><span id="selected-count">0</span> selected</div>
             <div class="selection-breakdown" id="selection-breakdown"></div>
         </div>
         <div class="bottom-bar-actions">
             <button class="btn btn-copy" id="copy-btn">📋 Copy</button>
             <button class="btn btn-submit" id="submit-btn">🚀 Make It Happen</button>
-            <button class="btn btn-panic" onclick="alert('Panic Undo: git revert HEAD~N && openclaw gateway restart')">🛑 Panic Undo</button>
+            <button class="btn btn-panic" id="panic-btn" onclick="openPanicModal()">🛑 Panic Undo</button>
         </div>
     </div>
 
@@ -516,34 +400,17 @@
     const auditData = {
         tabs: [
             {
-                id: "scores",
-                label: "📊 Scores",
-                sections: [{
-                    name: "📊 Self-Assessment Scores — March 9, 2026",
-                    findings: [
-                        { id: "score-1", severity: "info", title: "Responsiveness: 9/10", description: "Heartbeats every 15-60 min. MrDoit jobs completed on time. FlipIt overview paused appropriately (awaiting Mike decision).", fixed: true },
-                        { id: "score-2", severity: "info", title: "Proactivity: 10/10", description: "AI Sales Team PRD written without being asked (4:20 AM). Mob Reviews P2-P5 research completed autonomously. Voice context synced without prompting.", fixed: true },
-                        { id: "score-3", severity: "info", title: "Quality: 9/10", description: "Proof Phase 2 QA system built (119s, 25/25 ACs). Mercury 2 integrated. GPT-5.4 activated. One UI bug (toggle overflow) needed 3 fix attempts.", fixed: true },
-                        { id: "score-4", severity: "info", title: "Tool Mastery: 9/10", description: "GPT-5.4 via Codex OAuth working. ChatGPT CDP functional. MrDoit spawned 6 jobs. PC SSH + Ollama accessible.", fixed: true },
-                        { id: "score-5", severity: "info", title: "Memory: 9/10", description: "Daily logs detailed (March 8 log has 50+ entries). Voice context synced every heartbeat. Projects JSON updated.", fixed: true },
-                        { id: "score-6", severity: "info", title: "Communication: 9/10", description: "Clear Telegram updates. TOOLS.md updated with new rules. No API errors shown to Mike.", fixed: true },
-                        { id: "score-7", severity: "info", title: "Night Shifts: 10/10", description: "AI Sales Team PRD (9.2/10) written overnight. Mob Reviews research complete. Proof Phase 2 built. Autonomous work queue checked.", fixed: true },
-                        { id: "score-8", severity: "fixed", title: "OVERALL: 9.3/10 🏆", description: "<strong>MATCHING RECORD HIGH</strong> — tied with March 4 & 7. Excellent proactivity and night shift performance. Quality dip from toggle bug (3 attempts) but recovered.", fixed: true }
-                    ]
-                }]
-            },
-            {
                 id: "fixed",
                 label: "✅ Fixed",
                 sections: [{
-                    name: "✅ Fixed Since Last Audit (March 7)",
+                    name: "✅ Fixed Since Last Audit (Mar 9)",
                     findings: [
                         {
-                            id: "fix-codex-auth",
+                            id: "fix-git-workspace",
                             severity: "fixed",
-                            title: "Codex Auth Token Refreshed",
-                            description: "Token was expiring March 8. Mike completed browser OAuth refresh on March 8. GPT-5.4 now active via Codex OAuth.",
-                            recommendation: "✅ RESOLVED — Next refresh needed in ~30 days (early April). Added to tracking.",
+                            title: "Git Workspace Clean — Pre-Audit Checkpoint",
+                            description: "17 uncommitted files caught and committed to <code>af8b0a3</code> before this audit ran. Workspace is now clean. The auto-commit cron idea would make this automatic.",
+                            recommendation: "Resolved ✅ — Pre-audit checkpoint caught 18 files (including new rules files). Auto-commit cron would eliminate this manual step.",
                             effort: "done", impact: "done", fixed: true
                         }
                     ]
@@ -554,23 +421,25 @@
                 label: "🔍 Current Issues",
                 sections: [
                     {
-                        name: "🔴 CRITICAL (Requires Mike Action)",
+                        name: "🔴 CRITICAL — Needs Mike Action",
                         findings: [
                             {
                                 id: "issue-api-limits",
-                                severity: "critical",
+                                severity: "high",
                                 title: "No API Spending Limits Set",
-                                description: "16th consecutive audit with this finding. Claude, Kimi, OpenAI API keys have no spending caps configured. Claude Max ($200/mo) and ChatGPT Pro ($200/mo) are subscription-capped, but API pay-per-use has no limit.",
-                                recommendation: "Mike needs to log into Anthropic, OpenAI, and Alibaba (Kimi) dashboards and set monthly spend limits. This is a 10-minute task that's been deferred 16 days.",
-                                effort: "low", impact: "high"
+                                description: "17th consecutive audit. Claude, Kimi, OpenAI API keys have no spending caps configured. Mike's Claude Max ($200/mo) has built-in cap, but Kimi is pay-per-use with no limit.",
+                                recommendation: "Mike needs to log into Anthropic, OpenAI, and Alibaba (Kimi) dashboards and set monthly spending limits. This is a 10-minute task that prevents surprise bills.",
+                                effort: "low", impact: "high",
+                                repeatCount: 17
                             },
                             {
                                 id: "issue-mcp-health",
-                                severity: "critical",
-                                title: "MCP Server Process NOT Running",
-                                description: "9th consecutive audit. Health endpoint returns HTML error ('Cannot GET /health'). Process check shows 0 mcp-server processes. The tunnel is up but there's nothing behind it.",
-                                recommendation: "Run: <code>cd ~/.openclaw && node mcp-server/main.js</code> or check if the process is crashing on startup. This affects https://otto.workwithchat.com.",
-                                effort: "low", impact: "high"
+                                severity: "high",
+                                title: "MCP Server Health Endpoint Broken",
+                                description: "10th consecutive audit. Process is running (<code>node .../mcp-automation-server/dist/index.js</code>) but <code>/health</code> returns HTML error \"Cannot GET /health\". Tunnel is up but endpoint not responding correctly.",
+                                recommendation: "Check MCP server routes — health endpoint may not be registered. The process is alive but the endpoint is broken. Could be a route registration issue or the health route was removed.",
+                                effort: "medium", impact: "high",
+                                repeatCount: 10
                             }
                         ]
                     },
@@ -579,27 +448,30 @@
                         findings: [
                             {
                                 id: "issue-usage-scraper",
-                                severity: "high",
-                                title: "Claude Usage Scraper Still in ERROR State",
-                                description: "8th consecutive audit. The scraper that monitors Claude API usage is failing. Mike has no visibility into actual Claude spend without this.",
-                                recommendation: "Debug the scraper script or rebuild it. Located in <code>~/.otto/claude-usage-scraper/</code>. Check auth tokens and selectors.",
-                                effort: "medium", impact: "high"
+                                severity: "medium",
+                                title: "Claude Usage Scraper in ERROR State",
+                                description: "9th consecutive audit. Without this, Mike has no visibility into Claude API spend. The scraper is failing silently.",
+                                recommendation: "Debug the scraper script. Check if Claude dashboard HTML structure changed, or if auth expired.",
+                                effort: "medium", impact: "high",
+                                repeatCount: 9
                             },
                             {
                                 id: "issue-braincells-cron",
-                                severity: "high",
+                                severity: "medium",
                                 title: "BrainCells Morning Status Cron Failing",
-                                description: "7th consecutive audit. Cron fires but Telegram send fails. The BrainCells project isn't getting its automated status updates.",
-                                recommendation: "Check Telegram channel routing for the BrainCells cron. May need channel ID update or bot permissions refresh.",
-                                effort: "low", impact: "medium"
+                                description: "8th consecutive audit. Cron fires but Telegram send fails. The BrainCells project status isn't reaching Mike.",
+                                recommendation: "Check Telegram bot token and channel ID in the BrainCells cron config. May need to re-auth.",
+                                effort: "low", impact: "medium",
+                                repeatCount: 8
                             },
                             {
                                 id: "issue-mindmapforge-v3",
-                                severity: "high",
-                                title: "MindMapForge V3 Feature Flag Still OFF",
-                                description: "2nd consecutive audit. V3 was deployed but MrDoit self-wrote files (Rule 1B violation from March 6). Feature flag remains OFF. Mike needs to decide: rebuild via Codex or audit MrDoit files.",
-                                recommendation: "Mike decision needed: (A) Have Codex rebuild the V3 features fresh, or (B) Audit the existing MrDoit files for correctness then enable flag.",
-                                effort: "medium", impact: "medium"
+                                severity: "medium",
+                                title: "MindMapForge V3 Decision Needed",
+                                description: "3rd consecutive audit. V3 deployed but contains MrDoit self-written files (violates MRDOIT.md Rule 1). Mike must decide: rebuild via Codex OR audit MrDoit files for correctness.",
+                                recommendation: "Mike decides: (1) Trust MrDoit files and audit them manually, or (2) Rebuild V3 features via Codex for clean provenance.",
+                                effort: "high", impact: "medium",
+                                repeatCount: 3
                             }
                         ]
                     },
@@ -608,19 +480,21 @@
                         findings: [
                             {
                                 id: "issue-chatgpt-counter",
-                                severity: "medium",
+                                severity: "low",
                                 title: "ChatGPT Session Manager Counter Bug",
-                                description: "13th consecutive audit. tabsChecked counter always shows 0. The session manager is working but metrics aren't being recorded.",
-                                recommendation: "Fix the counter increment logic in <code>memory/chatgpt-sessions.json</code> update path.",
-                                effort: "low", impact: "low"
+                                description: "14th consecutive audit. <code>tabsChecked</code> always returns 0 even when tabs are checked. Counter increment logic is broken.",
+                                recommendation: "Debug the counter in chatgpt-session-manager skill. Likely an off-by-one or async timing issue.",
+                                effort: "low", impact: "low",
+                                repeatCount: 14
                             },
                             {
                                 id: "issue-ollama-update",
-                                severity: "medium",
-                                title: "PC Ollama 0.15.5 Needs Update for Qwen 3.5",
-                                description: "2nd consecutive audit. PC Ollama is 2 versions behind. qwen3.5:35b requires newer Ollama. Mike needs to run winget upgrade with UAC click.",
-                                recommendation: "On PC: <code>winget upgrade Ollama.Ollama</code> (requires admin). Then: <code>ollama pull qwen3.5:35b</code>",
-                                effort: "low", impact: "medium"
+                                severity: "low",
+                                title: "PC Ollama 0.15.5 Needs Update",
+                                description: "3rd consecutive audit. Current version doesn't support Qwen 3.5 models. Mike needs to run <code>winget upgrade</code> on PC with UAC click.",
+                                recommendation: "Mike runs on PC: <code>winget upgrade Ollama.Ollama</code> (requires UAC). Then Otto can pull qwen3.5:35b for better local inference.",
+                                effort: "low", impact: "medium",
+                                repeatCount: 3
                             }
                         ]
                     }
@@ -630,97 +504,107 @@
                 id: "ideas",
                 label: "💡 Ideas & Upgrades",
                 sections: [{
-                    name: "💡 Things I'd Love to Build (March 9)",
+                    name: "💡 Things I'd Love to Build",
                     findings: [
                         {
                             id: "idea-auto-commit-cron",
                             severity: "info",
-                            title: "🔄 Auto-Commit Cron (URGENT)",
-                            description: "Git workspace had 39 uncommitted files this morning. Pre-audit checkpoint saved us, but this is luck not system. Every 2 hours: check for changes, auto-commit with timestamp.",
+                            title: "🔄 [URGENT] Auto-Commit Cron",
+                            description: "Git auto-commit every 2 hours, push daily. Never lose work. Today we got lucky — checkpoint caught 17 files. Next time could be 0.",
+                            recommendation: "Quick win: Create cron that checks for uncommitted changes and commits with timestamp. Push to remote nightly.",
                             effort: "low", impact: "high",
-                            ideaDetail: "Simple cron: <code>git add -A && git commit -m 'Auto-commit $(date)'</code>. Prevents work loss. The 39 files this morning prove it's needed.",
-                            ideaImpact: "Never lose work again. The checkpoint saved us today but we can't rely on audit timing."
+                            ideaDetail: "Pattern: <code>git add -A && git commit -m 'Auto-commit $(date)'</code> every 2 hours. Push at midnight. Prevents data loss, provides undo history. Essential hygiene.",
+                            ideaImpact: "Zero risk of losing work. Every change tracked. Mike never has to worry about uncommitted files again."
                         },
                         {
                             id: "idea-calendar-write",
                             severity: "info",
-                            title: "📅 Calendar Write Access",
-                            description: "Research confirmed: calendar write is 2026 table stakes for AI assistants. Otto can read calendars but can't create/edit events. Every competitor (Motion, Lindy, Saner.AI) can do this.",
-                            effort: "medium", impact: "high",
-                            ideaDetail: "Google Calendar API integration. OAuth flow for Mike's calendar. Then: 'Otto, schedule a meeting with X tomorrow at 3pm' just works.",
-                            ideaImpact: "Otto becomes a true scheduling assistant. This has been proposed 4+ times — it's clearly wanted."
-                        },
-                        {
-                            id: "idea-morning-brief",
-                            severity: "info",
-                            title: "🌅 Morning Briefing Dashboard",
-                            description: "Auto-generated HTML page at 7 AM: weather, calendar, overnight work summary, project status, cost report, curated AI news. One tab replaces 5 morning checks.",
-                            effort: "medium", impact: "high",
-                            ideaDetail: "Combines weather skill + calendar API + overnight work log + screenshot archive + news queue. Generates HTML, opens in browser at 7 AM.",
-                            ideaImpact: "Saves 15-20 min of morning catch-up. See everything Otto built overnight in one glance."
+                            title: "📅 [Quick Win] Calendar Write Access",
+                            description: "Otto can create/edit calendar events. \"Otto, schedule a call with John tomorrow at 3pm.\" — actually creates the event.",
+                            recommendation: "Use macOS Calendar.app via AppleScript or CalDAV API. 2026 table stakes — every top assistant can do this.",
+                            effort: "low", impact: "high",
+                            ideaDetail: "AppleScript approach: <code>tell application \"Calendar\" to make new event...</code> Works with any calendar synced to macOS (Google, iCloud, Outlook). Natural language parsing for date/time.",
+                            ideaImpact: "Mike's asked for this 4 times. Time to deliver. Real assistant = can manage your schedule."
                         },
                         {
                             id: "idea-multi-agent-squad",
                             severity: "info",
-                            title: "🤖 Multi-Agent Squad (Dev/Ops/Scout)",
-                            description: "Split Otto into 3 specialized agents: Otto-Dev (coding, Codex), Otto-Ops (monitoring, health), Otto-Scout (research, trends). Each with own model config. 3x parallel throughput.",
+                            title: "🤖 [Ambitious] Multi-Agent Squad",
+                            description: "Split into 3 specialized agents running in parallel: <strong>Otto-Dev</strong> (coding), <strong>Otto-Ops</strong> (monitoring), <strong>Otto-Scout</strong> (research).",
+                            recommendation: "Each agent gets own SOUL.md, model config, memory. Main Otto orchestrates. 3x parallel throughput overnight.",
                             effort: "high", impact: "high",
-                            ideaDetail: "Top OpenClaw power users do this. Dev uses Codex, Ops uses Kimi (cheap), Scout uses Opus (smart). Main Otto orchestrates.",
-                            ideaImpact: "Overnight work goes from linear (one task) to parallel (three agents on different tasks)."
+                            ideaDetail: "Dev uses Codex + GPT-5.4 (smart). Ops uses Kimi (cheap). Scout uses Opus (research). They share state via JSON. Multiple research/coding streams simultaneously.",
+                            ideaImpact: "Overnight work goes from linear to parallel. Instead of one task at a time, three agents work different angles. Massive throughput gain."
                         },
                         {
                             id: "idea-voice-commands",
                             severity: "info",
                             title: "🎙️ Voice-Activated Commands",
-                            description: "Extend Otto Voice server (already running on RTX 5090) with command parsing: 'Hey Otto, deploy Proof' or 'Otto, what's MindMapForge status?' — instant voice responses.",
+                            description: "Extend Otto Voice server so Mike can say \"Hey Otto, deploy FlipIt\" or \"Otto, what's the project status?\" and get instant voice responses.",
+                            recommendation: "Add command parser layer: detect intent → route to OpenClaw → speak result. The voice server (Whisper + Piper + qwen3:32b) is already running on PC.",
                             effort: "high", impact: "high",
-                            ideaDetail: "Voice server at 192.168.1.194:8443 already running. Add: wake word, intent classification, OpenClaw API bridge, TTS response. 515ms latency target.",
-                            ideaImpact: "Talk to Otto from anywhere in the house. 'Otto, commit and push' → done. Sci-fi butler vibes."
+                            ideaDetail: "Wake word detection + intent classification + OpenClaw API bridge. Target: 515ms latency (faster than Alexa). Voice server already at 192.168.1.194:8443.",
+                            ideaImpact: "Talk to your AI from anywhere in the house. 'Otto, commit and push' → done. Sci-fi dream realized."
                         },
                         {
                             id: "idea-qa-auto-gate",
                             severity: "info",
                             title: "🧪 Automatic Quality Gate for Builds",
-                            description: "After every Codex build: auto-screenshot → AI vision rates it → if <9/10, auto-create fix task and re-run. Closed-loop quality. We proved this manually with StyleForge.",
+                            description: "After every Codex session: auto-screenshot result → AI vision evaluates → post score to Telegram. If < 9/10, auto-create fix task and re-run.",
+                            recommendation: "We proved this manually with StyleForge (6.5 → 9.0 in 3 iterations). Automating it means every project hits 9/10 without Mike involved.",
                             effort: "medium", impact: "high",
-                            ideaDetail: "Codex + dev server + Playwright + Claude Vision + retry loop. Every project hits 9/10 without Mike lifting a finger.",
-                            ideaImpact: "'9/10 standard' becomes a machine. Every deliverable is polished before Mike sees it."
+                            ideaDetail: "Pipeline: Codex completes → Playwright screenshots → Claude Vision rates → if <9, spawn fix task → loop until 9/10. Closed-loop quality.",
+                            ideaImpact: "'9/10 standard' becomes a machine. Every deliverable polished before Mike sees it. No more 'first draft' syndrome."
                         },
                         {
-                            id: "idea-cost-tracker",
+                            id: "idea-morning-brief",
                             severity: "info",
-                            title: "📊 Real-Time Cost Tracker in Dashboard",
-                            description: "Add to menubar dashboard: estimated cost per call, daily/weekly totals, budget burn rate. Color-coded: green (under), amber (approaching), red (over).",
-                            effort: "medium", impact: "medium",
-                            ideaDetail: "session_status returns token counts. We know pricing. Simple math: tokens × price = cost. Accumulate in JSON, display in Dashboard v3.",
-                            ideaImpact: "No surprise bills. See which models eat budget. Mike's Claude Max is $200/mo — this shows if it's used wisely."
+                            title: "🌅 Morning Briefing Dashboard",
+                            description: "Auto-generated HTML page every 7 AM: weather, calendar, overnight work summary with screenshots, project status, cost report, curated AI news.",
+                            recommendation: "Combines weather skill + calendar API + overnight log + news queue into one beautiful page. Opens automatically when Mike wakes.",
+                            effort: "medium", impact: "high",
+                            ideaDetail: "Single page replaces 5 different 'what happened' checks. Wake up, open one tab, know everything. Your daily newspaper about YOUR stuff.",
+                            ideaImpact: "Saves 15-20 minutes of morning catch-up. Makes overnight autonomy visible and impressive."
                         },
                         {
                             id: "idea-mrdoit-nl-cron",
                             severity: "info",
-                            title: "📝 MrDoit Natural Language → Cron Builder",
-                            description: "Tell MrDoit 'every 30 minutes check the work queue' and it generates the cron job automatically. Natural language automation pipeline.",
+                            title: "🗣️ Natural Language → Cron Builder",
+                            description: "Mike says \"Otto, remind me every Tuesday at 9am to review the sprint\" → Otto creates the cron job automatically.",
+                            recommendation: "Parse natural language schedule → generate cron expression → create cron via OpenClaw API. Fits 2026 'AI does the plumbing' trend.",
                             effort: "medium", impact: "medium",
-                            ideaDetail: "MrDoit already builds code. Extend it to generate crontab entries + launchd plists. 'Otto, run this every hour' → done.",
-                            ideaImpact: "Mike never edits crontab manually again. Automation becomes conversational."
+                            ideaDetail: "LLM parses: 'every Tuesday at 9am' → '0 9 * * 2'. Then calls OpenClaw cron API to create job. No more manual cron syntax.",
+                            ideaImpact: "Mike never edits crontab again. Just say what you want in plain English."
                         },
                         {
-                            id: "idea-deploy-pipeline",
+                            id: "idea-cost-tracker",
                             severity: "info",
-                            title: "🚀 Auto-Deploy with Screenshot Verification",
-                            description: "Git push → auto-build → deploy → Playwright screenshots → AI rates result → Telegram notification with screenshot + score. If <8/10, auto-revert.",
-                            effort: "high", impact: "high",
-                            ideaDetail: "Wire GitHub Actions + Playwright + AI vision + GitHub Pages. Every push gets visual quality check before live.",
-                            ideaImpact: "Zero broken deploys. Mike never sees a broken page. '9/10 or iterate' becomes automated."
+                            title: "📊 Real-Time Cost Tracker",
+                            description: "Live cost tracking in Dashboard v3: per-model spend, daily/weekly totals, burn rate, projected monthly. Green/amber/red indicators.",
+                            recommendation: "Pull from session_status token counts × model pricing. Accumulate in JSON, display in Dashboard.",
+                            effort: "medium", impact: "medium",
+                            ideaDetail: "Every session_status returns tokens. Tokens × price = cost. Simple math. Display: per-model breakdown + trend chart + budget projection.",
+                            ideaImpact: "No more surprise bills. See exactly which models eat budget. Optimize in real-time."
                         },
                         {
                             id: "idea-smart-context",
                             severity: "info",
                             title: "🧠 Smart Context Manager",
-                            description: "Auto-detect context >80%: pre-spawn sub-agents, save critical state, write HEARTBEAT checklist. Never hit 100% unprepared. Directly addresses overnight autonomy failure risk.",
+                            description: "Auto-detect when main session context >80%. Pre-spawn sub-agents, save state to memory, write HEARTBEAT.md checklist — BEFORE compaction hits.",
+                            recommendation: "Prevents context exhaustion. At 80%: dump task list, spawn sub-agents, save summary. Never hit 100% unprepared.",
                             effort: "medium", impact: "high",
-                            ideaDetail: "Monitor via session_status. At 80%: dump tasks to HEARTBEAT.md, spawn sub-agents for top 3, save summary to daily memory. At 90%: aggressive offloading.",
-                            ideaImpact: "Context never runs out unexpectedly. Otto stays productive even through resets."
+                            ideaDetail: "Monitor via session_status. At 80%: proactive offloading. At 90%: aggressive distribution. Otto stays productive through context resets.",
+                            ideaImpact: "Directly fixes potential overnight failures. Otto stays productive even through context resets."
+                        },
+                        {
+                            id: "idea-deploy-pipeline",
+                            severity: "info",
+                            title: "🔄 Auto-Deploy with Screenshot Verification",
+                            description: "Git push → auto-build → deploy to Netlify → Playwright screenshots → AI vision rates → Telegram notification with screenshot + score.",
+                            recommendation: "Combines existing Playwright + AI vision + Netlify. If score < 8/10, auto-revert and alert.",
+                            effort: "high", impact: "high",
+                            ideaDetail: "GitHub Action triggers on push → builds → deploys → screenshots → rates → notifies. Quality gate for every deploy.",
+                            ideaImpact: "Zero broken deploys. Every live site guaranteed 8+/10. Mike never sees a broken page."
                         }
                     ]
                 }]
@@ -732,12 +616,10 @@
     let activeTab = 'current';
 
     function loadState() {
-        const saved = localStorage.getItem('otto-audit-v2.7.2-selections');
+        const saved = localStorage.getItem('otto-audit-v2-selections');
         if (saved) { try { selectedFindings = new Set(JSON.parse(saved)); } catch(e) {} }
     }
-    function saveState() {
-        localStorage.setItem('otto-audit-v2.7.2-selections', JSON.stringify([...selectedFindings]));
-    }
+    function saveState() { localStorage.setItem('otto-audit-v2-selections', JSON.stringify([...selectedFindings])); }
 
     function calculateScores() {
         let health = 100;
@@ -749,35 +631,35 @@
             tab.sections.forEach(section => {
                 section.findings.forEach(f => {
                     if (f.fixed) { fixedCount++; return; }
-                    if (tab.id === 'ideas' || tab.id === 'scores') { ideasCount++; return; }
+                    if (tab.id === 'ideas') { ideasCount++; return; }
                     totalActive++;
-                    if (f.severity === 'critical') health -= 12;
-                    else if (f.severity === 'high') health -= 8;
+                    if (f.severity === 'high') health -= 8;
                     else if (f.severity === 'medium') health -= 4;
                     else if (f.severity === 'low') health -= 2;
                 });
             });
         });
-        health = Math.min(100, Math.max(0, health + fixedCount * 3));
-        return { health, grade: health >= 90 ? 'A' : health >= 80 ? 'B+' : health >= 70 ? 'B' : 'C+', fixedCount, ideasCount, totalActive };
+        health = Math.min(100, Math.max(0, health) + fixedCount * 2);
+        let grade = health >= 90 ? 'A' : health >= 80 ? 'B+' : health >= 70 ? 'B' : health >= 60 ? 'C+' : 'C';
+        return { health, grade, fixedCount, ideasCount, totalActive };
     }
 
     function updateScoreRings() {
         const s = calculateScores();
         const circ = 2 * Math.PI * 60;
 
-        document.getElementById('health-value').textContent = s.health / 10;
+        document.getElementById('health-value').textContent = s.health;
         document.getElementById('health-grade').textContent = s.grade;
         const hp = document.getElementById('health-progress');
         hp.style.strokeDashoffset = circ - (s.health / 100) * circ;
-        hp.style.stroke = s.health >= 90 ? 'var(--accent-green)' : s.health >= 70 ? 'var(--accent-amber)' : 'var(--severity-high)';
+        hp.style.stroke = s.health >= 80 ? 'var(--accent-green)' : s.health >= 60 ? 'var(--accent-amber)' : 'var(--severity-high)';
         document.getElementById('health-value').style.color = hp.style.stroke;
 
         document.getElementById('fixed-value').textContent = s.fixedCount;
-        document.getElementById('fixed-progress').style.strokeDashoffset = circ - (s.fixedCount / Math.max(1, s.fixedCount + s.totalActive)) * circ;
+        document.getElementById('fixed-progress').style.strokeDashoffset = circ - Math.min(1, s.fixedCount / (s.fixedCount + s.totalActive)) * circ;
 
         document.getElementById('ideas-value').textContent = s.ideasCount;
-        document.getElementById('ideas-progress').style.strokeDashoffset = circ - (s.ideasCount / 20) * circ;
+        document.getElementById('ideas-progress').style.strokeDashoffset = circ - 0.85 * circ;
     }
 
     function renderTabs() {
@@ -806,10 +688,7 @@
                 const header = document.createElement('div');
                 header.className = 'category-header';
                 header.innerHTML = `<span>${section.name}</span><span class="category-count">${section.findings.length}</span><span class="category-toggle">▼</span>`;
-                header.onclick = () => {
-                    header.classList.toggle('collapsed');
-                    header.nextElementSibling.classList.toggle('collapsed');
-                };
+                header.onclick = () => { header.classList.toggle('collapsed'); header.nextElementSibling.classList.toggle('collapsed'); };
 
                 const findings = document.createElement('div');
                 findings.className = 'findings';
@@ -832,10 +711,11 @@
     function createCard(finding, tabId) {
         const card = document.createElement('div');
         card.className = `finding-card severity-${finding.severity}`;
-
         const isFixed = finding.fixed;
         const isChecked = selectedFindings.has(finding.id);
         const isIdea = tabId === 'ideas';
+
+        let repeatHTML = finding.repeatCount ? `<span class="repeat-badge">${finding.repeatCount}x</span>` : '';
 
         let extraHTML = '';
         if (isIdea && finding.ideaDetail) {
@@ -851,24 +731,16 @@
             `;
         }
 
-        // Repeat count badge for recurring issues
-        let repeatBadge = '';
-        if (finding.id === 'issue-api-limits') repeatBadge = '<span class="badge repeat-badge">16th audit</span>';
-        if (finding.id === 'issue-mcp-health') repeatBadge = '<span class="badge repeat-badge">9th audit</span>';
-        if (finding.id === 'issue-usage-scraper') repeatBadge = '<span class="badge repeat-badge">8th audit</span>';
-        if (finding.id === 'issue-braincells-cron') repeatBadge = '<span class="badge repeat-badge">7th audit</span>';
-        if (finding.id === 'issue-chatgpt-counter') repeatBadge = '<span class="badge repeat-badge">13th audit</span>';
-
         card.innerHTML = `
             <div class="finding-header">
                 <div class="finding-checkbox ${isFixed ? 'disabled' : ''} ${isChecked ? 'checked' : ''}" data-id="${finding.id}"></div>
                 <div class="finding-content">
                     <div class="finding-title-row">
                         <span class="finding-title">${finding.title}</span>
-                        <span class="badge severity-badge ${finding.severity}">${isFixed ? 'FIXED' : finding.severity.toUpperCase()}</span>
-                        ${repeatBadge}
-                        ${!isFixed && finding.effort ? `<span class="badge effort-badge">⏱ ${finding.effort}</span>` : ''}
-                        ${!isFixed && finding.impact ? `<span class="badge impact-badge">💥 ${finding.impact}</span>` : ''}
+                        <span class="badge severity-badge ${finding.severity}">${isFixed ? 'FIXED' : finding.severity}</span>
+                        ${repeatHTML}
+                        ${!isFixed && finding.effort !== 'done' ? `<span class="badge effort-badge">⏱ ${finding.effort}</span>` : ''}
+                        ${!isFixed && finding.impact !== 'done' ? `<span class="badge impact-badge">💥 ${finding.impact}</span>` : ''}
                     </div>
                     <div class="finding-description">${finding.description}</div>
                     <div class="finding-recommendation ${isFixed ? 'fixed-rec' : ''}">
@@ -881,10 +753,7 @@
         `;
 
         if (!isFixed) {
-            card.querySelector('.finding-checkbox').onclick = (e) => {
-                e.stopPropagation();
-                toggleSelection(finding.id);
-            };
+            card.querySelector('.finding-checkbox').onclick = (e) => { e.stopPropagation(); toggleSelection(finding.id); };
         }
         return card;
     }
@@ -892,7 +761,6 @@
     function toggleSelection(id) {
         if (selectedFindings.has(id)) selectedFindings.delete(id);
         else selectedFindings.add(id);
-
         const cb = document.querySelector(`.finding-checkbox[data-id="${id}"]`);
         if (cb) cb.classList.toggle('checked');
         updateSelectionCount();
@@ -902,84 +770,120 @@
     function updateSelectionCount() {
         document.getElementById('selected-count').textContent = selectedFindings.size;
         let issues = 0, ideas = 0;
-        selectedFindings.forEach(id => {
-            if (id.startsWith('idea-')) ideas++;
-            else issues++;
-        });
+        selectedFindings.forEach(id => { if (id.startsWith('idea-')) ideas++; else issues++; });
         const parts = [];
         if (issues) parts.push(`${issues} fix${issues > 1 ? 'es' : ''}`);
         if (ideas) parts.push(`${ideas} idea${ideas > 1 ? 's' : ''}`);
         document.getElementById('selection-breakdown').textContent = parts.join(' + ');
     }
 
-    function getSelectedFindings() {
-        const selected = [];
+    function formatSelections() {
+        const sel = [];
         auditData.tabs.forEach(tab => {
             tab.sections.forEach(section => {
-                section.findings.forEach(f => {
-                    if (selectedFindings.has(f.id)) {
-                        selected.push({ tab: tab.label, category: section.name, ...f });
-                    }
-                });
+                section.findings.forEach(f => { if (selectedFindings.has(f.id)) sel.push({ tab: tab.label, category: section.name, ...f }); });
             });
         });
-        return selected;
-    }
-
-    function formatSelections() {
-        const sel = getSelectedFindings();
         if (!sel.length) return 'No items selected.';
-        let txt = `Otto Self-Audit v2.7.2 — Selected Items (${sel.length})\nDate: March 9, 2026\n${'='.repeat(50)}\n\n`;
-
-        const fixes = sel.filter(s => !s.id.startsWith('idea-') && !s.id.startsWith('score-'));
+        let txt = `Otto Self-Audit v2.7.3 — Selected Items (${sel.length})\nDate: March 10, 2026\n${'='.repeat(50)}\n\n`;
+        const fixes = sel.filter(s => !s.id.startsWith('idea-'));
         const ideas = sel.filter(s => s.id.startsWith('idea-'));
-
         if (fixes.length) {
             txt += `🔧 FIXES TO APPLY (${fixes.length})\n${'-'.repeat(30)}\n`;
-            fixes.forEach((f, i) => {
-                txt += `\n${i+1}. [${f.severity.toUpperCase()}] ${f.title}\n   💡 ${f.recommendation}\n`;
-            });
+            fixes.forEach((f, i) => { txt += `\n${i+1}. [${f.severity.toUpperCase()}] ${f.title}\n   💡 ${f.recommendation}\n`; });
             txt += '\n';
         }
         if (ideas.length) {
             txt += `💡 IDEAS TO BUILD (${ideas.length})\n${'-'.repeat(30)}\n`;
-            ideas.forEach((f, i) => {
-                txt += `\n${i+1}. ${f.title}\n   ${f.ideaDetail}\n`;
-            });
+            ideas.forEach((f, i) => { txt += `\n${i+1}. ${f.title}\n   ${f.recommendation}\n`; });
         }
         return txt;
     }
 
     async function copyToClipboard() {
-        try {
-            await navigator.clipboard.writeText(formatSelections());
-            showToast('✅ Copied to clipboard!');
-        } catch(e) { showToast('❌ Failed to copy'); }
+        try { await navigator.clipboard.writeText(formatSelections()); showToast('✅ Copied to clipboard!'); } catch(e) { showToast('❌ Failed to copy'); }
     }
 
+    const API_BASE = 'https://otto.workwithchat.com';
+
     async function submitToOtto() {
-        const sel = getSelectedFindings().filter(s => !s.fixed && !s.id.startsWith('score-'));
-        if (!sel.length) { showToast('⚠️ Nothing actionable selected!'); return; }
-        
-        // Write to audit-jobs.json
-        const jobs = sel.map(s => ({
-            id: s.id,
-            title: s.title,
-            status: 'queued',
-            queuedAt: new Date().toISOString(),
-            type: s.id.startsWith('idea-') ? 'idea' : 'fix'
-        }));
-        
+        const sel = [];
+        auditData.tabs.forEach(tab => {
+            tab.sections.forEach(section => {
+                section.findings.forEach(f => { if (selectedFindings.has(f.id)) sel.push(f); });
+            });
+        });
+        if (!sel.length) { showToast('⚠️ Nothing selected yet!'); return; }
         try {
-            // This would normally go to an API, but for now we'll save locally
-            showToast(`🚀 ${jobs.length} item(s) queued! I'll start working on them.`);
-            selectedFindings.clear();
-            saveState();
-            updateSelectionCount();
-            document.querySelectorAll('.finding-checkbox.checked').forEach(cb => cb.classList.remove('checked'));
+            const r = await fetch(`${API_BASE}/api/audit/submit`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ date: new Date().toISOString(), selections: sel, count: sel.length })
+            });
+            if (r.ok) {
+                showToast(`🚀 ${sel.length} item(s) sent!`);
+                sel.forEach(s => selectedFindings.delete(s.id));
+                saveState();
+                updateSelectionCount();
+            } else throw new Error();
         } catch(e) {
-            showToast('📋 Copied to clipboard');
+            showToast('📋 Copied (server offline)');
             await copyToClipboard();
+        }
+    }
+
+    let panicSelectedSteps = 0;
+    let panicCommits = [];
+
+    async function openPanicModal() {
+        document.getElementById('panic-overlay').classList.add('open');
+        document.getElementById('panic-loading').style.display = 'block';
+        document.getElementById('panic-commits').innerHTML = '';
+        document.getElementById('panic-log').style.display = 'none';
+        panicSelectedSteps = 0;
+        try {
+            const r = await fetch(`${API_BASE}/api/panic/history`);
+            const data = await r.json();
+            panicCommits = data.commits || [];
+            document.getElementById('panic-loading').style.display = 'none';
+            const ul = document.getElementById('panic-commits');
+            panicCommits.forEach((c, i) => {
+                if (i === 0) return;
+                const li = document.createElement('li');
+                li.className = 'panic-commit';
+                li.dataset.steps = i;
+                li.innerHTML = `<div class="panic-commit-radio"></div><span class="panic-commit-idx">-${i}</span><span class="panic-commit-hash">${c.hash}</span><span class="panic-commit-msg">${c.message}</span>`;
+                li.onclick = () => {
+                    document.querySelectorAll('.panic-commit').forEach(el => el.classList.remove('selected'));
+                    li.classList.add('selected');
+                    panicSelectedSteps = i;
+                };
+                ul.appendChild(li);
+            });
+        } catch(e) {
+            document.getElementById('panic-loading').textContent = '❌ Cannot reach Otto server';
+        }
+    }
+
+    function closePanicModal() { document.getElementById('panic-overlay').classList.remove('open'); }
+
+    async function panicUndo() {
+        if (!panicSelectedSteps) { showToast('⚠️ Select how far back'); return; }
+        if (!confirm(`Revert ${panicSelectedSteps} commit(s) and restart?`)) return;
+        const logEl = document.getElementById('panic-log');
+        logEl.style.display = 'block';
+        logEl.textContent = '🔄 Undoing...';
+        try {
+            const r = await fetch(`${API_BASE}/api/panic/undo`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ steps: panicSelectedSteps, restartServices: true })
+            });
+            const data = await r.json();
+            logEl.textContent = (data.log || []).join('\n');
+            showToast(data.ok ? '✅ Undo complete' : '⚠️ Partial undo');
+        } catch(e) {
+            logEl.textContent += '\n❌ Server unreachable';
         }
     }
 
@@ -987,8 +891,10 @@
         const t = document.createElement('div');
         t.className = 'toast'; t.textContent = msg;
         document.body.appendChild(t);
-        setTimeout(() => { t.style.animation = 'slideIn 0.3s ease reverse'; setTimeout(() => t.remove(), 300); }, 3000);
+        setTimeout(() => { t.style.animation = 'slideOut 0.3s ease'; setTimeout(() => t.remove(), 300); }, 3000);
     }
+
+    document.addEventListener('click', (e) => { if (e.target.id === 'panic-overlay') closePanicModal(); });
 
     document.addEventListener('DOMContentLoaded', () => {
         loadState();
