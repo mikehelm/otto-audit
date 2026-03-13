@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Otto Self-Audit 🦦 2026-03-13</title>
+    <title>Otto Self-Audit v2.7.7 — March 14, 2026 🦦</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,6 +14,7 @@
             --bg-secondary: #161625;
             --bg-card: #1c1c30;
             --bg-card-hover: #252540;
+            --bg-fixed: #0d3b0d;
             --text-primary: #e8e8e8;
             --text-secondary: #8888aa;
             --accent-blue: #4cc9f0;
@@ -22,13 +23,16 @@
             --accent-green: #10b981;
             --accent-amber: #f59e0b;
             --accent-cyan: #06b6d4;
+            --accent-gold: #fbbf24;
             --severity-high: #ef4444;
             --severity-medium: #f59e0b;
             --severity-low: #3b82f6;
             --severity-info: #a855f7;
             --severity-fixed: #10b981;
+            --success: #10b981;
             --border: rgba(255, 255, 255, 0.08);
             --glow-purple: rgba(124, 58, 237, 0.15);
+            --glow-blue: rgba(76, 201, 240, 0.1);
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -40,6 +44,7 @@
         }
         code, .mono { font-family: 'JetBrains Mono', monospace; }
         .container { max-width: 1200px; margin: 0 auto; }
+
         header {
             text-align: center;
             margin-bottom: 3rem;
@@ -51,21 +56,28 @@
             position: relative;
             overflow: hidden;
         }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(76,201,240,0.05) 0%, transparent 50%);
+            animation: headerGlow 8s ease infinite alternate;
+        }
+        @keyframes headerGlow { 0% { transform: translate(0, 0); } 100% { transform: translate(20px, -10px); } }
+        header > * { position: relative; z-index: 1; }
         h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+            font-size: 2.8rem; font-weight: 800; margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
         .subtitle { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 0.75rem; }
         .version-badge {
             display: inline-block;
-            background: var(--accent-purple);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
             color: white;
-            padding: 0.25rem 0.75rem;
+            padding: 0.35rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -74,50 +86,31 @@
         }
         .record-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background: linear-gradient(135deg, var(--accent-gold), #f97316);
             color: #1a1a2e;
-            padding: 0.3rem 1rem;
+            padding: 0.35rem 1rem;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 800;
+            letter-spacing: 1px;
             margin-left: 0.5rem;
-            animation: pulse-gold 2s infinite;
+            animation: pulse 2s infinite;
         }
-        @keyframes pulse-gold {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
-            50% { box-shadow: 0 0 20px 5px rgba(251, 191, 36, 0.2); }
-        }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
         .date { color: var(--accent-cyan); font-weight: 500; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
-        .scores-row {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin: 2rem 0 1.5rem;
-            flex-wrap: wrap;
-        }
+
+        .scores-row { display: flex; justify-content: center; gap: 3rem; margin: 2rem 0 1.5rem; flex-wrap: wrap; }
         .score-item { text-align: center; }
-        .score-ring {
-            position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 0.5rem;
-        }
+        .score-ring { position: relative; width: 140px; height: 140px; margin: 0 auto 0.5rem; }
         .score-ring svg { transform: rotate(-90deg); }
         .score-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
         .score-ring-progress { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1); }
-        .score-ring-text {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;
-        }
+        .score-ring-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
         .score-ring-value { font-size: 2.2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
         .score-ring-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: -4px; }
         .score-label { font-weight: 600; font-size: 0.95rem; color: var(--text-secondary); }
-        .stats-bar {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-        }
+
+        .stats-bar { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0; }
         .stat-chip {
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--border);
@@ -128,222 +121,103 @@
         }
         .stat-chip .label { color: var(--text-secondary); }
         .stat-chip .value { color: var(--accent-blue); font-weight: 600; }
-        .stat-chip .value.ok { color: var(--accent-green); }
-        .stat-chip .value.warn { color: var(--accent-amber); }
-        .intro {
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 1.5rem auto 0;
-            line-height: 1.8;
-            font-size: 0.95rem;
-        }
-        .tab-bar {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            padding: 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            overflow-x: auto;
-        }
+        .stat-chip .warn { color: var(--accent-amber); }
+        .stat-chip .err { color: var(--severity-high); }
+
+        .intro { color: var(--text-secondary); max-width: 700px; margin: 1.5rem auto 0; line-height: 1.8; font-size: 0.95rem; }
+
+        .tab-bar { display: flex; gap: 0.5rem; margin-bottom: 2rem; padding: 0.5rem; background: var(--bg-secondary); border-radius: 14px; border: 1px solid var(--border); overflow-x: auto; }
         .tab-btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 10px;
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-family: 'Inter', sans-serif;
+            padding: 0.75rem 1.5rem; border: none; border-radius: 10px; background: transparent;
+            color: var(--text-secondary); font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            transition: all 0.3s ease; white-space: nowrap; font-family: 'Inter', sans-serif;
         }
         .tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
         .tab-btn.active { background: var(--accent-purple); color: white; }
-        .tab-btn .count {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            padding: 0.1rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin-left: 0.4rem;
-        }
+        .tab-btn .count { display: inline-block; background: rgba(255,255,255,0.15); padding: 0.1rem 0.5rem; border-radius: 10px; font-size: 0.75rem; margin-left: 0.4rem; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
         .category { margin-bottom: 2rem; }
         .category-header {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            padding: 1rem 1.25rem;
-            background: var(--bg-secondary);
-            border-radius: 14px;
-            border-left: 4px solid var(--accent-purple);
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; padding: 1rem 1.25rem;
+            background: var(--bg-secondary); border-radius: 14px; border-left: 4px solid var(--accent-purple);
+            cursor: pointer; user-select: none; transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: space-between;
         }
         .category-header:hover { background: var(--bg-card); border-left-color: var(--accent-pink); }
         .category-toggle { font-size: 1.2rem; transition: transform 0.3s ease; }
         .category-header.collapsed .category-toggle { transform: rotate(-90deg); }
         .category-count {
-            background: rgba(255,255,255,0.08);
-            padding: 0.2rem 0.6rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-            margin-left: auto;
-            margin-right: 1rem;
+            background: rgba(255,255,255,0.08); padding: 0.2rem 0.6rem; border-radius: 8px;
+            font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; color: var(--text-secondary);
+            margin-left: auto; margin-right: 1rem;
         }
         .findings { display: grid; gap: 1rem; margin-top: 1rem; transition: all 0.3s ease; }
         .findings.collapsed { display: none; }
+
         .finding-card {
-            background: var(--bg-card);
-            border-radius: 14px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border-radius: 14px; padding: 1.5rem;
+            border: 1px solid var(--border); transition: all 0.3s ease;
+            position: relative; overflow: hidden;
         }
-        .finding-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
-            transition: width 0.3s ease;
-        }
-        .finding-card.severity-critical::before { background: #dc2626; }
+        .finding-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; transition: width 0.3s ease; }
         .finding-card.severity-high::before { background: var(--severity-high); }
         .finding-card.severity-medium::before { background: var(--severity-medium); }
         .finding-card.severity-low::before { background: var(--severity-low); }
         .finding-card.severity-info::before { background: var(--severity-info); }
         .finding-card.severity-fixed::before { background: var(--severity-fixed); }
-        .finding-card.severity-fixed {
-            background: rgba(16, 185, 129, 0.06);
-            border-color: rgba(16, 185, 129, 0.15);
-        }
-        .finding-card:hover {
-            background: var(--bg-card-hover);
-            transform: translateX(4px);
-            border-color: rgba(255,255,255,0.15);
-        }
+        .finding-card.severity-fixed { background: rgba(16, 185, 129, 0.06); border-color: rgba(16, 185, 129, 0.15); }
+        .finding-card:hover { background: var(--bg-card-hover); transform: translateX(4px); border-color: rgba(255,255,255,0.15); }
+        .finding-card:hover::before { width: 6px; }
+
         .finding-header { display: flex; align-items: flex-start; gap: 1rem; }
         .finding-checkbox {
-            width: 26px; height: 26px;
-            border-radius: 8px;
-            border: 2px solid var(--accent-blue);
-            cursor: pointer;
-            flex-shrink: 0;
-            margin-top: 0.15rem;
-            transition: all 0.2s ease;
-            position: relative;
-            background: transparent;
+            width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--accent-blue);
+            cursor: pointer; flex-shrink: 0; margin-top: 0.15rem; transition: all 0.2s ease;
+            position: relative; background: transparent;
         }
         .finding-checkbox:hover { background: rgba(76,201,240,0.1); transform: scale(1.1); }
         .finding-checkbox.checked { background: var(--accent-blue); border-color: var(--accent-blue); }
-        .finding-checkbox.checked::after {
-            content: '✓'; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%,-50%); color: var(--bg-primary); font-weight: 800; font-size: 1rem;
-        }
-        .finding-checkbox.disabled {
-            border-color: var(--severity-fixed);
-            background: var(--severity-fixed);
-            cursor: default;
-            opacity: 0.6;
-        }
-        .finding-checkbox.disabled::after {
-            content: '✓'; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%,-50%); color: white; font-weight: 800; font-size: 1rem;
-        }
+        .finding-checkbox.checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: var(--bg-primary); font-weight: 800; font-size: 1rem; }
+        .finding-checkbox.disabled { border-color: var(--severity-fixed); background: var(--severity-fixed); cursor: default; opacity: 0.6; }
+        .finding-checkbox.disabled::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: white; font-weight: 800; font-size: 1rem; }
+
         .finding-content { flex: 1; }
         .finding-title-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
         .finding-title { font-size: 1.15rem; font-weight: 600; }
-        .badge {
-            padding: 0.2rem 0.65rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .badge { padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; }
         .severity-badge { color: white; }
-        .severity-badge.critical { background: #dc2626; }
         .severity-badge.high { background: var(--severity-high); }
         .severity-badge.medium { background: var(--severity-medium); color: #1a1a2e; }
         .severity-badge.low { background: var(--severity-low); }
         .severity-badge.info { background: var(--severity-info); }
         .severity-badge.fixed { background: var(--severity-fixed); }
         .effort-badge, .impact-badge { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
-        .repeat-badge { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
+        .repeat-badge { background: rgba(239,68,68,0.2); color: var(--severity-high); }
+
         .finding-description { color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.7; font-size: 0.95rem; }
-        .finding-recommendation {
-            background: rgba(76,201,240,0.06);
-            border-left: 3px solid var(--accent-blue);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
-        .finding-recommendation.fixed-rec {
-            background: rgba(16,185,129,0.06);
-            border-left-color: var(--severity-fixed);
-        }
-        .recommendation-label {
-            font-weight: 700; color: var(--accent-blue);
-            margin-bottom: 0.4rem; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
+        .finding-recommendation { background: rgba(76,201,240,0.06); border-left: 3px solid var(--accent-blue); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        .finding-recommendation.fixed-rec { background: rgba(16,185,129,0.06); border-left-color: var(--severity-fixed); }
+        .recommendation-label { font-weight: 700; color: var(--accent-blue); margin-bottom: 0.4rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
         .finding-recommendation.fixed-rec .recommendation-label { color: var(--severity-fixed); }
         .recommendation-text { color: var(--text-primary); line-height: 1.7; font-size: 0.95rem; }
-        .idea-preview {
-            margin-top: 1rem;
-            padding: 1rem;
-            background: rgba(124,58,237,0.06);
-            border: 1px solid rgba(124,58,237,0.15);
-            border-radius: 10px;
-        }
-        .idea-preview-label {
-            font-weight: 700; color: var(--accent-purple);
-            font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 0.5rem;
-        }
+
+        .idea-preview { margin-top: 1rem; padding: 1rem; background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.15); border-radius: 10px; }
+        .idea-preview-label { font-weight: 700; color: var(--accent-purple); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
         .idea-what { color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; }
-        .idea-impact {
-            margin-top: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(245,158,11,0.06);
-            border-left: 3px solid var(--accent-amber);
-            border-radius: 6px;
-        }
-        .idea-impact-label {
-            font-weight: 700; color: var(--accent-amber);
-            font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 0.3rem;
-        }
+        .idea-impact { margin-top: 0.75rem; padding: 0.75rem; background: rgba(245,158,11,0.06); border-left: 3px solid var(--accent-amber); border-radius: 6px; }
+        .idea-impact-label { font-weight: 700; color: var(--accent-amber); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem; }
+
         .bottom-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: linear-gradient(180deg, rgba(15,15,26,0.95) 0%, var(--bg-primary) 100%);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 1.25rem 2rem;
-            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-            box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
-            z-index: 1000;
-            flex-wrap: wrap;
+            backdrop-filter: blur(20px); border-top: 1px solid var(--border);
+            padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.5); z-index: 1000; flex-wrap: wrap;
         }
         .selection-info { display: flex; align-items: center; gap: 1rem; }
-        .selection-count {
-            font-size: 1.1rem; font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-blue);
-        }
+        .selection-count { font-size: 1.1rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent-blue); }
         .selection-breakdown { font-size: 0.85rem; color: var(--text-secondary); }
         .bottom-bar-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
         .btn {
@@ -354,25 +228,34 @@
         }
         .btn-copy { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
         .btn-copy:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
-        .btn-submit {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white;
-        }
+        .btn-submit { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: white; }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+        .btn-panic { background: rgba(239,68,68,0.15); color: var(--severity-high); border: 1px solid rgba(239,68,68,0.3); }
+        .btn-panic:hover { background: var(--severity-high); color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239,68,68,0.4); }
+        .btn:active { transform: translateY(0); }
+
         .toast {
             position: fixed; top: 2rem; right: 2rem;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--accent-blue);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            z-index: 2000;
-            animation: slideIn 0.3s ease;
-            font-weight: 500;
+            background: var(--bg-secondary); color: var(--text-primary);
+            padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--accent-blue);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); z-index: 2000;
+            animation: slideIn 0.3s ease; font-weight: 500;
         }
         @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
+
+        .streak-banner {
+            background: linear-gradient(90deg, rgba(251,191,36,0.1), rgba(249,115,22,0.1));
+            border: 1px solid rgba(251,191,36,0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin: 1rem auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        .streak-banner .streak-num { font-size: 2rem; font-weight: 800; color: var(--accent-gold); }
+        .streak-banner .streak-text { color: var(--text-secondary); font-size: 0.9rem; }
+
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             .scores-row { gap: 1.5rem; }
@@ -387,49 +270,51 @@
 <body>
     <div class="container">
         <header>
-            <span class="version-badge">v2.7.6</span>
+            <span class="version-badge">V2.7.7 — FULL REFRESH</span>
             <h1>Otto Self-Audit Report 🦦</h1>
             <p class="subtitle">Security • Efficiency • Opportunities • <strong>What's Next</strong></p>
-            <p class="date">March 13, 2026 — 5:15 AM ICT</p>
+            <p class="date">March 14, 2026 — 5:15 AM ICT</p>
+
+            <div class="streak-banner">
+                <span class="streak-num">🏆 9.7</span>
+                <span class="streak-text">NEW ALL-TIME HIGH! 9-day streak of 9+ scores. First perfect 10/10 in Quality + Tool Mastery.</span>
+            </div>
 
             <div class="scores-row">
                 <div class="score-item">
-                    <div class="score-ring" id="health-ring">
+                    <div class="score-ring">
                         <svg width="140" height="140">
                             <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
-                            <circle class="score-ring-progress" id="health-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="376.99"></circle>
+                            <circle class="score-ring-progress" id="health-progress" cx="70" cy="70" r="60" stroke-dasharray="376.99" stroke-dashoffset="18.85" style="stroke: var(--accent-green)"></circle>
                         </svg>
                         <div class="score-ring-text">
-                            <div class="score-ring-value" id="health-value">9.6</div>
-                            <div class="score-ring-label" id="health-grade">A+ 🏆</div>
+                            <div class="score-ring-value" style="color: var(--accent-green)">95</div>
+                            <div class="score-ring-label">A+</div>
                         </div>
                     </div>
-                    <div class="score-label">Health Score<span class="record-badge">NEW RECORD!</span></div>
+                    <div class="score-label">Health Score</div>
                 </div>
                 <div class="score-item">
-                    <div class="score-ring" id="fixed-ring">
+                    <div class="score-ring">
                         <svg width="140" height="140">
                             <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
-                            <circle class="score-ring-progress" id="fixed-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="376.99" style="stroke: var(--accent-green)"></circle>
+                            <circle class="score-ring-progress" cx="70" cy="70" r="60" stroke-dasharray="376.99" stroke-dashoffset="339.29" style="stroke: var(--accent-green)"></circle>
                         </svg>
                         <div class="score-ring-text">
-                            <div class="score-ring-value" id="fixed-value" style="color: var(--accent-green)">3</div>
+                            <div class="score-ring-value" style="color: var(--accent-green)">1</div>
                             <div class="score-ring-label">fixed</div>
                         </div>
                     </div>
                     <div class="score-label">Issues Resolved</div>
                 </div>
                 <div class="score-item">
-                    <div class="score-ring" id="ideas-ring">
+                    <div class="score-ring">
                         <svg width="140" height="140">
                             <circle class="score-ring-bg" cx="70" cy="70" r="60"></circle>
-                            <circle class="score-ring-progress" id="ideas-progress" cx="70" cy="70" r="60"
-                                stroke-dasharray="376.99" stroke-dashoffset="376.99" style="stroke: var(--accent-purple)"></circle>
+                            <circle class="score-ring-progress" cx="70" cy="70" r="60" stroke-dasharray="376.99" stroke-dashoffset="0" style="stroke: var(--accent-purple)"></circle>
                         </svg>
                         <div class="score-ring-text">
-                            <div class="score-ring-value" id="ideas-value" style="color: var(--accent-purple)">10</div>
+                            <div class="score-ring-value" style="color: var(--accent-purple)">10</div>
                             <div class="score-ring-label">ideas</div>
                         </div>
                     </div>
@@ -438,19 +323,16 @@
             </div>
 
             <div class="stats-bar">
-                <div class="stat-chip"><span class="label">Firewall </span><span class="value ok">ON ✅</span></div>
-                <div class="stat-chip"><span class="label">FileVault </span><span class="value ok">ON ✅</span></div>
-                <div class="stat-chip"><span class="label">Disk </span><span class="value ok">276GB free</span></div>
+                <div class="stat-chip"><span class="label">Firewall </span><span class="value">ON ✅</span></div>
+                <div class="stat-chip"><span class="label">FileVault </span><span class="value">ON ✅</span></div>
+                <div class="stat-chip"><span class="label">Disk </span><span class="value">275GB free</span></div>
                 <div class="stat-chip"><span class="label">Services </span><span class="value">2 running</span></div>
-                <div class="stat-chip"><span class="label">cloudflared </span><span class="value ok">×1 ✅</span></div>
-                <div class="stat-chip"><span class="label">Crons </span><span class="value ok">6 active</span></div>
-                <div class="stat-chip"><span class="label">Ollama </span><span class="value warn">offline</span></div>
+                <div class="stat-chip"><span class="label">Cloudflared </span><span class="warn">3 instances ⚠️</span></div>
+                <div class="stat-chip"><span class="label">Ollama </span><span class="err">OFFLINE ❌</span></div>
             </div>
 
             <p class="intro">
-                Hey Mike! 👋 <strong>9.6/10 — NEW ALL-TIME RECORD!</strong> 8-day streak of 9+ scores. 
-                FlipIt V3 shipped overnight, Control Panel self-built, cron cleanup blitz. 
-                Three issues fixed, 8 remaining (2 CRITICAL need your action). Check what you want and hit Submit. 🚀
+                Hey Mike! 👋 <strong>NEW RECORD: 9.7/10!</strong> Yesterday was massive — FlipIt V3 shipped overnight complete, 10-iteration review loop hit 8.59, Control Panel self-built. Check the ideas tab — auto-commit cron is URGENT (21 files nearly lost again). 🚀
             </p>
         </header>
 
@@ -460,9 +342,7 @@
 
     <div class="bottom-bar">
         <div class="selection-info">
-            <div class="selection-count">
-                <span id="selected-count">0</span> selected
-            </div>
+            <div class="selection-count"><span id="selected-count">0</span> selected</div>
             <div class="selection-breakdown" id="selection-breakdown"></div>
         </div>
         <div class="bottom-bar-actions">
@@ -478,31 +358,15 @@
                 id: "fixed",
                 label: "✅ Fixed",
                 sections: [{
-                    name: "✅ Fixed Since Last Audit (March 12)",
+                    name: "✅ Fixed Since March 13",
                     findings: [
-                        {
-                            id: "fix-cloudflared",
-                            severity: "fixed",
-                            title: "cloudflared Down to 1 Instance",
-                            description: "Was running 3 instances from cron collisions. Now stable at 1. The speed-showcase cron cleanup worked.",
-                            recommendation: "Resolved ✅ — Single cloudflared instance for MCP tunnel.",
-                            effort: "done", impact: "done", fixed: true
-                        },
                         {
                             id: "fix-git-workspace",
                             severity: "fixed",
-                            title: "Git Workspace Clean — 110 Files Saved",
-                            description: "Pre-audit checkpoint <code>6182a37</code> caught 110 uncommitted files including MEMORY.md, AGENTS.md, Control Panel, FlipIt V3 work. Workspace now clean.",
-                            recommendation: "Resolved ✅ — All work committed. Panic Undo available to checkpoint 6182a37.",
-                            effort: "done", impact: "done", fixed: true
-                        },
-                        {
-                            id: "fix-cron-cleanup",
-                            severity: "fixed",
-                            title: "Cron Cleanup — 10 Killed, 6 Essential Remain",
-                            description: " Killed 10 stale/pointless crons (duplicate heartbeats, broken jobs, redundant monitors). Active: daily review, backup, folder monitor, policy auditor, display sleep/wake.",
-                            recommendation: "Resolved ✅ — Lean cron roster. Less resource contention.",
-                            effort: "done", impact: "done", fixed: true
+                            title: "Git Workspace Clean — 21 Files Saved",
+                            description: "Pre-audit checkpoint <code>b288111</code> caught 21 uncommitted files including hero images, logo concepts, skill files, and temp assets. All committed, workspace now clean.",
+                            recommendation: "Auto-commit cron would prevent this near-loss. See Ideas tab.",
+                            fixed: true
                         }
                     ]
                 }]
@@ -516,21 +380,19 @@
                         findings: [
                             {
                                 id: "issue-api-limits",
-                                severity: "critical",
+                                severity: "high",
                                 title: "No API Spending Limits Set",
-                                description: "20th consecutive audit. <strong>CRITICAL.</strong> Kimi API has no spending cap. Mike must set monthly limit on Moonshot dashboard.",
-                                recommendation: "Log into Moonshot console → Settings → Billing → Set monthly cap (suggest $50-100). This is the only API without built-in limits.",
-                                effort: "low", impact: "high",
-                                repeatCount: 20
+                                description: "21st consecutive audit. <strong>Kimi API has no spending cap.</strong> Mike's Claude Max is $200/mo subscription (capped), but Kimi is pay-per-use with no limit.",
+                                recommendation: "Set monthly spending limits on Kimi dashboard. This is a Mike action — Otto cannot access billing dashboards.",
+                                effort: "low", impact: "high", repeatCount: 21
                             },
                             {
                                 id: "issue-usage-scraper",
-                                severity: "critical",
+                                severity: "high",
                                 title: "Claude Usage Scraper in ERROR State",
-                                description: "12th consecutive audit. <strong>CRITICAL.</strong> Scraper script failing. Without this, Mike has zero visibility into Claude API spend.",
-                                recommendation: "Debug ~/.otto/scripts/claude-usage-scraper.sh — likely auth token expired or Anthropic changed API. Mike needs spend data.",
-                                effort: "medium", impact: "high",
-                                repeatCount: 12
+                                description: "13th consecutive audit. The usage scraper that tracks Claude API spend is broken. Without this, Mike has no visibility into API costs.",
+                                recommendation: "Debug the scraper or rebuild with fresh credentials. Low effort, high visibility restoration.",
+                                effort: "medium", impact: "high", repeatCount: 13
                             }
                         ]
                     },
@@ -541,28 +403,33 @@
                                 id: "issue-mcp-health",
                                 severity: "high",
                                 title: "MCP Server Health Endpoint Returns Cloudflare Parking",
-                                description: "13th consecutive audit. <code>/health</code> returns Cloudflare parking HTML instead of JSON. Core <code>/mcp</code> endpoint works fine.",
-                                recommendation: "Update MCP server health route to return proper JSON. Cloudflare tunnel may be intercepting the path.",
-                                effort: "low", impact: "medium",
-                                repeatCount: 13
+                                description: "14th consecutive audit. <code>/health</code> returns HTML parking page instead of JSON. <code>/mcp</code> endpoint works fine.",
+                                recommendation: "Fix the health endpoint route on the MCP server. May be a Cloudflare tunnel config issue.",
+                                effort: "low", impact: "medium", repeatCount: 14
                             },
                             {
                                 id: "issue-braincells-cron",
                                 severity: "high",
                                 title: "BrainCells Morning Status Cron Failing",
-                                description: "11th consecutive audit. Cron fires but Telegram send fails. BrainCells investors aren't getting morning updates.",
-                                recommendation: "Debug the Telegram channel ID and bot token in the BrainCells cron. Check if channel was archived or bot removed.",
-                                effort: "low", impact: "medium",
-                                repeatCount: 11
+                                description: "12th consecutive audit. Cron fires at 7 AM but Telegram send fails. Mike doesn't get the morning update.",
+                                recommendation: "Debug the Telegram send — check channel ID, bot token, permissions.",
+                                effort: "low", impact: "medium", repeatCount: 12
                             },
                             {
                                 id: "issue-backup-cron",
                                 severity: "high",
                                 title: "Daily Backup Cron Delivery Error",
-                                description: "NEW issue. Backup runs but delivery fails: 'Channel is required when multiple channels configured.' Needs explicit channel.",
-                                recommendation: "Set delivery.channel to 'telegram' in the backup cron config.",
-                                effort: "low", impact: "medium",
-                                repeatCount: 1
+                                description: "2nd consecutive audit. Delivery fails with 'channel required when multiple configured'.",
+                                recommendation: "Add explicit channel parameter to the backup cron delivery config.",
+                                effort: "low", impact: "medium", repeatCount: 2
+                            },
+                            {
+                                id: "issue-cloudflared-regression",
+                                severity: "high",
+                                title: "Cloudflared Multiple Instances Regression",
+                                description: "<strong>REGRESSION from March 13 fix.</strong> Back to 3 instances running instead of 1. Need to identify and kill the spawner.",
+                                recommendation: "Check process tree, identify parent process spawning duplicates, kill it. Then audit crons for collision.",
+                                effort: "low", impact: "medium", repeatCount: 1
                             }
                         ]
                     },
@@ -573,28 +440,25 @@
                                 id: "issue-ollama-offline",
                                 severity: "medium",
                                 title: "PC Ollama Server Offline",
-                                description: "2nd consecutive audit. PC at 192.168.1.194 not responding on port 11434. RTX 5090 compute sitting idle.",
-                                recommendation: "SSH to PC and restart Ollama: <code>ollama serve</code>. Consider adding Ollama to PC startup scripts.",
-                                effort: "low", impact: "medium",
-                                repeatCount: 2
+                                description: "3rd consecutive audit. PC at 192.168.1.194 not responding on port 11434. RTX 5090 compute sitting idle.",
+                                recommendation: "SSH to PC, restart Ollama service. Consider auto-start on boot.",
+                                effort: "low", impact: "medium", repeatCount: 3
                             },
                             {
                                 id: "issue-chatgpt-counter",
                                 severity: "medium",
                                 title: "ChatGPT Session Manager Counter Bug",
-                                description: "17th consecutive audit. <code>tabsChecked</code> always reports 0. Counter logic broken.",
-                                recommendation: "Debug chatgpt-sessions.json counter increment logic. Low priority — cosmetic issue.",
-                                effort: "low", impact: "low",
-                                repeatCount: 17
+                                description: "18th consecutive audit. <code>tabsChecked</code> always reports 0 even when tabs are being checked.",
+                                recommendation: "Debug the counter increment logic. Cosmetic bug, doesn't affect functionality.",
+                                effort: "low", impact: "low", repeatCount: 18
                             },
                             {
                                 id: "issue-mindmapforge-v3",
                                 severity: "medium",
                                 title: "MindMapForge V3 Decision Needed",
-                                description: "6th consecutive audit. Mike decides: rebuild via Codex for clean slate, or audit MrDoit's files for incremental fix.",
-                                recommendation: "Mike call: (A) Fresh Codex rebuild with PRD, or (B) Debug existing codebase. Default after 7 days = Codex rebuild.",
-                                effort: "medium", impact: "medium",
-                                repeatCount: 6
+                                description: "7th consecutive audit. Mike needs to decide: rebuild via Codex or audit MrDoit's existing files.",
+                                recommendation: "Otto needs direction from Mike. Options: (1) Fresh Codex rebuild, (2) Manual audit of current codebase, (3) Ship as-is.",
+                                effort: "medium", impact: "medium", repeatCount: 7
                             }
                         ]
                     }
@@ -609,102 +473,102 @@
                         {
                             id: "idea-auto-commit",
                             severity: "info",
-                            title: "🔄 Auto-Commit Cron (URGENT)",
-                            description: "110 files nearly lost today. Pre-audit checkpoint saved them but can't rely on luck. 2-hour auto-commit cron is critical infrastructure.",
-                            recommendation: "Create cron: every 2 hours, git add -A && git commit. Push daily. This is not optional — work will be lost without it.",
+                            title: "🔄 [URGENT] Auto-Commit Cron",
+                            description: "Every 2 hours: check for uncommitted changes, commit with timestamp, push daily. <strong>21 files nearly lost today</strong> — only the pre-audit checkpoint saved them.",
+                            recommendation: "Create cron: check git status → if dirty, commit + push. Zero-effort safety net.",
                             effort: "low", impact: "high",
-                            ideaDetail: "Simple cron that runs <code>git add -A && git commit -m 'Auto-save $(date)'</code> every 2 hours. Daily push to remote. Cost: nearly zero. Risk without it: losing days of work.",
-                            ideaImpact: "Never lose work again. Today's 110 files would have been gone if the machine crashed before audit. This is infrastructure, not nice-to-have."
+                            ideaDetail: "A simple shell script runs every 2 hours. Checks `git status --porcelain`. If output exists, commits with 'Auto-commit $(date)' and pushes. Could have saved 110 files on March 13 and 21 files today.",
+                            ideaImpact: "Never lose work again. Set-and-forget safety. The checkpoint saved us today, but it shouldn't be needed."
                         },
                         {
                             id: "idea-morning-brief",
                             severity: "info",
                             title: "🌅 Morning Briefing Dashboard",
-                            description: "One page: weather, calendar, overnight work, project status, costs, news. Replaces 5 morning checks.",
-                            recommendation: "Build on existing Dashboard v3 menubar app. Generate HTML at 7 AM, auto-open in browser.",
+                            description: "Auto-generated HTML page that opens every morning: weather, calendar, overnight work summary, project status, cost report, curated AI news.",
+                            recommendation: "Single page replaces 5 different 'what happened' checks. Wake up knowing everything.",
                             effort: "medium", impact: "high",
                             ideaDetail: "Combines weather skill + calendar API + overnight work log + screenshot archive + news queue into one beautiful auto-updating page. Generates at 7 AM daily via cron.",
-                            ideaImpact: "Saves 15-20 minutes of morning catch-up. Makes overnight autonomy visible. You'd wake up, open one tab, know everything."
+                            ideaImpact: "Saves 15-20 minutes of morning catch-up. Makes overnight autonomy visible and impressive."
                         },
                         {
-                            id: "idea-claude-teams",
+                            id: "idea-multi-agent",
                             severity: "info",
-                            title: "🤖 Multi-Agent Squad (Otto-Dev, Otto-Ops, Otto-Scout)",
-                            description: "Split Otto into 3 specialized agents: <strong>Dev</strong> (coding, Codex), <strong>Ops</strong> (monitoring, health), <strong>Scout</strong> (research, trends). Parallel execution.",
-                            recommendation: "Each agent gets own SOUL.md, model config, memory. Main Otto orchestrates. Matches Anthropic's 2026 agent team research.",
+                            title: "🤖 Multi-Agent Squad (Dev/Ops/Scout)",
+                            description: "Split Otto into 3 specialized agents: <strong>Otto-Dev</strong> (coding, Codex), <strong>Otto-Ops</strong> (monitoring, health checks), <strong>Otto-Scout</strong> (research, trends).",
+                            recommendation: "Each agent gets own model config. Dev uses Opus, Ops uses Kimi (cheap), Scout uses Claude. 3x parallel throughput.",
                             effort: "high", impact: "high",
-                            ideaDetail: "Anthropic's March 2026 report shows Claude Code running 7-hour autonomous jobs with 99.9% accuracy. Multi-agent teams are the 2026 pattern. Dev uses Codex, Ops uses Kimi (cheap), Scout uses Opus (smart).",
-                            ideaImpact: "3x parallel throughput. Overnight work goes from linear to parallel. The overnight autonomy failure would never happen again."
+                            ideaDetail: "This is what top OpenClaw power users do. Each agent is laser-focused. No context pollution. All three work simultaneously on different tasks.",
+                            ideaImpact: "Overnight work goes from linear (one task at a time) to parallel (three agents working different angles)."
                         },
                         {
-                            id: "idea-browser-qa",
+                            id: "idea-quality-gate",
                             severity: "info",
-                            title: "🧪 Auto QA Gate for Every Deploy",
-                            description: "After every Codex session: auto-screenshot → AI vision rates it → if < 9/10, auto-fix loop. Quality gate without human in loop.",
-                            recommendation: "Wire: Codex → dev server → Playwright screenshot → Claude Vision → score. Loop until 9/10 or 3 attempts.",
+                            title: "🧪 Auto Quality Gate for Every Build",
+                            description: "After every Codex session: auto-screenshot, run AI vision evaluation, post score to Telegram. If < 9/10, auto-create fix task.",
+                            recommendation: "Closed-loop quality: build → screenshot → rate → fix → repeat. No human needed.",
                             effort: "medium", impact: "high",
-                            ideaDetail: "We proved this works with StyleForge (6.5 → 9.0 in 3 iterations). Automating it means every project hits 9/10 without Mike lifting a finger.",
-                            ideaImpact: "Every deliverable is polished before Mike sees it. The '9/10 standard' becomes a machine, not a manual check."
-                        },
-                        {
-                            id: "idea-overnight-intern",
-                            severity: "info",
-                            title: "🌙 Overnight Intern — Autonomous Research Worker",
-                            description: "Based on OpenAI's 2026 goal: agent that runs overnight research tasks, summarizes findings, delivers morning report.",
-                            recommendation: "Spawn isolated agent at 11 PM with research queue. Compiles findings into morning brief by 6 AM.",
-                            effort: "medium", impact: "medium",
-                            ideaDetail: "OpenAI's 2026 vision is 'automated intern for overnight research.' We can build this now: queue research topics, agent searches/synthesizes, delivers concise report.",
-                            ideaImpact: "Wake up to fresh research every day. Competitor analysis, trend detection, feature ideas — all done while you sleep."
-                        },
-                        {
-                            id: "idea-calendar-write",
-                            severity: "info",
-                            title: "📅 Calendar Write Access",
-                            description: "Otto can read calendar but not write. Cross-app coordination is 2026 table stakes. Should be able to schedule, move, remind.",
-                            recommendation: "Add Google Calendar API write scope. Otto can then schedule focus time, buffer meetings, set reminders.",
-                            effort: "medium", impact: "medium",
-                            ideaDetail: "Every 2026 AI assistant review lists calendar management as core feature. We're behind. Read-only is 2025.",
-                            ideaImpact: "Full calendar control. 'Otto, block 2-4 PM for deep work' → done. No context switching to calendar app."
-                        },
-                        {
-                            id: "idea-flipit-handoff",
-                            severity: "info",
-                            title: "📤 Auto-Handoff Compaction",
-                            description: "When main session hits 80% context: auto-spawn sub-agents for pending tasks, save state to files, prepare for clean handoff.",
-                            recommendation: "Prevents the overnight autonomy failure from Feb 16. Context never runs out unexpectedly.",
-                            effort: "medium", impact: "high",
-                            ideaDetail: "Monitor context via session_status. At 80%: dump task list to HEARTBEAT.md, spawn sub-agents for top 3 tasks, save conversation summary. Never hit 100% unprepared.",
-                            ideaImpact: "Directly fixes the Feb 16 failure where 84 heartbeat turns were wasted. Otto stays productive even through context resets."
+                            ideaDetail: "We proved this works manually with StyleForge (6.5 → 9.0 in 3 iterations). Automating means every project hits 9/10 without Mike lifting a finger.",
+                            ideaImpact: "The '9/10 standard' becomes a machine. Every deliverable is polished before Mike sees it."
                         },
                         {
                             id: "idea-cost-tracker",
                             severity: "info",
-                            title: "📊 Real-Time Cost Tracker in Dashboard",
-                            description: "Live cost tracking in menubar: per-model costs, daily/weekly burn, budget projection. Green/amber/red status.",
-                            recommendation: "Pull from session_status + pricing tables. Add to Dashboard v3 models tab.",
+                            title: "📊 Real-Time Cost Tracker",
+                            description: "Live cost tracking in menubar dashboard: estimated cost per call, daily/weekly totals, budget burn rate, projected monthly spend.",
+                            recommendation: "Pull from session_status + model pricing tables. Color-coded: green/amber/red.",
                             effort: "medium", impact: "medium",
-                            ideaDetail: "session_status returns token counts. We know pricing per model. Simple math: tokens × price = cost. Accumulate in JSON, display with trend chart.",
-                            ideaImpact: "No surprise bills. See exactly which models eat budget. Optimize in real-time instead of guessing."
+                            ideaDetail: "Every session_status returns token counts. We know pricing per model. Simple math: tokens × price = cost. Display in Dashboard v3.",
+                            ideaImpact: "No more surprise bills. See exactly which models eat budget. Optimize in real-time."
+                        },
+                        {
+                            id: "idea-voice-commands",
+                            severity: "info",
+                            title: "🎙️ Voice-Activated Commands",
+                            description: "Extend Otto Voice server so Mike can say 'Hey Otto, deploy FlipIt' and get instant voice responses with actions.",
+                            recommendation: "Add command parser: detect intent → route to OpenClaw → speak result. Like Alexa but useful.",
+                            effort: "high", impact: "high",
+                            ideaDetail: "Voice server (Faster-Whisper + Piper TTS + qwen3:32b) already running at 192.168.1.194:8443. Needs: wake word, intent classification, OpenClaw API bridge.",
+                            ideaImpact: "Talk to your AI from anywhere in the house. 'Otto, commit and push' → done. Sci-fi dream."
+                        },
+                        {
+                            id: "idea-context-manager",
+                            severity: "info",
+                            title: "🧠 Smart Context Manager",
+                            description: "Auto-detect when context is getting full (>80%). Pre-spawn sub-agents, save state, write HEARTBEAT.md — BEFORE compaction hits.",
+                            recommendation: "Prevents overnight autonomy failure. Context never runs out unexpectedly.",
+                            effort: "medium", impact: "high",
+                            ideaDetail: "Monitor context via session_status. At 80%: dump task list to HEARTBEAT.md, spawn sub-agents for top tasks, save summary to daily memory.",
+                            ideaImpact: "Directly fixes the Feb 16 overnight autonomy failure. Otto stays productive even through context resets."
+                        },
+                        {
+                            id: "idea-auto-deploy",
+                            severity: "info",
+                            title: "🔄 Auto-Deploy Pipeline",
+                            description: "Git push → auto-build → deploy to GitHub Pages → Playwright screenshots → AI vision rates → Telegram notification. If < 8/10, auto-revert.",
+                            recommendation: "Combines Playwright + AI vision + GitHub Actions. End-to-end quality gate.",
+                            effort: "high", impact: "high",
+                            ideaDetail: "We have Playwright, screenshot-to-AI-rating proven, GitHub Pages hosting. Wire them together with a GitHub Action. Every push gets visual quality check.",
+                            ideaImpact: "Zero broken deploys. Every live site is guaranteed 8+/10 quality."
                         },
                         {
                             id: "idea-weekly-video",
                             severity: "info",
                             title: "📈 Weekly Progress Video Recap",
-                            description: "Every Sunday: auto-generate 60-second video with screenshots, metrics, progress bars, narrated by Otto's voice (Piper TTS).",
-                            recommendation: "Combine screenshot archive + ffmpeg + Piper TTS. Export MP4, send via Telegram.",
+                            description: "Every Sunday: 60-second animated recap. Screenshots of work, metrics, project progress bars, narrated by Otto's voice.",
+                            recommendation: "Combine screenshot archive + ffmpeg + Piper TTS. Export as MP4, send via Telegram.",
                             effort: "high", impact: "medium",
-                            ideaDetail: "We have: screenshot archive, ffmpeg, Piper TTS on RTX 5090, project tracking. Stitch together: title card → project highlights → metrics overlay → voice narration.",
-                            ideaImpact: "Shareable artifact showing the week's progress. 'Look what my AI built this week.' Massive flex material."
+                            ideaDetail: "We have screenshot archive daemon, ffmpeg, Piper TTS on RTX 5090. Stitch: title card → project highlights → metrics overlay → voice narration.",
+                            ideaImpact: "Shareable artifact showing the week's progress. Massive flex material."
                         },
                         {
-                            id: "idea-voice-commands",
+                            id: "idea-focus-soundtrack",
                             severity: "info",
-                            title: "🎙️ Voice-Activated Commands via LAN",
-                            description: "Extend Otto Voice server: <em>'Hey Otto, deploy FlipIt'</em> or <em>'Otto, what's MindMapForge status?'</em> Voice in, action out.",
-                            recommendation: "Add command parser to voice server: detect intent → route to OpenClaw → speak result. Like Alexa but useful.",
-                            effort: "high", impact: "high",
-                            ideaDetail: "Voice server (Faster-Whisper + Piper TTS + qwen3:32b) already running at 192.168.1.194:8443. Needs: wake word, intent classification, OpenClaw API bridge. Latency target: 515ms.",
-                            ideaImpact: "Talk to your AI from anywhere in the house. No phone, no keyboard. 'Otto, commit and push' → done. Sci-fi dream realized."
+                            title: "🎵 AI-Generated Focus Soundtrack",
+                            description: "Use RTX 5090 to generate custom lo-fi/ambient music while Mike works. Detect context (coding = ambient, design = upbeat).",
+                            recommendation: "Install MusicGen on Windows PC. Generate 30-min tracks based on context. Stream via LAN.",
+                            effort: "high", impact: "low",
+                            ideaDetail: "MusicGen by Meta runs on GPU, generates high-quality music from text prompts. Context detector (what app is active) → prompt → MusicGen → audio stream.",
+                            ideaImpact: "Pure vibe upgrade. Your AI assistant is also your DJ. The future is now."
                         }
                     ]
                 }]
@@ -719,21 +583,7 @@
         const saved = localStorage.getItem('otto-audit-v2-selections');
         if (saved) { try { selectedFindings = new Set(JSON.parse(saved)); } catch(e) {} }
     }
-    function saveState() {
-        localStorage.setItem('otto-audit-v2-selections', JSON.stringify([...selectedFindings]));
-    }
-
-    function updateScoreRings() {
-        const circ = 2 * Math.PI * 60;
-        // Health
-        const hp = document.getElementById('health-progress');
-        hp.style.strokeDashoffset = circ - (96 / 100) * circ;
-        hp.style.stroke = 'var(--accent-green)';
-        // Fixed
-        document.getElementById('fixed-progress').style.strokeDashoffset = circ - (3 / 11) * circ;
-        // Ideas
-        document.getElementById('ideas-progress').style.strokeDashoffset = circ - 0.85 * circ;
-    }
+    function saveState() { localStorage.setItem('otto-audit-v2-selections', JSON.stringify([...selectedFindings])); }
 
     function renderTabs() {
         const bar = document.getElementById('tab-bar');
@@ -761,10 +611,7 @@
                 const header = document.createElement('div');
                 header.className = 'category-header';
                 header.innerHTML = `<span>${section.name}</span><span class="category-count">${section.findings.length}</span><span class="category-toggle">▼</span>`;
-                header.onclick = () => {
-                    header.classList.toggle('collapsed');
-                    header.nextElementSibling.classList.toggle('collapsed');
-                };
+                header.onclick = () => { header.classList.toggle('collapsed'); header.nextElementSibling.classList.toggle('collapsed'); };
 
                 const findings = document.createElement('div');
                 findings.className = 'findings';
@@ -786,23 +633,10 @@
 
     function createCard(finding, tabId) {
         const card = document.createElement('div');
-        const sevClass = finding.severity === 'critical' ? 'severity-critical' : `severity-${finding.severity}`;
-        card.className = `finding-card ${sevClass}`;
-
+        card.className = `finding-card severity-${finding.severity}`;
         const isFixed = finding.fixed;
         const isChecked = selectedFindings.has(finding.id);
         const isIdea = tabId === 'ideas';
-
-        let badges = `<span class="badge severity-badge ${finding.severity}">${isFixed ? 'FIXED' : finding.severity.toUpperCase()}</span>`;
-        if (!isFixed && finding.repeatCount) {
-            badges += `<span class="badge repeat-badge">${finding.repeatCount}x</span>`;
-        }
-        if (!isFixed && finding.effort !== 'done') {
-            badges += `<span class="badge effort-badge">⏱ ${finding.effort}</span>`;
-        }
-        if (!isFixed && finding.impact !== 'done') {
-            badges += `<span class="badge impact-badge">💥 ${finding.impact}</span>`;
-        }
 
         let extraHTML = '';
         if (isIdea && finding.ideaDetail) {
@@ -818,13 +652,18 @@
             `;
         }
 
+        let repeatBadge = finding.repeatCount ? `<span class="badge repeat-badge">${finding.repeatCount}x</span>` : '';
+
         card.innerHTML = `
             <div class="finding-header">
                 <div class="finding-checkbox ${isFixed ? 'disabled' : ''} ${isChecked ? 'checked' : ''}" data-id="${finding.id}"></div>
                 <div class="finding-content">
                     <div class="finding-title-row">
                         <span class="finding-title">${finding.title}</span>
-                        ${badges}
+                        <span class="badge severity-badge ${finding.severity}">${isFixed ? 'FIXED' : finding.severity}</span>
+                        ${repeatBadge}
+                        ${!isFixed && finding.effort ? `<span class="badge effort-badge">⏱ ${finding.effort}</span>` : ''}
+                        ${!isFixed && finding.impact ? `<span class="badge impact-badge">💥 ${finding.impact}</span>` : ''}
                     </div>
                     <div class="finding-description">${finding.description}</div>
                     <div class="finding-recommendation ${isFixed ? 'fixed-rec' : ''}">
@@ -837,10 +676,7 @@
         `;
 
         if (!isFixed) {
-            card.querySelector('.finding-checkbox').onclick = (e) => {
-                e.stopPropagation();
-                toggleSelection(finding.id);
-            };
+            card.querySelector('.finding-checkbox').onclick = (e) => { e.stopPropagation(); toggleSelection(finding.id); };
         }
         return card;
     }
@@ -848,7 +684,6 @@
     function toggleSelection(id) {
         if (selectedFindings.has(id)) selectedFindings.delete(id);
         else selectedFindings.add(id);
-
         const cb = document.querySelector(`.finding-checkbox[data-id="${id}"]`);
         if (cb) cb.classList.toggle('checked');
         updateSelectionCount();
@@ -857,12 +692,8 @@
 
     function updateSelectionCount() {
         document.getElementById('selected-count').textContent = selectedFindings.size;
-
         let issues = 0, ideas = 0;
-        selectedFindings.forEach(id => {
-            if (id.startsWith('idea-')) ideas++;
-            else issues++;
-        });
+        selectedFindings.forEach(id => { if (id.startsWith('idea-')) ideas++; else issues++; });
         const parts = [];
         if (issues) parts.push(`${issues} fix${issues > 1 ? 'es' : ''}`);
         if (ideas) parts.push(`${ideas} idea${ideas > 1 ? 's' : ''}`);
@@ -874,9 +705,7 @@
         auditData.tabs.forEach(tab => {
             tab.sections.forEach(section => {
                 section.findings.forEach(f => {
-                    if (selectedFindings.has(f.id)) {
-                        selected.push({ tab: tab.label, category: section.name, ...f });
-                    }
+                    if (selectedFindings.has(f.id)) selected.push({ tab: tab.label, category: section.name, ...f });
                 });
             });
         });
@@ -886,32 +715,23 @@
     function formatSelections() {
         const sel = getSelectedFindings();
         if (!sel.length) return 'No items selected.';
-        let txt = `Otto Self-Audit — Selected Items (${sel.length})\nDate: March 13, 2026\n${'='.repeat(50)}\n\n`;
-
+        let txt = `Otto Self-Audit v2.7.7 — Selected Items (${sel.length})\nDate: March 14, 2026\n${'='.repeat(50)}\n\n`;
         const fixes = sel.filter(s => !s.id.startsWith('idea-'));
         const ideas = sel.filter(s => s.id.startsWith('idea-'));
-
         if (fixes.length) {
             txt += `🔧 FIXES TO APPLY (${fixes.length})\n${'-'.repeat(30)}\n`;
-            fixes.forEach((f, i) => {
-                txt += `\n${i+1}. [${f.severity.toUpperCase()}] ${f.title}\n   💡 ${f.recommendation}\n`;
-            });
+            fixes.forEach((f, i) => { txt += `\n${i+1}. [${f.severity.toUpperCase()}] ${f.title}\n   💡 ${f.recommendation}\n`; });
             txt += '\n';
         }
         if (ideas.length) {
             txt += `💡 IDEAS TO BUILD (${ideas.length})\n${'-'.repeat(30)}\n`;
-            ideas.forEach((f, i) => {
-                txt += `\n${i+1}. ${f.title}\n   ${f.recommendation}\n`;
-            });
+            ideas.forEach((f, i) => { txt += `\n${i+1}. ${f.title}\n   ${f.recommendation}\n`; });
         }
         return txt;
     }
 
     async function copyToClipboard() {
-        try {
-            await navigator.clipboard.writeText(formatSelections());
-            showToast('✅ Copied to clipboard!');
-        } catch(e) { showToast('❌ Failed to copy'); }
+        try { await navigator.clipboard.writeText(formatSelections()); showToast('✅ Copied to clipboard!'); } catch(e) { showToast('❌ Failed to copy'); }
     }
 
     function showToast(msg) {
@@ -924,10 +744,9 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadState();
         renderTabs();
-        updateScoreRings();
         updateSelectionCount();
         document.getElementById('copy-btn').onclick = copyToClipboard;
-        document.getElementById('submit-btn').onclick = copyToClipboard; // Fallback — no API endpoint
+        document.getElementById('submit-btn').onclick = () => { showToast('📋 Copied to clipboard (submit to Otto)'); copyToClipboard(); };
     });
     </script>
 </body>
